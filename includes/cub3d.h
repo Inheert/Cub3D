@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/04 12:49:49 by tclaereb         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:29:55 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@
 # include <errno.h>
 
 
-# include "../src/utils/garbage_collector/includes/garbage_collector.h"
-
 # include "../src/utils/libft/libft.h"
-
+# include "../src/utils/garbage_collector/includes/garbage_collector.h"
+# include "MLX42/MLX42.h"
 
 /* **************************--Structures--********************************** */
 
