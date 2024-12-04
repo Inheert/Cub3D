@@ -25,7 +25,7 @@ all: $(NAME)
 $(NAME): $(OBJECTS)
 	@$(MAKE_GARBAGE)
 	@$(MAKE_LIBFT)
-	@$(CC) $(OBJECTS) -o $@ $(INCLUDES) $(GARBAGE) $(LIBFT)
+	@$(CC) $(OBJECTS) -o $@ $(INCLUDES) $(GARBAGE) $(LIBFT) src/utils/libmlx42.a -ldl -lglfw -pthread -lm
 	@echo "\033[1;38;5;10m   ⭐ - All files compiled.\033[0m"
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
