@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 13:23:22 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/05/03 19:16:35 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:38:17 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_read_fd(int fd, char *start_point_buff)
 	char	*buffer_readed;
 	int		rd_bytes;
 
-	buffer_readed = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buffer_readed = gb_malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer_readed)
 		return (NULL);
 	rd_bytes = 1;
@@ -28,14 +28,14 @@ char	*ft_read_fd(int fd, char *start_point_buff)
 		if (rd_bytes == -1 || (!rd_bytes && !buffer_readed[0]
 				&& (!start_point_buff || !(*start_point_buff))))
 		{
-			free(buffer_readed);
-			free(start_point_buff);
+			gb_free(buffer_readed);
+			gb_free(start_point_buff);
 			return (NULL);
 		}
 		buffer_readed[rd_bytes] = '\0';
 		start_point_buff = ft_strjoin_gnl(start_point_buff, buffer_readed);
 	}
-	free(buffer_readed);
+	gb_free(buffer_readed);
 	return (start_point_buff);
 }
 
