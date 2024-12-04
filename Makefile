@@ -23,7 +23,8 @@ all: $(NAME)
 
 $(NAME): $(OBJECTS)
 	@$(MAKE_GARBAGE)
-	@$(CC) $(OBJECTS) -o $@ $(INCLUDES) $(GARBAGE)
+	@$(MAKE_LIBFT)
+	@$(CC) $(OBJECTS) -o $@ $(INCLUDES) $(GARBAGE) $(LIBFT)
 	@echo "\033[1;38;5;10m   ⭐ - All files compiled.\033[0m"
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
@@ -33,12 +34,14 @@ $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	@rm -rf $(BIN_DIR)
 	@$(MAKE_GARBAGE) -s clean
+	@$(MAKE_LIBFT) -s clean
 	@find . -name '*.o' -delete
 	@echo "\033[1;38;5;226m   📂 - bin folders removed.\033[0m"
 
 fclean: clean
 	@rm -f $(NAME)
 	@$(MAKE_GARBAGE) -s fclean
+	@$(MAKE_LIBFT) -s fclean
 	@echo "\033[1;38;5;9m   📤 - Libs and executable removed.\033[0m"
 
 re: fclean all
