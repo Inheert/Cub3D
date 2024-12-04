@@ -1,0 +1,7 @@
+.vscode/
+bin/
+src/main.c
+cub3D
+minishell
+*.a
+*.o
