@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:21:37 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/01 10:08:00 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:34:44 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <stddef.h>
 
 # include <stdarg.h>
+
+#include "../garbage_collector/includes/garbage_collector.h"
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

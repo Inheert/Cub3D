@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 14:24:26 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/05/03 19:16:25 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:38:12 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ char	*ft_strjoin_gnl(char *start_point_buff, char *buffer_readed)
 
 	if (!start_point_buff)
 	{
-		start_point_buff = malloc(sizeof(char) * 1);
+		start_point_buff = gb_malloc(sizeof(char) * 1);
 		start_point_buff[0] = '\0';
 	}
 	if ((!start_point_buff || !buffer_readed))
 		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen_gnl(start_point_buff)
+	str = gb_malloc(sizeof(char) * (ft_strlen_gnl(start_point_buff)
 				+ ft_strlen_gnl(buffer_readed) + 1));
 	if (str == NULL)
 		return (NULL);
@@ -65,7 +65,7 @@ char	*ft_strjoin_gnl(char *start_point_buff, char *buffer_readed)
 	while (buffer_readed[j] != '\0')
 		str[i++] = buffer_readed[j++];
 	str[i] = '\0';
-	free(start_point_buff);
+	gb_free(start_point_buff);
 	return (str);
 }
 
@@ -79,7 +79,7 @@ char	*ft_get_line(char *start_point_buff)
 		return (NULL);
 	while (start_point_buff[len] && start_point_buff[len] != '\n')
 		len++;
-	line_to_w = malloc(sizeof(char) * (len + 2));
+	line_to_w = gb_malloc(sizeof(char) * (len + 2));
 	if (!line_to_w)
 		return (NULL);
 	len = 0;
@@ -108,10 +108,10 @@ char	*ft_find_new_start(char *start_point_buff)
 		i++;
 	if (!start_point_buff[i])
 	{
-		free(start_point_buff);
+		gb_free(start_point_buff);
 		return (NULL);
 	}
-	new_start = malloc(sizeof(char)
+	new_start = gb_malloc(sizeof(char)
 			* (ft_strlen_gnl(start_point_buff) - i + 1));
 	if (!new_start)
 		return (NULL);
@@ -120,6 +120,6 @@ char	*ft_find_new_start(char *start_point_buff)
 	while (start_point_buff[i])
 		new_start[j++] = start_point_buff[i++];
 	new_start[j] = '\0';
-	free (start_point_buff);
+	gb_free(start_point_buff);
 	return (new_start);
 }
