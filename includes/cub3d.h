@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/04 12:42:56 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/04 12:49:49 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <math.h>
 # include <stdbool.h>
+# include <errno.h>
 
 
 # include "../src/utils/garbage_collector/includes/garbage_collector.h"
@@ -29,7 +30,7 @@
 
 /**
  * Stock file information for futer use
- * 
+ *
  * @param no path: north texture.
  * @param so path: south texture.
  * @param we path: west texture.
@@ -37,12 +38,12 @@
  * @param f path: north texture.
  * @param c path: north texture.
  * @param complet number of identifier find in the file.
- * 
+ *
  * @param nl number of lines.
  * @param nc number of colons.
  * @param validated 1 if all the file_information is validated.
  * 					0 if is not.
- * 
+ *
  */
 typedef struct s_file_info
 {
@@ -57,29 +58,29 @@ typedef struct s_file_info
 
 	int			nl;
 	int			nc;
-	
+
 	char		*line;
 	char		*lb;
 	char		*lm;
 	char		*la;
-	
+
 	bool		valid;
 
 }	t_file;
 
 /**
- * 
+ *
  */
 typedef struct s_data
 {
 	t_file	*fi;
-	
+
 	char	**map_2d;
 	int		p_x;
 	int		p_y;
 
 }	t_data;
 
-
+void	raise_error(char *error, char *details, int exit_code, bool critical);
 
 #endif

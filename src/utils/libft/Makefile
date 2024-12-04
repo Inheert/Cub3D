@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+         #
+#    By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/18 13:41:46 by jodiaz-a          #+#    #+#              #
-#    Updated: 2024/12/01 10:07:27 by jodiaz-a         ###   ########.fr        #
+#    Updated: 2024/12/04 13:08:03 by tclaereb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,12 @@
 ## ARGUMENTS
 #########################################
 
-INCLUDES_PATH = ../../includes
-NAME		= libft.a
-CFLAGS		= -Wextra -Wall -Werror -g3 -I$(INCLUDES_PATH)
-CC			= gcc
+INCLUDES_PATH	= ../../includes
+NAME			= libft.a
+CFLAGS			= -Wextra -Wall -Werror -g3 -I$(INCLUDES_PATH)
+CC				= gcc
+
+BIN_DIR = ./bin
 
 ########################################
 ## SOURCES
@@ -79,7 +81,7 @@ SOURCES	=	ft_isalpha.c	\
 			ft_abs.c
 
 
-OBJS_FILES	=	$(SOURCES:.c=.o)
+OBJS_FILES		= $(addprefix $(BIN_DIR)/,$(SOURCES:.c=.o))
 
 ########################################
 ## RULES
@@ -89,13 +91,14 @@ OBJS_FILES	=	$(SOURCES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS_FILES)
-	$(AR) rcs $(NAME) $(OBJS_FILES)
+	$(AR) rcs $@ $^
 
-%.o: %.c
+$(BIN_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(OBJS_FILES)
+	@rm -rf $(BIN_DIR)
 
 fclean: clean
 	@rm -f $(NAME)

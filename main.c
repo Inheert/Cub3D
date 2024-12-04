@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/04 12:43:16 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/04 12:52:49 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int ac, char **av)
 	// t_file file_info;
 
 	if (ac != 2 || !av || !av[1] || !ft_is_cub((const char *)av[1]))
-		return (printf("Error: File inexistent or wrong file.\n"), 2);
+		raise_error("Parsing", "file inexistent or wrong file.", 1 ,1);
 	// if (read_file(av[1], &dt) == NULL)
 	// 	return (printf("Error: Map invalid.\n"), 2);
 }

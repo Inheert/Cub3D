@@ -9,7 +9,8 @@ INCLUDES = -I ./includes/
 SRC_DIR = .
 BIN_DIR = ./bin
 
-SOURCES = main.c
+SOURCES = main.c \
+			src/utils/ft_error.c
 
 OBJECTS = $(addprefix $(BIN_DIR)/,$(SOURCES:.c=.o))
 
