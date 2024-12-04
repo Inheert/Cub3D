@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 15:45:50 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/05/03 12:02:52 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:37:57 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*q_lettre(const char *s1, char c)
 	while (*s1 && *s1 != c)
 		s1++;
 	len = s1 - start;
-	mot = (char *)malloc(len + 1);
+	mot = (char *)gb_malloc(len + 1);
 	if (!mot)
 		return (NULL);
 	while (start != s1)
@@ -61,10 +61,10 @@ void	free_tout(int i, char **split)
 	f = 0;
 	while (f < i)
 	{
-		free(split[f]);
+		gb_free(split[f]);
 		f++;
 	}
-	free(split);
+	gb_free(split);
 }
 
 int	less25(char const *s, char c, int i, char **split)
@@ -101,7 +101,7 @@ char	**ft_split(char const *s, char c)
 	num_mots = q_mots(s, c);
 	if (!s || num_mots < 0 || !num_mots || !c)
 		return (NULL);
-	split = (char **)malloc(sizeof(char *) * (num_mots + 1));
+	split = (char **)gb_malloc(sizeof(char *) * (num_mots + 1));
 	if (!split)
 		return (NULL);
 	i = 0;
