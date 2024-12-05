@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:21:37 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/04 13:34:44 by tclaereb         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:47:34 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,21 @@ int		ft_print_xx(unsigned int num, const char f);
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1000
 
-char	*get_next_line(int fd);
-int		ft_strlen_gnl(char *s);
-char	*ft_strjoin_gnl(char *start_point_buff, char *buffer_readed);
-char	*ft_read_fd(int fd, char *start_point_buff);
-char	*ft_get_line(char *start_point_buff);
-char	*ft_find_new_start(char *start_point_buff);
-char	*ft_strchr_gnl(char *start_point_buff, int bn);
+char	*get_next_line_bonus(int fd);
+int		ft_strlen1(char *s);
+char	*ft_strjoin1(char *start_point, char *buffer_rd);
+char	*ft_read_fd(int fd, char *start_point);
+char	*ft_get_line(char *start_point);
+char	*ft_new_start_point(char *start_point);
+char	*ft_strchr1(char *start_point, int bn);
+
+// char	*get_next_line(int fd);
+// int		ft_strlen_gnl(char *s);
+// char	*ft_strjoin_gnl(char *start_point_buff, char *buffer_readed);
+// char	*ft_read_fd(int fd, char *start_point_buff);
+// char	*ft_get_line(char *start_point_buff);
+// char	*ft_find_new_start(char *start_point_buff);
+// char	*ft_strchr_gnl(char *start_point_buff, int bn);
 
 double	ft_abs(double n);
 

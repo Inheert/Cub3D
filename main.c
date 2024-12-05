@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/04 13:40:33 by tclaereb         ###   ########.fr       */
+/*   Updated: 2024/12/05 13:50:14 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,36 @@ int	ft_is_cub(const char *file)
 	return (1);
 }
 
+void	init_t_file(t_file *fi)
+{
+	fi->no = NULL;
+	fi->so = NULL;
+	fi->we = NULL;
+	fi->ea = NULL;
+	fi->f = NULL;
+	fi->c = NULL;
+	fi->complet = 1;
+
+	fi->nl = 0;
+	fi->nc = 0;
+
+	fi->line = NULL;
+	fi->lb = NULL;
+	fi->lm = NULL;
+	fi->la = NULL;
+
+	fi->valid = true;
+	
+}
+
 int	main(int ac, char **av)
 {
-	// t_data dt;
-	// t_file file_info;
+	t_data	dt;
+	t_file	file_info;
 
 	if (ac != 2 || !av || !av[1] || !ft_is_cub((const char *)av[1]))
 		raise_error("Parsing", "file inexistent or wrong file.", 1 ,1);
-	// if (read_file(av[1], &dt) == NULL)
-	// 	return (printf("Error: Map invalid.\n"), 2);
+	init_t_file(&file_info);
+	dt.fi = &file_info;
+	read_file(av[1], &dt);
 }

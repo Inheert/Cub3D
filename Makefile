@@ -10,7 +10,10 @@ SRC_DIR = .
 BIN_DIR = ./bin
 
 SOURCES = main.c \
-			src/utils/ft_error.c
+			src/utils/ft_error.c	\
+			src/parsing/flood_fill.c	\
+			src/parsing/read_file.c	\
+			src/parsing/read_map.c
 
 OBJECTS = $(addprefix $(BIN_DIR)/,$(SOURCES:.c=.o))
 
@@ -25,7 +28,7 @@ all: $(NAME)
 $(NAME): $(OBJECTS)
 	@$(MAKE_GARBAGE)
 	@$(MAKE_LIBFT)
-	@$(CC) $(OBJECTS) -o $@ $(INCLUDES) $(GARBAGE) $(LIBFT) src/utils/libmlx42.a -ldl -lglfw -pthread -lm
+	@$(CC) $(OBJECTS) -o $@ $(INCLUDES) $(LIBFT) $(GARBAGE) src/utils/libmlx42.a -ldl -lglfw -pthread -lm
 	@echo "\033[1;38;5;10m   ⭐ - All files compiled.\033[0m"
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
