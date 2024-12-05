@@ -6,11 +6,11 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/04 12:14:42 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:52:09 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "c3d.h"
+#include "cub3d.h"
 
 /**
  * Take the information that the structure t_file
@@ -64,6 +64,7 @@ bool	verify_format_file(int fd, int fd1, t_data *dt)
 	while (1)
 	{
 		line = get_next_line_bonus(fd);
+		line1 = get_next_line_bonus(fd1);
 		if (line == NULL || line1 == NULL)
 			return (perror("Error: read_file: get_next_line return NULL.\n"),
 				false);
@@ -78,8 +79,7 @@ bool	verify_format_file(int fd, int fd1, t_data *dt)
 		}
 		else if (line && *line && dt->fi->complet == 6
 			&& ft_strchr(line, '1') != NULL)//leack???
-			return (dt->map_2d = read_map(line, line1, fd, fd1, dt), 1);
-		line1 = get_next_line_bonus(fd1);//fd1 is  one line late
+			return (dt->map = read_map(line, line1, fd, fd1, dt), 1);
 	}
 	return (0);
 }
@@ -95,8 +95,8 @@ void	read_file(char *file, t_data *dt)
 		return (perror("Error: read_file: File cannot be open.\n"));
 	if (verify_format_file(fd, fd1, dt) == false)
 		return (perror("Error: read_file: File cannot read.\n"));
-	if (dt->map_2d == NULL)
+	if (dt->map == NULL)
 		return (perror("Error: read_map: NULL.\n"));
-	if (dt->map_2D == NULL)
+	if (dt->map == NULL)
 		return ;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/04 13:29:55 by tclaereb         ###   ########.fr       */
+/*   Updated: 2024/12/04 20:05:43 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,13 @@
  *
  * @param nl number of lines.
  * @param nc number of colons.
- * @param validated 1 if all the file_information is validated.
+ * 
+ * @param line char * to the line before the map.
+ * @param lb line before lm (UP).
+ * @param lm line for next_line_keep_map_close().
+ * @param la line before lm (DWON).
+ * 
+ * @param valid 1 if all the file_information is validated.
  * 					0 if is not.
  *
  */
@@ -53,7 +59,6 @@ typedef struct s_file_info
 	const char	*f;
 	const char	*c;
 	int			complet;
-
 
 	int			nl;
 	int			nc;
@@ -74,7 +79,9 @@ typedef struct s_data
 {
 	t_file	*fi;
 
-	char	**map_2d;
+	char	**map;
+	char	*map_verif;
+	int		pos_player;
 	int		p_x;
 	int		p_y;
 
