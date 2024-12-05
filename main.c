@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/04 13:40:33 by tclaereb         ###   ########.fr       */
+/*   Updated: 2024/12/05 13:23:09 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,23 @@ int	ft_is_cub(const char *file)
 	return (1);
 }
 
+mlx_t		*g_window = NULL;
+mlx_image_t	*g_game_container = NULL;
+
 int	main(int ac, char **av)
 {
 	// t_data dt;
 	// t_file file_info;
-
-	if (ac != 2 || !av || !av[1] || !ft_is_cub((const char *)av[1]))
-		raise_error("Parsing", "file inexistent or wrong file.", 1 ,1);
+	// if (ac != 2 || !av || !av[1] || !ft_is_cub((const char *)av[1]))
+	// 	raise_error("Parsing", "file inexistent or wrong file.", 1 ,1);
 	// if (read_file(av[1], &dt) == NULL)
 	// 	return (printf("Error: Map invalid.\n"), 2);
+	(void)ac; (void)av;
+
+	mlx_t	*window;
+
+	window = create_window();
+	player_init();
+	mlx_loop(window);
+	mlx_terminate(window);
 }
