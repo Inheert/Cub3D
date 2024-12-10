@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/05 14:36:38 by tclaereb         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:56:00 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,36 +44,36 @@ void	hook_frame_update(void *param)
 	int	i;
 	int	j;
 
-	(void)param;
 	i = -1;
-	while (++i < 1024)
+	while (++i < W_WIDTH * 0.5)
 	{
 		j = -1;
-		while (++j < 1024)
+		while (++j < W_HEIGHT)
 			mlx_put_pixel(g_game_container, i, j, 0x00003366);
 	}
+	draw_map((t_map **)param);
 	draw_player();
 }
 
-void	initialize_hooks()
+void	initialize_hooks(t_map **map)
 {
 	mlx_key_hook(g_window, &cub_keys_hooks, NULL);
-	mlx_loop_hook(g_window,  &hook_frame_update, NULL);
+	mlx_loop_hook(g_window,  &hook_frame_update, map);
 }
 
-mlx_t	*create_window()
+mlx_t	*create_window(t_map **map)
 {
 	mlx_t	*window;
 
-	window = mlx_init(2048, 1024, "Cub3D", false);
+	window = mlx_init(W_WIDTH, W_HEIGHT, "Cub3D", false);
 	if (!window)
 		raise_perror("a problem occur while creating the mlx window.", true);
 	g_window = window;
-	g_game_container = mlx_new_image(window, 1024, 1024);
+	g_game_container = mlx_new_image(window, W_WIDTH * 0.5, W_HEIGHT);
 	if (!g_game_container)
 		raise_error("Error:", "game image container creation failed.", 1, true);
 	if (mlx_image_to_window(window, g_game_container, 0, 0) == -1)
 		raise_error("Error:", "game image container to window failed.", 1, true);
-	initialize_hooks();
+	initialize_hooks(map);
 	return (window);
 }

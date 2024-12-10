@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/05 14:37:29 by tclaereb         ###   ########.fr       */
+/*   Updated: 2024/12/10 09:35:36 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # include "../src/utils/libft/libft.h"
 # include "../src/utils/garbage_collector/includes/garbage_collector.h"
 # include "MLX42/MLX42.h"
+
+# define W_WIDTH 2048
+# define W_HEIGHT 1024
 
 # define PLAYER_SPEED 80
 # define ANGLE_SPEED 60
@@ -95,16 +98,19 @@ typedef enum s_map_build
 {
 	PLAYER,
 	WALL,
+	FLOOR,
 	EMPTY,
 }	t_map_build;
 
 typedef struct s_map
 {
-	t_map_build		slot;
+	char			slot;
 	struct s_map	*up;
 	struct s_map	*right;
 	struct s_map	*down;
 	struct s_map	*left;
+	unsigned int	line_count;
+	unsigned int	col_count;
 }	t_map;
 
 extern mlx_t		*g_window;
@@ -113,9 +119,12 @@ extern mlx_image_t	*g_game_container;
 void	raise_perror(char *error, bool critical);
 void	raise_error(char *error, char *details, int exit_code, bool critical);
 
-mlx_t	*create_window();
+t_map	**t_map_create(char **old_map);
+
+mlx_t	*create_window(t_map **map);
 void	player_init();
 void	draw_player();
+void	draw_map(t_map **map);
 void	player_set_x(int32_t direction);
 void	player_set_y(int32_t direction);
 void	player_set_angle(float ang);

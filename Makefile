@@ -2,7 +2,7 @@ NAME = cub3D
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 
 INCLUDES = -I ./includes/
 
@@ -11,8 +11,10 @@ BIN_DIR = ./bin
 
 SOURCES = main.c \
 			src/utils/ft_error.c \
+			src/utils/t_map/t_map_utils_1.c \
 			src/core/window.c \
-			src/core/player.c
+			src/core/player.c \
+			src/core/map.c \
 
 OBJECTS = $(addprefix $(BIN_DIR)/,$(SOURCES:.c=.o))
 
