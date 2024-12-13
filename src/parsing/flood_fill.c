@@ -31,9 +31,11 @@ int	flood_fill(t_data *dt, int courrent_pos)
 		|| dt->map_verif[courrent_pos] == 'W'
 		|| dt->map_verif[courrent_pos] == 'S')
 		dt->map_verif[courrent_pos] = 'x';
-	flood_fill(dt, courrent_pos - dt->fi->nl);
-	flood_fill(dt, courrent_pos + dt->fi->nl);
-	flood_fill(dt, courrent_pos - 1);
-	flood_fill(dt, courrent_pos + 1);
+	flood_fill(dt, courrent_pos - dt->fi->nc);
+	flood_fill(dt, courrent_pos + dt->fi->nc);
+	if (courrent_pos % dt->fi->nc != 0)
+		flood_fill(dt, courrent_pos - 1);
+	if ((courrent_pos + 1) % dt->fi->nc != 0)
+		flood_fill(dt, courrent_pos + 1);
 	return (0);
 }

@@ -6,25 +6,25 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:59:03 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/05 14:11:46 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:31:55 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	is_player(char *p, t_data *dt)
+int	is_player(char *p, t_data *dt, int i)
 {
 	static int	player = 0;
 
-	if (!player && (*p == 'E' || *p == 'W' || *p == 'N' || *p == 'S'))//Pas plus d'un jouer
-		return (player++, 1);
-	else if (player && (*p == 'E' || *p == 'W' || *p == 'N' || *p == 'S'))
-		return (printf("is_player 1\n"), dt->fi->valid = false, 2);
+	if (player == 0 && (*p == 'E' || *p == 'W' || *p == 'N' || *p == 'S'))//Pas plus d'un jouer
+		return (player++, dt->pos_player = i, 1);
+	else if ((*p == 'E' || *p == 'W' || *p == 'N' || *p == 'S'))
+		return (dt->fi->valid = false, 2);
 		
-	if (*p == '1' || *p == '0' || *p == ' ')
+	if (*p == '1' || *p == '0' || *p == ' '|| *p == '\n')
 		return (1);
-
-	return (printf("is_player 2\n"), dt->fi->valid = false, 2);
+	printf("%c", *p);
+	return (dt->fi->valid = false, 2);
 }
 
 bool	dimetions_for_map(char *line1, int fd1, t_data *dt)
@@ -34,6 +34,7 @@ bool	dimetions_for_map(char *line1, int fd1, t_data *dt)
 	while (line1)
 	{
 		dt->fi->nl++;
+		free(line1);
 		line1 = get_next_line_bonus(fd1);
 		if (!line1)
 			break ;
@@ -54,7 +55,9 @@ char	*get_map(t_data *dt, int fd)
 	char	*map;
 	int		i;
 	int		j;
+	int		is_player_output;
 
+	dt->pos_player = 0;
 	map = malloc(sizeof(char) * ((dt->fi->nl * dt->fi->nc) + 1));
 	if (!map)
 		return (printf("get_map 1\n"), NULL);
@@ -62,21 +65,22 @@ char	*get_map(t_data *dt, int fd)
 	while (i < (dt->fi->nl * dt->fi->nc))
 	{
 		j = 0;
-		while (dt->fi->line[j] || dt->fi->line[j] != '\n')// a regarder '\n'
+		while (dt->fi->line[j])// a regarder '\n'
 		{
-			printf("%c", dt->fi->line[j]);
-			if (dt->fi->line[j] && is_player(&dt->fi->line[j], dt) == 2)
+			is_player_output = is_player(&dt->fi->line[j], dt, i);
+			if (dt->fi->line[j] && is_player_output == 2)
 				return (printf("get_map 2\n"), NULL);
-			else if (dt->fi->line[j] && is_player(&dt->fi->line[j], dt) == 1)
-				dt->pos_player = i;
 			map[i++] = dt->fi->line[j++];
 		}
 		dt->fi->line = get_next_line_bonus(fd);
-		if (!dt->fi->line)
-			return (printf("get_map 3\n"), free(map), NULL);
+		if (!dt->fi->line && ((dt->fi->nl * dt->fi->nc) - 1) == i)
+			break;
+		else if (!dt->fi->line)
+			return (printf("get_map 3; %i\n", i), free(map), NULL);
 	}
-	map[dt->fi->nl * dt->fi->nc] = '\0';
-	return (printf("get_map 4\n"), map);
+	map[i + 1] = '\0';
+	printf("%s\n", map);
+	return (printf("get_map 4; %i\nvalid: %d \n%s", i, dt->fi->valid,map), map);
 }
 
  /**
@@ -90,7 +94,7 @@ bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt)
 	dt->map_verif = get_map(dt, fd);// a causa de esto habra que regresar un int
 	if (!dt->map_verif)
 		return (raise_error("Error\n", "read_map 1 NULL.\n", 1, true), 0);
-	if (!flood_fill(dt, dt->pos_player))
+	if (flood_fill(dt, dt->pos_player) == 1)
 		return (raise_error("Error\n", " read_map 2 NULL.\n", 1, true), 0);
 	return (true);
 }

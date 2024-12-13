@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/05 13:50:23 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:59:04 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ bool	verify_format_file(int fd, int fd1, t_data *dt)
 		line1 = get_next_line_bonus(fd1);
 		if (line == NULL || line1 == NULL)
 			return (raise_error("Error\n", "read_file: gnl return NULL.\n", 1, true), false);
-		if (line && *line && dt->fi->complet < 6)
+		if (line && *line && dt->fi->complet <= 6)
 		{
 			while (*line == ' ')
 				line++;
@@ -95,7 +95,7 @@ bool	verify_format_file(int fd, int fd1, t_data *dt)
 			else if (line && *line && (init_file_info(line, dt)) == false)
 				return (raise_error("Error\n", "read_file: init_file_info.\n", 1, true), false);
 		}
-		else if (line && *line && dt->fi->complet == 6
+		else if (line && *line && dt->fi->complet == 7
 			&& ft_strchr(line, '1') != NULL)//leack???
 			return (read_map(line, line1, fd, fd1, dt), 1);
 	}
@@ -115,6 +115,8 @@ void	read_file(char *file, t_data *dt)
 		return (raise_error("Error\n", "read_file: cannot open the file.\n", 1, true));
 	if (verify_format_file(fd, fd1, dt) == false)
 		return (raise_error("Error\n", "read_file: file usless.\n", 1, true));
-	if (dt->map == NULL)
+	if (dt->map_verif == NULL)
 		return (raise_error("Error\n", "read_file: file usless.\n", 1, true));
+	// close(fd);
+	// close(fd1);
 }

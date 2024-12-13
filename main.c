@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/05 13:50:14 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:23:14 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,27 @@ void	init_t_file(t_file *fi)
 	fi->nc = 0;
 
 	fi->line = NULL;
-	fi->lb = NULL;
-	fi->lm = NULL;
-	fi->la = NULL;
 
 	fi->valid = true;
+	
+}
+
+void	print_file_info(t_file *fi, t_data *dt)
+{
+	printf("fi->no: %s\n", fi->no);
+	printf("fi->so: %s\n", fi->so);
+	printf("fi->we: %s\n", fi->we);
+	printf("fi->ea: %s\n", fi->ea);
+	printf("fi->f: %s\n", fi->f);
+	printf("fi->c: %s\n", fi->c);
+	printf("fi->complet: %i\n", fi->complet);
+	printf("fi->nl: %i\n", fi->nl);
+	printf("fi->nc: %i\n", fi->nc);
+	printf("fi->line: %s\n", fi->line);
+	printf("fi->valid: %d\n", fi->valid);
+
+	printf("dt->map_verif: \n%s\n", dt->map_verif);
+	printf("dt->pos_player: %i\n", dt->pos_player);
 	
 }
 
@@ -61,4 +77,5 @@ int	main(int ac, char **av)
 	init_t_file(&file_info);
 	dt.fi = &file_info;
 	read_file(av[1], &dt);
+	print_file_info(&file_info, &dt);
 }
