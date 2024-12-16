@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 14:12:39 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/05 12:47:49 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:20:28 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ char	*ft_strjoin1(char *start_point, char *buffer_rd)
 
 	if (!start_point)
 	{
-		start_point = malloc(sizeof(char) * 1);
+		start_point = gb_malloc(sizeof(char) * 1);
 		start_point[0] = '\0';
 	}
 	if ((!start_point || !buffer_rd))
 		return (NULL);
-	str = malloc(sizeof(char)
+	str = gb_malloc(sizeof(char)
 			* (ft_strlen1(start_point) + ft_strlen1(buffer_rd) + 1));
 	if (str == NULL)
 		return (NULL);
@@ -65,7 +65,7 @@ char	*ft_strjoin1(char *start_point, char *buffer_rd)
 	while (buffer_rd[j] != '\0')
 		str[i++] = buffer_rd[j++];
 	str[i] = '\0';
-	free(start_point);
+	gb_free(start_point);
 	return (str);
 }
 
@@ -79,7 +79,7 @@ char	*ft_get_line(char *start_point)
 		return (NULL);
 	while (start_point[len] && start_point[len] != '\n')
 		len++;
-	line_to_w = malloc(sizeof(char) * (len + 2));
+	line_to_w = gb_malloc(sizeof(char) * (len + 2));
 	if (!line_to_w)
 		return (NULL);
 	len = 0;
@@ -108,10 +108,10 @@ char	*ft_new_start_point(char *start_point)
 		i++;
 	if (!start_point[i])
 	{
-		free(start_point);
+		gb_free(start_point);
 		return (NULL);
 	}
-	new_start = malloc(sizeof(char) * (ft_strlen1(start_point) - i + 1));
+	new_start = gb_malloc(sizeof(char) * (ft_strlen1(start_point) - i + 1));
 	if (!new_start)
 		return (NULL);
 	i++;
@@ -119,6 +119,6 @@ char	*ft_new_start_point(char *start_point)
 	while (start_point[i])
 		new_start[j++] = start_point[i++];
 	new_start[j] = '\0';
-	free (start_point);
+	gb_free (start_point);
 	return (new_start);
 }

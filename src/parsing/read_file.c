@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/13 17:59:04 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:02:55 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ char	*take_colors(char *color)
 {
 	char	*start;
 	int		i;
+	int		len;
 
 	i = 0;
 	while (color[i] == 'F' || color[i] == 'C' || color[i] == ' ')
@@ -41,11 +42,15 @@ char	*take_colors(char *color)
 	if (!color[i] && !ft_isalnum(color[i]))
 		return (raise_error("Error\n", "read_file: bad use of Colors.\n", 1, true), NULL);
 	start = &color[i];
+	len = 0;
 	while (color[i] && (ft_isalnum(color[i]) || color[i] == ','))
+	{
 		i++;
-	if (i > 11)
+		len++;
+	}
+	if (len > 11)
 		return (raise_error("Error\n", "read_file: bad use of Colors.\n", 1, true), NULL);
-	return (ft_substr(start, 0, i));
+	return (printf("colors: i = %i and len = %i\n", i, len), ft_substr(start, 0, len));
 }
 
 /**
@@ -54,17 +59,17 @@ char	*take_colors(char *color)
 bool	init_file_info(char *line, t_data *dt)
 {
 	if (ft_strncmp(line, "NO", 2) == 0)
-		return (printf("NO\n"), dt->fi->no = take_path_info(line), true);
+		return (dt->fi->no = take_path_info(line), true);
 	else if (ft_strncmp(line, "SO", 2) == 0)
-		return (printf("SO\n"), dt->fi->so = take_path_info(line), true);
+		return (dt->fi->so = take_path_info(line), true);
 	else if (ft_strncmp(line, "WE", 2) == 0)
-		return (printf("WE\n"), dt->fi->we = take_path_info(line), true);
+		return (dt->fi->we = take_path_info(line), true);
 	else if (ft_strncmp(line, "EA", 2) == 0)
-		return (printf("EA\n"), dt->fi->ea = take_path_info(line), true);
+		return (dt->fi->ea = take_path_info(line), true);
 	else if (ft_strncmp(line, "F", 1) == 0)
-		return (printf("F\n"), dt->fi->f = take_colors(line), true);
+		return (dt->fi->f = take_colors(line), true);
 	else if (ft_strncmp(line, "C", 1) == 0)
-		return (printf("C\n"), dt->fi->c = take_colors(line), true);
+		return (dt->fi->c = take_colors(line), true);
 	return (false);
 }
 /**
@@ -88,17 +93,25 @@ bool	verify_format_file(int fd, int fd1, t_data *dt)
 			return (raise_error("Error\n", "read_file: gnl return NULL.\n", 1, true), false);
 		if (line && *line && dt->fi->complet <= 6)
 		{
-			while (*line == ' ')
+			while (*line == ' ' || *line == '\n' || *line == '\t')
 				line++;
 			if (line && *line && init_file_info(line, dt))
-					printf("complet: %i\n", dt->fi->complet++);
+					dt->fi->complet++;
 			else if (line && *line && (init_file_info(line, dt)) == false)
 				return (raise_error("Error\n", "read_file: init_file_info.\n", 1, true), false);
 		}
 		else if (line && *line && dt->fi->complet == 7
 			&& ft_strchr(line, '1') != NULL)//leack???
 			return (read_map(line, line1, fd, fd1, dt), 1);
+		if (line)
+			gb_free(line);
+		if (line1)
+			gb_free(line1);
 	}
+	if (line)
+		gb_free(line);
+	if (line1)
+		gb_free(line1);
 	return (0);
 }
 
@@ -117,6 +130,6 @@ void	read_file(char *file, t_data *dt)
 		return (raise_error("Error\n", "read_file: file usless.\n", 1, true));
 	if (dt->map_verif == NULL)
 		return (raise_error("Error\n", "read_file: file usless.\n", 1, true));
-	// close(fd);
-	// close(fd1);
+	close(fd);
+	close(fd1);
 }

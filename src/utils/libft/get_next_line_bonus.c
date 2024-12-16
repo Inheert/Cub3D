@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 14:11:31 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/05 13:03:18 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:19:52 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_read_fd(int fd, char *start_point)
 	char	*buff_rd;
 	int		rd_bytes;
 
-	buff_rd = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buff_rd = gb_malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff_rd)
 		return (NULL);
 	rd_bytes = 1;
@@ -28,14 +28,14 @@ char	*ft_read_fd(int fd, char *start_point)
 		if (rd_bytes == -1 || (!rd_bytes && !buff_rd[0]
 				&& (!start_point || !(*start_point))))
 		{
-			free(buff_rd);
-			free(start_point);
+			gb_free(buff_rd);
+			gb_free(start_point);
 			return (NULL);
 		}
 		buff_rd[rd_bytes] = '\0';
 		start_point = ft_strjoin1(start_point, buff_rd);
 	}
-	free(buff_rd);
+	gb_free(buff_rd);
 	
 	return ( start_point);
 }
