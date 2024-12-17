@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/10 09:35:36 by tclaereb         ###   ########.fr       */
+/*   Updated: 2024/12/14 08:57:40 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,6 @@ void	draw_map(t_map **map);
 void	player_set_x(int32_t direction);
 void	player_set_y(int32_t direction);
 void	player_set_angle(float ang);
+void	draw_rays(t_map **map);
 
 #endif

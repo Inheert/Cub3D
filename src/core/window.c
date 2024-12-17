@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/10 11:56:00 by tclaereb         ###   ########.fr       */
+/*   Updated: 2024/12/14 08:58:02 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	hook_frame_update(void *param)
 	}
 	draw_map((t_map **)param);
 	draw_player();
+	draw_rays((t_map **)param);
 }
 
 void	initialize_hooks(t_map **map)
