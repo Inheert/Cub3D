@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:59:03 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/16 17:34:41 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/17 14:02:41 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	dimetions_for_map(char *line1, int fd1, t_data *dt)
 			dt->fi->nc = i;//take the longest line as reference.
 		gb_free(line1);
 		line1 = get_next_line_bonus(fd1);
-		if (!line1)
+		if (!line1 || line1[0] == '\n' || !ft_strchr(line1, '1'))
 			break ;
 	}
 	if (line1)
@@ -64,7 +64,7 @@ char	*get_map(t_data *dt, int fd)
 	int		is_player_output;
 
 	dt->pos_player = 0;
-	map = gb_malloc(sizeof(char) * ((dt->fi->nl * dt->fi->nc)));
+	map = gb_malloc(sizeof(char) * ((dt->fi->nl * dt->fi->nc) + 1));
 	if (!map)
 		return (printf("get_map 1\n"), NULL);
 	i = 0;
@@ -74,25 +74,27 @@ char	*get_map(t_data *dt, int fd)
 		while (dt->fi->line[j])// a regarder '\n'
 		{
 			is_player_output = is_player(&dt->fi->line[j], dt, i);
-			if (dt->fi->line[j] && is_player_output == 2)
+			if (is_player_output == 2)
 				return (printf("get_map 2\n"), NULL);
-			map[i++] = dt->fi->line[j++];
+			if (dt->fi->line[j] == '\n' && (dt->fi->line[j - 1] == ' ' || dt->fi->line[j - 1] == '1'))
+				map[i++] = '1', j++;
+			else
+				map[i++] = dt->fi->line[j++];
 		}
-		printf("j == %i\n", j);
-		// while (j < dt->fi->nc)
-		// {
-		// 	map[i++] = '1';
-		// 	j++;
-		// }
+		while (j < dt->fi->nc)
+		{
+			map[i++] = '1';
+			j++;
+		}
 		gb_free(dt->fi->line);
 		dt->fi->line = get_next_line_bonus(fd);
-		if (!dt->fi->line && ((dt->fi->nl * dt->fi->nc) - 1) == i)
+		if ((!dt->fi->line && ((dt->fi->nl * dt->fi->nc)) == i) || dt->fi->line[0] == '\n'  || !ft_strchr(dt->fi->line, '1'))
 			break;
-		else if (!dt->fi->line)
+		else if (!dt->fi->line )
 			return (printf("get_map 3\n%i char on the map\n%i char on gc_malloc\n", i, (dt->fi->nl * dt->fi->nc)), gb_free(map), NULL);
 	}
 	map[i] = '\0';
-	return (printf("get_map 4\n%i chars on the map\n%i char in the gb_malloc \nvalid: %d \n%s\n", i+1, (dt->fi->nl * dt->fi->nc),dt->fi->valid, map), map);
+	return (printf("get_map 4\n%i chars on the map\n%i char in the gb_malloc \nvalid: %d\n", i, (dt->fi->nl * dt->fi->nc),dt->fi->valid), map);
 }
 
  /**
@@ -101,11 +103,11 @@ char	*get_map(t_data *dt, int fd)
 bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt)
 {
 	if (dimetions_for_map(line1, fd1, dt) == false)
-		return (raise_error("Error\n", "read_map 0 NULL.\n", 1, true), 0);
+		return (raise_error("Error\n", "dimetions_for_map.\n", 1, true), 0);
 	dt->fi->line = line;
 	dt->map_verif = get_map(dt, fd);
 	if (!dt->map_verif)
-		return (raise_error("Error\n", "read_map 1 NULL.\n", 1, true), 0);
+		return (raise_error("Error\n", "Not valid map.\n", 1, true), 0);
 	if (flood_fill(dt, dt->pos_player) == 1)
 		return (raise_error("Error\n", " read_map 2 NULL.\n", 1, true), 0);
 	return (true);

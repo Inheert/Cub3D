@@ -1,9 +1,19 @@
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
-F 220,100,0
-C 225,30,0
-1111
-1N01
-1111
+NO                  ./path_to_the_north_texture
+SO ./path_to_           the_south_texture
+
+
+EA                          ./path_to_the_east_texture
+
+WE ./path_to   _the_west_texture
+
+
+ C            225,30,0
+
+            F 220,100,255
+
+111111111111
+    1N0001001111 111111
+111111111111
+
+ksdfh
+

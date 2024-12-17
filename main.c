@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/16 13:56:31 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:14:39 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,14 @@ void	printing_all_file_info(t_file *fi, t_data *dt)
 	printf("fi->line: %s\n", fi->line);
 	printf("fi->valid: %d\n", fi->valid);
 
-	printf("dt->map_verif: \n%s\n", dt->map_verif);
-	
+	printf("dt->map_verif: \n");
+	for (int i = 0; i < (fi->nc * fi->nl); i++)
+	{
+		if (i % dt->fi->nc == 0 && i != 0)
+			printf("\n");
+		printf("%c", dt->map_verif[i]);
+	}
+	printf("\n");
 	printf("dt->pos_player: %i\n", dt->pos_player);
 	
 }
