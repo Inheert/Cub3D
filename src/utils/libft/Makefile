@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+         #
+#    By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/18 13:41:46 by jodiaz-a          #+#    #+#              #
-#    Updated: 2024/12/05 12:33:04 by tclaereb         ###   ########.fr        #
+#    Updated: 2024/12/05 11:36:59 by jodiaz-a         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,8 +76,8 @@ SOURCES	=	ft_isalpha.c	\
 		ft_lstclear.c	\
 		ft_lstiter.c	\
 		ft_lstmap.c		\
-			get_next_line.c	\
-			get_next_line_utils.c	\
+			get_next_line_bonus.c	\
+			get_next_line_utils_bonus.c	\
 			ft_abs.c
 
 

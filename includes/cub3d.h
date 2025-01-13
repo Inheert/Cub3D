@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/14 08:57:40 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/13 07:06:49 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <math.h>
 # include <stdbool.h>
 # include <errno.h>
+# include <fcntl.h>
 
 # include "../src/utils/libft/libft.h"
 # include "../src/utils/garbage_collector/includes/garbage_collector.h"
@@ -71,9 +72,6 @@ typedef struct s_file_info
 	int			nc;
 
 	char		*line;
-	char		*lb;
-	char		*lm;
-	char		*la;
 
 	bool		valid;
 
@@ -86,11 +84,11 @@ typedef struct s_data
 {
 	t_file	*fi;
 
-	char	**map;
+	// char	**map;
 	char	*map_verif;
 	int		pos_player;
-	int		p_x;
-	int		p_y;
+	// int		p_x;
+	// int		p_y;
 
 }	t_data;
 
@@ -119,9 +117,10 @@ extern mlx_image_t	*g_game_container;
 void	raise_perror(char *error, bool critical);
 void	raise_error(char *error, char *details, int exit_code, bool critical);
 
-t_map	**t_map_create(char **old_map);
-
-mlx_t	*create_window(t_map **map);
+void	read_file(char *file, t_data *dt);
+bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt);
+int		flood_fill(t_data *dt, int courrent_pos);
+mlx_t	*create_window();
 void	player_init();
 void	draw_player();
 void	draw_map(t_map **map);
