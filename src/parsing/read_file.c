@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/04 17:52:09 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:02:55 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,54 @@ char	*take_path_info(char *line)
 
 	path = ft_strchr(line, '.');
 	if (path == NULL)
-		return (perror("Error: read_file: bad use of indetifier.\n"), NULL);
-	while (ft_isprint(path[i]) && path[i] != ' ')
+		return (raise_error("Error\n", "read_file: bad use of indetifier.\n", 1, true), NULL);
+	i = 0;
+	while (ft_isgraph(path[i]))
 		i++;
 	return (ft_substr(path, 0, i));
 }
+
+char	*take_colors(char *color)
+{
+	char	*start;
+	int		i;
+	int		len;
+
+	i = 0;
+	while (color[i] == 'F' || color[i] == 'C' || color[i] == ' ')
+		i++;
+	if (!color[i] && !ft_isalnum(color[i]))
+		return (raise_error("Error\n", "read_file: bad use of Colors.\n", 1, true), NULL);
+	start = &color[i];
+	len = 0;
+	while (color[i] && (ft_isalnum(color[i]) || color[i] == ','))
+	{
+		i++;
+		len++;
+	}
+	if (len > 11)
+		return (raise_error("Error\n", "read_file: bad use of Colors.\n", 1, true), NULL);
+	return (printf("colors: i = %i and len = %i\n", i, len), ft_substr(start, 0, len));
+}
+
 /**
  * Get organize the information in the t_file structure
  */
-char	*init_file_info(char *line, t_data *dt)
+bool	init_file_info(char *line, t_data *dt)
 {
 	if (ft_strncmp(line, "NO", 2) == 0)
-		return (dt->fi->no = take_path_info(line), dt->fi->no);
+		return (dt->fi->no = take_path_info(line), true);
 	else if (ft_strncmp(line, "SO", 2) == 0)
-		return (dt->fi->so = take_path_info(line), dt->fi->so);
+		return (dt->fi->so = take_path_info(line), true);
 	else if (ft_strncmp(line, "WE", 2) == 0)
-		return (dt->fi->we = take_path_info(line), dt->fi->we);
+		return (dt->fi->we = take_path_info(line), true);
 	else if (ft_strncmp(line, "EA", 2) == 0)
-		return (dt->fi->ea = take_path_info(line), dt->fi->ea);
+		return (dt->fi->ea = take_path_info(line), true);
 	else if (ft_strncmp(line, "F", 1) == 0)
-		return (dt->fi->f = take_path_info(line), dt->fi->f);
+		return (dt->fi->f = take_colors(line), true);
 	else if (ft_strncmp(line, "C", 1) == 0)
-		return (dt->fi->c = take_path_info(line), dt->fi->c);
-	return (NULL);
+		return (dt->fi->c = take_colors(line), true);
+	return (false);
 }
 /**
  * tratar el caso cuando se llega al final del file
@@ -59,28 +84,34 @@ bool	verify_format_file(int fd, int fd1, t_data *dt)
 {
 	char	*line;
 	char	*line1;
-	int		spaces;
 
 	while (1)
 	{
 		line = get_next_line_bonus(fd);
 		line1 = get_next_line_bonus(fd1);
 		if (line == NULL || line1 == NULL)
-			return (perror("Error: read_file: get_next_line return NULL.\n"),
-				false);
-		spaces = 0;
-		if (line && *line && dt->fi->complet != 6)
+			return (raise_error("Error\n", "read_file: gnl return NULL.\n", 1, true), false);
+		if (line && *line && dt->fi->complet <= 6)
 		{
-			while (*line == ' ' || *line++ == '\t')
-				spaces++;
-			if (line && *line)
-				if (init_file_info(line, dt))
+			while (*line == ' ' || *line == '\n' || *line == '\t')
+				line++;
+			if (line && *line && init_file_info(line, dt))
 					dt->fi->complet++;
+			else if (line && *line && (init_file_info(line, dt)) == false)
+				return (raise_error("Error\n", "read_file: init_file_info.\n", 1, true), false);
 		}
-		else if (line && *line && dt->fi->complet == 6
+		else if (line && *line && dt->fi->complet == 7
 			&& ft_strchr(line, '1') != NULL)//leack???
-			return (dt->map = read_map(line, line1, fd, fd1, dt), 1);
+			return (read_map(line, line1, fd, fd1, dt), 1);
+		if (line)
+			gb_free(line);
+		if (line1)
+			gb_free(line1);
 	}
+	if (line)
+		gb_free(line);
+	if (line1)
+		gb_free(line1);
 	return (0);
 }
 
@@ -90,13 +121,15 @@ void	read_file(char *file, t_data *dt)
 	int		fd1;
 
 	fd = open(file, O_RDONLY, 777);
+	printf("fd: %i\n", fd);//
 	fd1 = open(file, O_RDONLY, 777);
+	printf("fd1: %i\n", fd1);//
 	if (fd < 0 || fd1 < 0)
-		return (perror("Error: read_file: File cannot be open.\n"));
+		return (raise_error("Error\n", "read_file: cannot open the file.\n", 1, true));
 	if (verify_format_file(fd, fd1, dt) == false)
-		return (perror("Error: read_file: File cannot read.\n"));
-	if (dt->map == NULL)
-		return (perror("Error: read_map: NULL.\n"));
-	if (dt->map == NULL)
-		return ;
+		return (raise_error("Error\n", "read_file: file usless.\n", 1, true));
+	if (dt->map_verif == NULL)
+		return (raise_error("Error\n", "read_file: file usless.\n", 1, true));
+	close(fd);
+	close(fd1);
 }

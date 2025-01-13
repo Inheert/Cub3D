@@ -10,6 +10,10 @@ SRC_DIR = .
 BIN_DIR = ./bin
 
 SOURCES = main.c \
+			src/utils/ft_error.c	\
+			src/parsing/flood_fill.c	\
+			src/parsing/read_file.c	\
+			src/parsing/read_map.c
 			src/utils/ft_error.c \
 			src/core/window.c \
 			src/core/player.c
