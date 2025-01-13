@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
 /*   Updated: 2024/12/13 17:22:28 by jodiaz-a         ###   ########.fr       */
@@ -21,10 +21,14 @@
 # include <errno.h>
 # include <fcntl.h>
 
-
 # include "../src/utils/libft/libft.h"
 # include "../src/utils/garbage_collector/includes/garbage_collector.h"
 # include "MLX42/MLX42.h"
+
+# define PLAYER_SPEED 80
+# define ANGLE_SPEED 60
+
+# define PI 3.14159265359
 
 /* **************************--Structures--********************************** */
 
@@ -41,12 +45,12 @@
  *
  * @param nl number of lines.
  * @param nc number of colons.
- * 
+ *
  * @param line char * to the line before the map.
  * @param lb line before lm (UP).
  * @param lm line for next_line_keep_map_close().
  * @param la line before lm (DWON).
- * 
+ *
  * @param valid 1 if all the file_information is validated.
  * 					0 if is not.
  *
@@ -85,10 +89,36 @@ typedef struct s_data
 
 }	t_data;
 
+typedef enum s_map_build
+{
+	PLAYER,
+	WALL,
+	EMPTY,
+}	t_map_build;
+
+typedef struct s_map
+{
+	t_map_build		slot;
+	struct s_map	*up;
+	struct s_map	*right;
+	struct s_map	*down;
+	struct s_map	*left;
+}	t_map;
+
+extern mlx_t		*g_window;
+extern mlx_image_t	*g_game_container;
+
+void	raise_perror(char *error, bool critical);
 void	raise_error(char *error, char *details, int exit_code, bool critical);
 
 void	read_file(char *file, t_data *dt);
 bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt);
 int		flood_fill(t_data *dt, int courrent_pos);
+mlx_t	*create_window();
+void	player_init();
+void	draw_player();
+void	player_set_x(int32_t direction);
+void	player_set_y(int32_t direction);
+void	player_set_angle(float ang);
 
 #endif

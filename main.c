@@ -71,7 +71,6 @@ void	printing_all_file_info(t_file *fi, t_data *dt)
 	}
 	printf("\n");
 	printf("dt->pos_player: %i\n", dt->pos_player);
-	
 }
 
 int	main(int ac, char **av)
