@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/04 20:05:43 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:22:28 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <math.h>
 # include <stdbool.h>
 # include <errno.h>
+# include <fcntl.h>
 
 
 # include "../src/utils/libft/libft.h"
@@ -64,9 +65,6 @@ typedef struct s_file_info
 	int			nc;
 
 	char		*line;
-	char		*lb;
-	char		*lm;
-	char		*la;
 
 	bool		valid;
 
@@ -79,14 +77,18 @@ typedef struct s_data
 {
 	t_file	*fi;
 
-	char	**map;
+	// char	**map;
 	char	*map_verif;
 	int		pos_player;
-	int		p_x;
-	int		p_y;
+	// int		p_x;
+	// int		p_y;
 
 }	t_data;
 
 void	raise_error(char *error, char *details, int exit_code, bool critical);
+
+void	read_file(char *file, t_data *dt);
+bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt);
+int		flood_fill(t_data *dt, int courrent_pos);
 
 #endif
