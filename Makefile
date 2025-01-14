@@ -13,11 +13,9 @@ SOURCES = main.c \
 			src/utils/ft_error.c	\
 			src/parsing/flood_fill.c	\
 			src/parsing/read_file.c	\
-			src/parsing/read_map.c
-			src/utils/ft_error.c \
+			src/parsing/read_map.c \
 			src/utils/t_map/t_map_utils_1.c \
 			src/core/window.c \
-			src/core/player.c \
 			src/core/map.c \
 
 OBJECTS = $(addprefix $(BIN_DIR)/,$(SOURCES:.c=.o))

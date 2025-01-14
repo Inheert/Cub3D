@@ -6,23 +6,62 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 09:25:51 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/10 13:32:58 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/13 09:07:19 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_rectangle(uint32_t x, uint32_t y, int width, int height, uint32_t color)
+void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color)
 {
 	int	i;
 	int	j;
 
 	i = -1;
+	// printf("Draw rect\n");
 	while (++i < height)
 	{
+		if (i + y < 0)
+			continue ;
+		// printf("1. %d %d %d %d %d %d\n", i, y, height, W_HEIGHT, i + y, i + y > W_HEIGHT);
+		if (i + y > W_HEIGHT)
+			return ;
 		j = -1;
 		while (++j < width)
+		{
+			//printf("%d %d\n", i, j);
+			if (j + x < 0)
+				continue ;
+			if (j + x > W_WIDTH)
+				return ;
 			mlx_put_pixel(g_game_container, x + j, y + i, color);
+		}
+	}
+}
+
+void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color)
+{
+	int dx = abs(xend - xstart);
+	int dy = abs(yend - ystart);
+	int sx = (xstart < xend) ? 1 : -1;
+	int sy = (ystart < yend) ? 1 : -1;
+	int err = dx - dy;
+	while (1) {
+		if (xstart < 0 || xstart > W_WIDTH)
+			break ;
+		if (ystart < 0 || ystart > W_HEIGHT)
+			break ;
+		mlx_put_pixel(g_game_container, xstart, ystart, color);
+		if (xstart == xend && ystart == yend) break;
+		int e2 = 2 * err;
+		if (e2 > -dy) {
+			err -= dy;
+			xstart += sx;
+		}
+		if (e2 < dx) {
+		err += dx;
+			ystart += sy;
+		}
 	}
 }
 

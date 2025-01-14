@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/13 07:07:07 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/13 07:42:11 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,14 @@ void	printing_all_file_info(t_file *fi, t_data *dt)
 	printf("dt->pos_player: %i\n", dt->pos_player);
 }
 
+mlx_t		*g_window = NULL;
+mlx_image_t	*g_game_container = NULL;
+
 int	main(int ac, char **av)
 {
 	t_data	dt;
 	t_file	file_info;
+	mlx_t	*window;
 
 	if (ac != 2 || !av || !av[1] || !ft_is_cub((const char *)av[1]))
 		raise_error("Parsing", "file inexistent or wrong file.", 1 ,1);
@@ -84,7 +88,10 @@ int	main(int ac, char **av)
 	dt.map_verif = NULL;
 	dt.fi = &file_info;
 	read_file(av[1], &dt);
-	printing_all_file_info(&file_info, &dt);
+	// printing_all_file_info(&file_info, &dt);
 
+	window = create_window();
+	mlx_loop(window);
+	mlx_terminate(window);
 	raise_error("Perfect", "Program ends well.", 1 ,1);//ne
 }

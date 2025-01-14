@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/16 14:02:55 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/01/13 07:29:02 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ char	*take_colors(char *color)
 	}
 	if (len > 11)
 		return (raise_error("Error\n", "read_file: bad use of Colors.\n", 1, true), NULL);
-	return (printf("colors: i = %i and len = %i\n", i, len), ft_substr(start, 0, len));
+	// printf("colors: i = %i and len = %i\n", i, len);
+	return (ft_substr(start, 0, len));
 }
 
 /**
@@ -74,7 +75,7 @@ bool	init_file_info(char *line, t_data *dt)
 }
 /**
  * tratar el caso cuando se llega al final del file
- * 
+ *
  * Before going to read_map it verify:
  * 	- there are more lines to read
  * 	- the 6 informations tha must have the file were fulfill
@@ -121,9 +122,9 @@ void	read_file(char *file, t_data *dt)
 	int		fd1;
 
 	fd = open(file, O_RDONLY, 777);
-	printf("fd: %i\n", fd);//
+	// printf("fd: %i\n", fd);
 	fd1 = open(file, O_RDONLY, 777);
-	printf("fd1: %i\n", fd1);//
+	// printf("fd1: %i\n", fd1);
 	if (fd < 0 || fd1 < 0)
 		return (raise_error("Error\n", "read_file: cannot open the file.\n", 1, true));
 	if (verify_format_file(fd, fd1, dt) == false)

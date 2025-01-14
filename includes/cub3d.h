@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/13 07:06:49 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/14 09:04:42 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,16 @@
 
 # define W_WIDTH 2048
 # define W_HEIGHT 1024
+# define MINIMAP_WIDTH 1024
+# define MINIMAP_HEIGHT 1024
+# define MINIMAP_PLAYER_SIZE 30
 
-# define PLAYER_SPEED 80
+# define PLAYER_SPEED 15
 # define ANGLE_SPEED 60
 
 # define PI 3.14159265359
+# define P2 PI / 2
+# define P3 3 * PI / 2
 
 /* **************************--Structures--********************************** */
 
@@ -128,5 +133,8 @@ void	player_set_x(int32_t direction);
 void	player_set_y(int32_t direction);
 void	player_set_angle(float ang);
 void	draw_rays(t_map **map);
+void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color);
+void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color);
+uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b, unsigned int alpha);
 
 #endif
