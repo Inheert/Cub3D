@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/14 09:59:51 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/20 10:17:26 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void draw_map_2d()
 			xo = MINIMAP_WIDTH / mapX;
 			yo = MINIMAP_HEIGHT / mapY;
 			if (map[y * mapX + x] == 1)
-				draw_rectangle(xo * x + 1, yo * y + 1, xo - 1, yo - 1, get_hexa_color(200, 200, 200, 255));
+				draw_rectangle(TILE_SIZE * x + 1, TILE_SIZE * y + 1, TILE_SIZE - 1, TILE_SIZE - 1, get_hexa_color(200, 200, 200, 255));
 			else
-				draw_rectangle(xo * x + 1, yo * y + 1, xo - 1, yo - 1, get_hexa_color(15, 15, 15, 255));
+				draw_rectangle(TILE_SIZE * x + 1, TILE_SIZE * y + 1, TILE_SIZE - 1, TILE_SIZE - 1, get_hexa_color(15, 15, 15, 255));
 		}
 	}
 }
@@ -66,13 +66,13 @@ void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
 		close_window();
 	if (keydata.key == MLX_KEY_W)
 	{
-		px += pdx;
-		py += pdy;
+		px += pdx * PLAYER_SPEED * g_window->delta_time;
+		py += pdy * PLAYER_SPEED * g_window->delta_time;
 	}
 	if (keydata.key == MLX_KEY_S)
 	{
-		px -= pdx;
-		py -= pdy;
+		px -= pdx * PLAYER_SPEED * g_window->delta_time;
+		py -= pdy * PLAYER_SPEED * g_window->delta_time;
 	}
 	if (keydata.key == MLX_KEY_A)
 	{
@@ -96,95 +96,121 @@ void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
 	// 	player_set_angle(0.1);
 }
 
-void draw_player()
+void draw_player_2d()
 {
 	draw_rectangle( px - MINIMAP_PLAYER_SIZE * 0.5, py - MINIMAP_PLAYER_SIZE * 0.5,
 		MINIMAP_PLAYER_SIZE, MINIMAP_PLAYER_SIZE, get_hexa_color(200, 0, 0, 255));
-	draw_line(px, py, px + pdx * 5, py + pdy * 5, get_hexa_color(0, 255, 0, 255));
 }
 
 void draw_rays_2d()
 {
-	printf("angle: %f\n", pa);
-	int	r, mx, my, mp, dof;
-	float	rx, ry, ra, xo, yo;
+	float ra, rdx, rdy, ray_x, ray_y;
+	int ray_count = 100; // Nombre fixe de rayons
+	float fov = PI / 4; // Champ de vision (45 degrés)
+	float angle_step = fov / ray_count; // Pas angulaire fixe
 
-	ra = pa;
-	for (r = 0; r < 1; r++)
+	ra = pa - (fov / 2); // Angle de départ du cône
+	while (ra < 0) ra += 2 * PI;
+	while (ra > 2 * PI) ra -= 2 * PI;
+	printf("player pos: %d %d\n", (int)(px / TILE_SIZE), (int)(py / TILE_SIZE));
+	for (int i = 0; i < ray_count; i++)
 	{
-		dof = 0;
-		float aTan = -1 / tan(ra);
-		if (ra > PI)
+		float current_ra = ra;
+		ray_x = px;
+		ray_y = py;
+		rdx = cos(current_ra);
+		rdy = sin(current_ra);
+
+		// Parcours du rayon jusqu'à ce qu'il touche un mur ou sorte des limites
+		while (1)
 		{
-			ry = (((int)py >> 6) << 6) - 0.0001;
-			rx = (py - ry) * aTan + px;
-			yo = -64;
-			xo = -yo * aTan;
+			int	ray_cell_x = (int)(ray_x / TILE_SIZE);
+			int	ray_cell_y = (int)(ray_y / TILE_SIZE);
+
+			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= mapX || ray_cell_y >= mapY)
+				break ;
+
+			if (map[ray_cell_y * mapX + ray_cell_x] == 1)
+				break ;
+
+			// Avancer le rayon
+			ray_x += rdx;
+			ray_y += rdy;
 		}
-		if (ra < PI)
+
+		draw_line(px, py, ray_x, ray_y, get_hexa_color(100, 100, 255, 255), g_game_container);
+		// Avancer l'angle
+		ra += angle_step;
+		if (ra > 2 * PI) ra -= 2 * PI; // Gérer le dépassement de 2*PI
+	}
+
+	// Dessiner la direction du joueur
+	draw_line(px, py, px + cos(pa) * 20, py + sin(pa) * 20, get_hexa_color(0, 255, 0, 255), g_game_container);
+}
+
+void draw_3d_view()
+{
+	float ra, rdx, rdy, ray_x, ray_y;
+	int ray_count = MINIMAP_WIDTH; // Nombre fixe de rayons
+	float fov = PI / 4;  // Champ de vision (45 degrés)
+	float angle_step = fov / ray_count; // Pas angulaire fixe
+	int screen_width = MINIMAP_WIDTH; // Largeur de l'écran
+	int screen_height = MINIMAP_HEIGHT; // Hauteur de l'écran
+
+	ra = pa - (fov / 2); // Angle de départ du cône
+	while (ra < 0) ra += 2 * PI;
+	while (ra > 2 * PI) ra -= 2 * PI;
+
+	for (int i = 0; i < ray_count; i++)
+	{
+		float current_ra = ra;
+		ray_x = px;
+		ray_y = py;
+		rdx = cos(current_ra);
+		rdy = sin(current_ra);
+
+		// Parcours du rayon jusqu'à ce qu'il touche un mur
+		float distance = 0.0;
+		while (1)
 		{
-			ry = (((int)py >> 6) << 6) + 64;
-			rx = (py - ry) * aTan + px;
-			yo = 64;
-			xo = -yo * aTan;
+			int ray_cell_x = (int)(ray_x / TILE_SIZE);
+			int ray_cell_y = (int)(ray_y / TILE_SIZE);
+
+			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= mapX || ray_cell_y >= mapY)
+				break;
+
+			if (map[ray_cell_y * mapX + ray_cell_x] == 1)
+				break;
+
+			// Avancer le rayon
+			ray_x += rdx;
+			ray_y += rdy;
+			distance += 1.0;
 		}
-		if (ra == 0 || ra == PI)
-		{
-			rx = px;
-			ry= py;
-			dof = 8;
-		}
-		while (dof < 8)
-		{
-			mx = (int)(rx) >> 6;
-			my = (int)(ry) >> 6;
-			mp = my * mapX + mx;
-			if (mp < mapY && map[mp] == 1)
-				dof = 8;
-			else
-			{
-				rx += xo;
-				ry += yo;
-				dof += 1;
-			}
-		}
-		// dof = 0;
-		// float nTan = -tan(ra);
-		// if (ra > P2 && ra < P3)
-		// {
-		// 	rx = (((int)px >> 6) << 6) - 0.0001;
-		// 	ry = (px - rx) * nTan + py;
-		// 	xo = -64;
-		// 	yo = -xo * nTan;
-		// }
-		// if (ra < P2 || ra > P3)
-		// {
-		// 	rx = (((int)px >> 6) << 6) + 64;
-		// 	ry = (px - rx) * nTan + py;
-		// 	xo = 64;
-		// 	yo = -xo * nTan;
-		// }
-		// if (ra == 0 || ra == PI)
-		// {
-		// 	rx = px;
-		// 	ry = py;
-		// 	dof = 8;
-		// }
-		// while (dof < 8)
-		// {
-		// 	mx = (int)(rx) >> 6;
-		// 	my = (int)(ry) >> 6;
-		// 	mp = my * mapX + mx;
-		// 	if  (mp < mapX * mapY && map[mp] == 1)
-		// 		dof = 8;
-		// 	else
-		// 	{
-		// 		rx += xo;
-		// 		ry += yo;
-		// 		dof += 1;
-		// 	}
-		// }
-		draw_line(px, py, rx, ry, get_hexa_color(0, 255, 255, 255));
+
+		// Corriger la distorsion
+		float corrected_distance = distance * cos(ra - pa);
+
+		// Calculer la hauteur du mur
+		int wall_height = (int)(TILE_SIZE * screen_height / corrected_distance);
+		if (wall_height > screen_height) wall_height = screen_height;
+
+		// Déterminer les positions pour dessiner la colonne
+		int wall_top = (screen_height / 2) - (wall_height / 2);
+		int wall_bottom = (screen_height / 2) + (wall_height / 2);
+
+		// Dessiner le ciel
+		draw_line(i * (screen_width / ray_count), 0, i * (screen_width / ray_count), wall_top, get_hexa_color(135, 206, 250, 255), g_game_container);
+
+		// Dessiner le mur
+		draw_line(i * (screen_width / ray_count), wall_top, i * (screen_width / ray_count), wall_bottom, get_hexa_color(150, 75, 0, 255), g_game_container);
+
+		// Dessiner le sol
+		draw_line(i * (screen_width / ray_count), wall_bottom, i * (screen_width / ray_count), screen_height, get_hexa_color(169, 169, 169, 255), g_game_container);
+
+		// Avancer l'angle
+		ra += angle_step;
+		if (ra > 2 * PI) ra -= 2 * PI;
 	}
 }
 
@@ -202,11 +228,9 @@ void	hook_frame_update(void *param)
 			mlx_put_pixel(g_game_container, i, j, 0x00003366);
 	}
 	draw_map_2d();
-	draw_player();
 	draw_rays_2d();
-	// draw_map((t_map **)param);
-	// draw_player();
-	// draw_rays((t_map **)param);
+	draw_3d_view();
+	draw_player_2d();
 }
 
 void	initialize_hooks(t_map **map)

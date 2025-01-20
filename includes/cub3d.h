@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/14 09:04:42 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/20 10:13:07 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@
 # define MINIMAP_HEIGHT 1024
 # define MINIMAP_PLAYER_SIZE 30
 
-# define PLAYER_SPEED 15
+# define TILE_SIZE 128
+
+# define PLAYER_SPEED 45
 # define ANGLE_SPEED 60
 
 # define PI 3.14159265359
@@ -134,7 +136,7 @@ void	player_set_y(int32_t direction);
 void	player_set_angle(float ang);
 void	draw_rays(t_map **map);
 void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color);
-void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color);
+void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color, mlx_image_t *g_game_container);
 uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b, unsigned int alpha);
 
 #endif

@@ -6,11 +6,16 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/13 07:42:11 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/20 10:00:10 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+/*
+	Definir une image pr le jeu
+	Definir une image pr la minimap
+*/
 
 /**
  * Make sure the file pas as argument is type .cub

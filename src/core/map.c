@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 09:25:51 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/13 09:07:19 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/20 10:05:45 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,25 @@ void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color)
 	}
 }
 
-void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color)
+void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color, mlx_image_t *image)
 {
 	int dx = abs(xend - xstart);
 	int dy = abs(yend - ystart);
 	int sx = (xstart < xend) ? 1 : -1;
 	int sy = (ystart < yend) ? 1 : -1;
 	int err = dx - dy;
-	while (1) {
-		if (xstart < 0 || xstart > W_WIDTH)
+
+	if (!image)
+		return ;
+	while (1)
+	{
+		if (xstart < 0 || xstart > MINIMAP_WIDTH)
 			break ;
-		if (ystart < 0 || ystart > W_HEIGHT)
+		if (ystart < 0 || ystart > MINIMAP_HEIGHT)
 			break ;
-		mlx_put_pixel(g_game_container, xstart, ystart, color);
-		if (xstart == xend && ystart == yend) break;
+		mlx_put_pixel(image, xstart, ystart, color);
+		if (xstart == xend && ystart == yend)
+			break;
 		int e2 = 2 * err;
 		if (e2 > -dy) {
 			err -= dy;
