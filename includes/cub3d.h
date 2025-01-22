@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/22 07:44:10 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/22 09:29:43 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,24 +99,12 @@ typedef struct s_data
 
 }	t_data;
 
-typedef enum s_map_build
+typedef struct s_cub
 {
-	PLAYER,
-	WALL,
-	FLOOR,
-	EMPTY,
-}	t_map_build;
-
-typedef struct s_map
-{
-	char			slot;
-	struct s_map	*up;
-	struct s_map	*right;
-	struct s_map	*down;
-	struct s_map	*left;
-	unsigned int	line_count;
-	unsigned int	col_count;
-}	t_map;
+	mlx_image_t	*game_img;
+	mlx_image_t	*minimap_img;
+	mlx_texture_t	*texture;
+}	t_cub;
 
 extern mlx_t		*g_window;
 extern mlx_image_t	*g_game_container;
@@ -130,11 +118,9 @@ int		flood_fill(t_data *dt, int courrent_pos);
 mlx_t	*create_window();
 void	player_init();
 void	draw_player();
-void	draw_map(t_map **map);
 void	player_set_x(int32_t direction);
 void	player_set_y(int32_t direction);
 void	player_set_angle(float ang);
-void	draw_rays(t_map **map);
 void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color);
 void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color, mlx_image_t *g_game_container);
 uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b, unsigned int alpha);

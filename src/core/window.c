@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/22 08:39:11 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/22 11:08:36 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ float px, py, pdx, pdy, pa;
 void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
 {
 	(void)param;
-	(void)keydata;
-	printf("%d\n", keydata.key);
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		close_window();
 	if (keydata.key == MLX_KEY_W)
@@ -77,7 +75,7 @@ void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
 	}
 	if (keydata.key == MLX_KEY_A)
 	{
-		float	strafe_angle = pa -  PI / 2;
+		float	strafe_angle = pa - PI / 2;
 		px += cos(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
 		py += sin(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
 	}
@@ -150,8 +148,9 @@ void draw_rays_2d()
 	draw_line(px, py, px + cos(pa) * 20, py + sin(pa) * 20, get_hexa_color(0, 255, 0, 255), g_game_container);
 }
 
-void draw_3d_view()
+void draw_3d_view(t_cub	*cub)
 {
+	(void)cub;
 	float ra, rdx, rdy, ray_x, ray_y;
 	int ray_count = W_WIDTH;
 	float fov = PI / 4;
@@ -173,6 +172,7 @@ void draw_3d_view()
 
 		// Parcours du rayon jusqu'à ce qu'il touche un mur
 		float distance = 0.0;
+		int hit_vertical = 0;
 		while (1)
 		{
 			int ray_cell_x = (int)(ray_x / TILE_SIZE);
@@ -181,8 +181,15 @@ void draw_3d_view()
 			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= mapX || ray_cell_y >= mapY)
 				break;
 
-			if (map[ray_cell_y * mapX + ray_cell_x] == 1)
-				break;
+            if (map[ray_cell_y * mapX + ray_cell_x] == 1)
+            {
+                // Vérification : impact vertical ou horizontal
+                float next_vertical = fabs((ray_cell_x * TILE_SIZE + (rdx > 0 ? TILE_SIZE : 0) - px) / rdx);
+                float next_horizontal = fabs((ray_cell_y * TILE_SIZE + (rdy > 0 ? TILE_SIZE : 0) - py) / rdy);
+
+                hit_vertical = next_vertical < next_horizontal; // Vrai si le mur est vertical
+                break;
+            }
 
 			// Avancer le rayon
 			ray_x += rdx;
@@ -201,12 +208,37 @@ void draw_3d_view()
 		// Déterminer les positions pour dessiner la colonne
 		int wall_top = (W_HEIGHT / 2) - (wall_height / 2);
 		int wall_bottom = (W_HEIGHT / 2) + (wall_height / 2);
-		// printf("w start: %d\n", i * (W_WIDTH / ray_count));
+
+        float wall_hit_x;
+        if (hit_vertical)
+            wall_hit_x = fmod(ray_y, TILE_SIZE) / TILE_SIZE; // Impact sur un mur vertical
+        else
+            wall_hit_x = fmod(ray_x, TILE_SIZE) / TILE_SIZE; // Impact sur un mur horizontal
+
+		int texture_x = (int)(wall_hit_x * cub->texture->width);
+
+		// Dessiner chaque pixel de la colonne avec la texture
+		for (int y = wall_top; y < wall_bottom; y++)
+		{
+			// Calculer la coordonnée verticale dans la texture
+			int texture_y = (y - wall_top) * cub->texture->height / wall_height;
+
+			// Obtenir la couleur du pixel de la texture
+			int color_index = (texture_y * cub->texture->width + texture_x) * 4; // 4 pour RGBA
+			uint8_t r = cub->texture->pixels[color_index];
+			uint8_t g = cub->texture->pixels[color_index + 1];
+			uint8_t b = cub->texture->pixels[color_index + 2];
+			uint8_t a = cub->texture->pixels[color_index + 3];
+
+			// Dessiner le pixel à l'écran
+			mlx_put_pixel(g_game_container, i, y, get_hexa_color(r, g, b, a));
+		}
+
 		// Dessiner le ciel
 		draw_line(i * (W_WIDTH / ray_count), 0, i * (W_WIDTH / ray_count), wall_top, get_hexa_color(135, 206, 250, 255), g_game_container);
 
 		// Dessiner le mur
-		draw_line(i * (W_WIDTH / ray_count), wall_top, i * (W_WIDTH / ray_count), wall_bottom, get_hexa_color(150, 75, 0, 255), g_game_container);
+		// draw_line(i * (W_WIDTH / ray_count), wall_top, i * (W_WIDTH / ray_count), wall_bottom, get_hexa_color(150, 75, 0, 255), g_game_container);
 
 		// Dessiner le sol
 		draw_line(i * (W_WIDTH / ray_count), wall_bottom, i * (W_WIDTH / ray_count), W_HEIGHT, get_hexa_color(169, 169, 169, 255), g_game_container);
@@ -232,17 +264,17 @@ void	hook_frame_update(void *param)
 	}
 	draw_map_2d();
 	draw_rays_2d();
-	draw_3d_view();
+	draw_3d_view(param);
 	draw_player_2d();
 }
 
-void	initialize_hooks(t_map **map)
+void	initialize_hooks(t_cub *cub)
 {
 	mlx_key_hook(g_window, &cub_keys_hooks, NULL);
-	mlx_loop_hook(g_window,  &hook_frame_update, map);
+	mlx_loop_hook(g_window,  &hook_frame_update, cub);
 }
 
-mlx_t	*create_window(t_map **map)
+mlx_t	*create_window(t_cub *cub)
 {
 	mlx_t	*window;
 
@@ -255,10 +287,12 @@ mlx_t	*create_window(t_map **map)
 		raise_error("Error:", "game image container creation failed.", 1, true);
 	if (mlx_image_to_window(window, g_game_container, 0, 0) == -1)
 		raise_error("Error:", "game image container to window failed.", 1, true);
+	cub->texture = mlx_load_png("./src/resources/decors/256_Brick 01 Mud.png");
+	printf("%p\n", cub->texture);
 	px = 500;
 	py = 500;
 	pdx = cos(pa) * 5;
 	pdy = sin(pa) * 5;
-	initialize_hooks(map);
+	initialize_hooks(cub);
 	return (window);
 }

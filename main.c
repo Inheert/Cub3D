@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/22 08:30:53 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/22 09:29:02 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	main(int ac, char **av)
 {
 	t_data	dt;
 	t_file	file_info;
+	t_cub	*cub;
 	mlx_t	*window;
 
 	if (ac != 2 || !av || !av[1] || !ft_is_cub((const char *)av[1]))
@@ -95,7 +96,8 @@ int	main(int ac, char **av)
 	dt.fi = &file_info;
 	read_file(av[1], &dt);
 	// printing_all_file_info(&file_info, &dt);
-	window = create_window();
+	cub = gb_malloc(sizeof(t_cub));
+	window = create_window(cub);
 	mlx_loop(window);
 	mlx_terminate(window);
 	raise_error("Perfect", "Program ends well.", 1 ,1);//ne

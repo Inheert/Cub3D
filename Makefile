@@ -14,7 +14,6 @@ SOURCES = main.c \
 			src/parsing/flood_fill.c	\
 			src/parsing/read_file.c	\
 			src/parsing/read_map.c \
-			src/utils/t_map/t_map_utils_1.c \
 			src/core/window.c \
 			src/core/map.c \
 

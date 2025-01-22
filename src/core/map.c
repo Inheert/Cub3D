@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 09:25:51 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/22 08:17:42 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/22 11:20:01 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint3
 		return ;
 	while (1)
 	{
-		if (xstart < 0 || (uint32_t)xstart > image->width)
+		if (xstart < 0 || (uint32_t)xstart >= image->width)
 			break ;
-		if (ystart < 0 || (uint32_t)ystart > image->height)
+		if (ystart < 0 || (uint32_t)ystart >= image->height)
 			break ;
 		mlx_put_pixel(image, xstart, ystart, color);
 		if (xstart == xend && ystart == yend)
@@ -90,25 +90,4 @@ uint32_t	get_color(char symbol)
 	else if (symbol == '1')
 		return(get_hexa_color(0, 255, 0, 255));
 	return (get_hexa_color(0, 0, 0, 255));
-}
-
-void	draw_map(t_map **map)
-{
-	int					slot_width;
-	int					slot_height;
-	unsigned int		i;
-	unsigned int		j;
-
-	slot_width = W_WIDTH * 0.5  / (*map)->line_count;
-	slot_height = W_HEIGHT / (*map)->col_count;
-
-	i = -1;
-	while (map[++i])
-	{
-		j = -1;
-		while (++j < (*map)->col_count)
-		{
-			draw_rectangle(slot_width * j, slot_height * i, slot_width, slot_height, get_color(map[i][j].slot));
-		}
-	}
 }
