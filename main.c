@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/20 10:00:10 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/22 08:30:53 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
 	Definir une image pr le jeu
 	Definir une image pr la minimap
+	Garder un TILE-SIZE fixe tout en faisant en sorte que les images s'adaptent a la taille de l'ecran
 */
 
 /**
@@ -94,7 +95,6 @@ int	main(int ac, char **av)
 	dt.fi = &file_info;
 	read_file(av[1], &dt);
 	// printing_all_file_info(&file_info, &dt);
-
 	window = create_window();
 	mlx_loop(window);
 	mlx_terminate(window);

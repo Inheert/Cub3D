@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/20 10:17:26 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/22 08:39:11 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
 {
 	(void)param;
 	(void)keydata;
+	printf("%d\n", keydata.key);
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		close_window();
 	if (keydata.key == MLX_KEY_W)
@@ -76,13 +77,25 @@ void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
 	}
 	if (keydata.key == MLX_KEY_A)
 	{
+		float	strafe_angle = pa -  PI / 2;
+		px += cos(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
+		py += sin(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
+	}
+	if (keydata.key == MLX_KEY_D)
+	{
+		float	strafe_angle = pa + PI / 2;
+		px += cos(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
+		py += sin(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
+	}
+	if (keydata.key == MLX_KEY_LEFT)
+	{
 		pa -= 0.1;
 		if (pa < 0)
 			pa += 2 * PI;
 		pdx = cos(pa) * 5;
 		pdy = sin(pa) * 5;
 	}
-	if (keydata.key == MLX_KEY_D)
+	if (keydata.key == MLX_KEY_RIGHT)
 	{
 		pa += 0.1;
 		if (pa > 2 * PI)
@@ -90,10 +103,6 @@ void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
 		pdx = cos(pa) * 5;
 		pdy = sin(pa) * 5;
 	}
-	// if (keydata.key == MLX_KEY_LEFT)
-	// 	player_set_angle(-0.1);
-	// if (keydata.key == MLX_KEY_RIGHT)
-	// 	player_set_angle(0.1);
 }
 
 void draw_player_2d()
@@ -105,14 +114,14 @@ void draw_player_2d()
 void draw_rays_2d()
 {
 	float ra, rdx, rdy, ray_x, ray_y;
-	int ray_count = 100; // Nombre fixe de rayons
-	float fov = PI / 4; // Champ de vision (45 degrés)
-	float angle_step = fov / ray_count; // Pas angulaire fixe
+	int ray_count = 100;
+	float fov = PI / 4;
+	float angle_step = fov / ray_count;
 
-	ra = pa - (fov / 2); // Angle de départ du cône
+	ra = pa - (fov / 2);
 	while (ra < 0) ra += 2 * PI;
 	while (ra > 2 * PI) ra -= 2 * PI;
-	printf("player pos: %d %d\n", (int)(px / TILE_SIZE), (int)(py / TILE_SIZE));
+	// printf("player pos: %d %d\n", (int)(px / TILE_SIZE), (int)(py / TILE_SIZE));
 	for (int i = 0; i < ray_count; i++)
 	{
 		float current_ra = ra;
@@ -120,8 +129,6 @@ void draw_rays_2d()
 		ray_y = py;
 		rdx = cos(current_ra);
 		rdy = sin(current_ra);
-
-		// Parcours du rayon jusqu'à ce qu'il touche un mur ou sorte des limites
 		while (1)
 		{
 			int	ray_cell_x = (int)(ray_x / TILE_SIZE);
@@ -132,34 +139,29 @@ void draw_rays_2d()
 
 			if (map[ray_cell_y * mapX + ray_cell_x] == 1)
 				break ;
-
-			// Avancer le rayon
 			ray_x += rdx;
 			ray_y += rdy;
 		}
 
 		draw_line(px, py, ray_x, ray_y, get_hexa_color(100, 100, 255, 255), g_game_container);
-		// Avancer l'angle
 		ra += angle_step;
-		if (ra > 2 * PI) ra -= 2 * PI; // Gérer le dépassement de 2*PI
+		if (ra > 2 * PI) ra -= 2 * PI;
 	}
-
-	// Dessiner la direction du joueur
 	draw_line(px, py, px + cos(pa) * 20, py + sin(pa) * 20, get_hexa_color(0, 255, 0, 255), g_game_container);
 }
 
 void draw_3d_view()
 {
 	float ra, rdx, rdy, ray_x, ray_y;
-	int ray_count = MINIMAP_WIDTH; // Nombre fixe de rayons
-	float fov = PI / 4;  // Champ de vision (45 degrés)
-	float angle_step = fov / ray_count; // Pas angulaire fixe
-	int screen_width = MINIMAP_WIDTH; // Largeur de l'écran
-	int screen_height = MINIMAP_HEIGHT; // Hauteur de l'écran
+	int ray_count = W_WIDTH;
+	float fov = PI / 4;
+	float angle_step = fov / ray_count;
 
-	ra = pa - (fov / 2); // Angle de départ du cône
-	while (ra < 0) ra += 2 * PI;
-	while (ra > 2 * PI) ra -= 2 * PI;
+	ra = pa - (fov / 2);
+	while (ra < 0)
+		ra += 2 * PI;
+	while (ra > 2 * PI)
+		ra -= 2 * PI;
 
 	for (int i = 0; i < ray_count; i++)
 	{
@@ -192,21 +194,22 @@ void draw_3d_view()
 		float corrected_distance = distance * cos(ra - pa);
 
 		// Calculer la hauteur du mur
-		int wall_height = (int)(TILE_SIZE * screen_height / corrected_distance);
-		if (wall_height > screen_height) wall_height = screen_height;
+		int wall_height = (int)(TILE_SIZE * W_HEIGHT / corrected_distance);
+		if (wall_height > W_HEIGHT)
+			wall_height = W_HEIGHT;
 
 		// Déterminer les positions pour dessiner la colonne
-		int wall_top = (screen_height / 2) - (wall_height / 2);
-		int wall_bottom = (screen_height / 2) + (wall_height / 2);
-
+		int wall_top = (W_HEIGHT / 2) - (wall_height / 2);
+		int wall_bottom = (W_HEIGHT / 2) + (wall_height / 2);
+		// printf("w start: %d\n", i * (W_WIDTH / ray_count));
 		// Dessiner le ciel
-		draw_line(i * (screen_width / ray_count), 0, i * (screen_width / ray_count), wall_top, get_hexa_color(135, 206, 250, 255), g_game_container);
+		draw_line(i * (W_WIDTH / ray_count), 0, i * (W_WIDTH / ray_count), wall_top, get_hexa_color(135, 206, 250, 255), g_game_container);
 
 		// Dessiner le mur
-		draw_line(i * (screen_width / ray_count), wall_top, i * (screen_width / ray_count), wall_bottom, get_hexa_color(150, 75, 0, 255), g_game_container);
+		draw_line(i * (W_WIDTH / ray_count), wall_top, i * (W_WIDTH / ray_count), wall_bottom, get_hexa_color(150, 75, 0, 255), g_game_container);
 
 		// Dessiner le sol
-		draw_line(i * (screen_width / ray_count), wall_bottom, i * (screen_width / ray_count), screen_height, get_hexa_color(169, 169, 169, 255), g_game_container);
+		draw_line(i * (W_WIDTH / ray_count), wall_bottom, i * (W_WIDTH / ray_count), W_HEIGHT, get_hexa_color(169, 169, 169, 255), g_game_container);
 
 		// Avancer l'angle
 		ra += angle_step;
@@ -247,7 +250,7 @@ mlx_t	*create_window(t_map **map)
 	if (!window)
 		raise_perror("a problem occur while creating the mlx window.", true);
 	g_window = window;
-	g_game_container = mlx_new_image(window, W_WIDTH * 0.5, W_HEIGHT);
+	g_game_container = mlx_new_image(window, W_WIDTH, W_HEIGHT);
 	if (!g_game_container)
 		raise_error("Error:", "game image container creation failed.", 1, true);
 	if (mlx_image_to_window(window, g_game_container, 0, 0) == -1)

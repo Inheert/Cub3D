@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 09:25:51 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/20 10:05:45 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/22 08:17:42 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint3
 		return ;
 	while (1)
 	{
-		if (xstart < 0 || xstart > MINIMAP_WIDTH)
+		if (xstart < 0 || (uint32_t)xstart > image->width)
 			break ;
-		if (ystart < 0 || ystart > MINIMAP_HEIGHT)
+		if (ystart < 0 || (uint32_t)ystart > image->height)
 			break ;
 		mlx_put_pixel(image, xstart, ystart, color);
 		if (xstart == xend && ystart == yend)
