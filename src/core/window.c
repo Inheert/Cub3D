@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/22 11:08:36 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/23 14:15:55 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int	map[] =
 {
 	1,1,1,1,1,1,1,1,
 	1,0,1,0,0,0,0,1,
-	1,0,1,0,0,0,0,1,
-	1,0,1,0,0,0,0,1,
+	1,0,0,0,1,0,0,1,
 	1,0,0,0,0,0,0,1,
 	1,0,0,0,0,1,0,1,
-	1,0,0,0,0,0,0,1,
+	1,0,0,0,0,1,0,1,
+	1,0,0,1,0,0,0,1,
 	1,1,1,1,1,1,1,1,
 };
 
@@ -170,9 +170,8 @@ void draw_3d_view(t_cub	*cub)
 		rdx = cos(current_ra);
 		rdy = sin(current_ra);
 
-		// Parcours du rayon jusqu'à ce qu'il touche un mur
 		float distance = 0.0;
-		int hit_vertical = 0;
+		int hit_texture_x = 0;
 		while (1)
 		{
 			int ray_cell_x = (int)(ray_x / TILE_SIZE);
@@ -181,69 +180,49 @@ void draw_3d_view(t_cub	*cub)
 			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= mapX || ray_cell_y >= mapY)
 				break;
 
-            if (map[ray_cell_y * mapX + ray_cell_x] == 1)
-            {
-                // Vérification : impact vertical ou horizontal
-                float next_vertical = fabs((ray_cell_x * TILE_SIZE + (rdx > 0 ? TILE_SIZE : 0) - px) / rdx);
-                float next_horizontal = fabs((ray_cell_y * TILE_SIZE + (rdy > 0 ? TILE_SIZE : 0) - py) / rdy);
-
-                hit_vertical = next_vertical < next_horizontal; // Vrai si le mur est vertical
-                break;
-            }
-
-			// Avancer le rayon
+			if (map[ray_cell_y * mapX + ray_cell_x] == 1)
+			{
+				float rest = fmodf(ray_y, TILE_SIZE);
+				if (rest > 126 || rest < 1)
+					hit_texture_x = (int)fmodf(ray_x, TILE_SIZE);
+				else
+					hit_texture_x = (int)fmodf(ray_y, TILE_SIZE);
+				break;
+			}
 			ray_x += rdx;
 			ray_y += rdy;
 			distance += 1.0;
 		}
-
-		// Corriger la distorsion
 		float corrected_distance = distance * cos(ra - pa);
 
-		// Calculer la hauteur du mur
 		int wall_height = (int)(TILE_SIZE * W_HEIGHT / corrected_distance);
-		if (wall_height > W_HEIGHT)
-			wall_height = W_HEIGHT;
 
-		// Déterminer les positions pour dessiner la colonne
 		int wall_top = (W_HEIGHT / 2) - (wall_height / 2);
 		int wall_bottom = (W_HEIGHT / 2) + (wall_height / 2);
 
-        float wall_hit_x;
-        if (hit_vertical)
-            wall_hit_x = fmod(ray_y, TILE_SIZE) / TILE_SIZE; // Impact sur un mur vertical
-        else
-            wall_hit_x = fmod(ray_x, TILE_SIZE) / TILE_SIZE; // Impact sur un mur horizontal
-
-		int texture_x = (int)(wall_hit_x * cub->texture->width);
-
-		// Dessiner chaque pixel de la colonne avec la texture
+		int texture_width = cub->texture->width;
+		int texture_height = cub->texture->height;
 		for (int y = wall_top; y < wall_bottom; y++)
 		{
-			// Calculer la coordonnée verticale dans la texture
-			int texture_y = (y - wall_top) * cub->texture->height / wall_height;
+			int texture_y = (int)(((float)(y - wall_top) / wall_height) * texture_height);
+			int texture_index = (texture_y * texture_width + hit_texture_x) * 4;
 
-			// Obtenir la couleur du pixel de la texture
-			int color_index = (texture_y * cub->texture->width + texture_x) * 4; // 4 pour RGBA
-			uint8_t r = cub->texture->pixels[color_index];
-			uint8_t g = cub->texture->pixels[color_index + 1];
-			uint8_t b = cub->texture->pixels[color_index + 2];
-			uint8_t a = cub->texture->pixels[color_index + 3];
+			uint8_t r = cub->texture->pixels[texture_index];
+			uint8_t g = cub->texture->pixels[texture_index + 1];
+			uint8_t b = cub->texture->pixels[texture_index + 2];
+			uint8_t a = cub->texture->pixels[texture_index + 3];
 
-			// Dessiner le pixel à l'écran
+			if (i < 0 || y < 0 || i >= W_WIDTH || y >= W_HEIGHT)
+				continue ;
 			mlx_put_pixel(g_game_container, i, y, get_hexa_color(r, g, b, a));
 		}
 
-		// Dessiner le ciel
 		draw_line(i * (W_WIDTH / ray_count), 0, i * (W_WIDTH / ray_count), wall_top, get_hexa_color(135, 206, 250, 255), g_game_container);
 
-		// Dessiner le mur
 		// draw_line(i * (W_WIDTH / ray_count), wall_top, i * (W_WIDTH / ray_count), wall_bottom, get_hexa_color(150, 75, 0, 255), g_game_container);
 
-		// Dessiner le sol
 		draw_line(i * (W_WIDTH / ray_count), wall_bottom, i * (W_WIDTH / ray_count), W_HEIGHT, get_hexa_color(169, 169, 169, 255), g_game_container);
 
-		// Avancer l'angle
 		ra += angle_step;
 		if (ra > 2 * PI) ra -= 2 * PI;
 	}
@@ -287,7 +266,7 @@ mlx_t	*create_window(t_cub *cub)
 		raise_error("Error:", "game image container creation failed.", 1, true);
 	if (mlx_image_to_window(window, g_game_container, 0, 0) == -1)
 		raise_error("Error:", "game image container to window failed.", 1, true);
-	cub->texture = mlx_load_png("./src/resources/decors/256_Brick 01 Mud.png");
+	cub->texture = mlx_load_png("./src/resources/decors/256_Marble 01.png");
 	printf("%p\n", cub->texture);
 	px = 500;
 	py = 500;
