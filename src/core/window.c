@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/23 14:15:55 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/23 14:55:09 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,6 @@ void draw_3d_view(t_cub	*cub)
 		ra += 2 * PI;
 	while (ra > 2 * PI)
 		ra -= 2 * PI;
-
 	for (int i = 0; i < ray_count; i++)
 	{
 		float current_ra = ra;
@@ -202,11 +201,12 @@ void draw_3d_view(t_cub	*cub)
 
 		int texture_width = cub->texture->width;
 		int texture_height = cub->texture->height;
+		printf("%d\n", hit_texture_x);
 		for (int y = wall_top; y < wall_bottom; y++)
 		{
 			int texture_y = (int)(((float)(y - wall_top) / wall_height) * texture_height);
 			int texture_index = (texture_y * texture_width + hit_texture_x) * 4;
-
+			//printf("%d\n", texture_index);
 			uint8_t r = cub->texture->pixels[texture_index];
 			uint8_t g = cub->texture->pixels[texture_index + 1];
 			uint8_t b = cub->texture->pixels[texture_index + 2];

@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/23 14:16:15 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/23 14:18:23 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # include "../src/utils/garbage_collector/includes/garbage_collector.h"
 # include "MLX42/MLX42.h"
 
-# define W_WIDTH 500
-# define W_HEIGHT 500
+# define W_WIDTH 2048
+# define W_HEIGHT 2048
 # define MINIMAP_WIDTH 1024
 # define MINIMAP_HEIGHT 1024
 # define MINIMAP_PLAYER_SIZE 30
