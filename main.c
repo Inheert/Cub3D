@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/17 13:14:39 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/01/25 09:12:32 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,47 @@ void	printing_all_file_info(t_file *fi, t_data *dt)
 	}
 	printf("\n");
 	printf("dt->pos_player: %i\n", dt->pos_player);
+	printf("dt->vue_player: %c\n", dt->vue_player);
+	printf("char **map:\n");
+	for (int i = 0; i < dt->fi->nl ; i++)
+	{
+		printf("%s\n", dt->map[i]);
+	}
 	
+}
+
+void str_to_table(t_data *dt)
+{
+	
+	int		i;
+	int		j;
+	int		k;
+	
+	dt->map = (char **)gb_malloc(sizeof(char *) * dt->fi->nl);
+	if (!dt->map)
+		return;
+	k = 0;
+	i = 0;
+	while (i < dt->fi->nl)
+	{
+		dt->map[i] = (char *)gb_malloc(sizeof(char) * (dt->fi->nc + 1));
+		if (!dt->map)
+			return;
+		j = 0;
+		while (j < dt->fi->nc)
+		{
+			if (dt->pos_player == k)
+			{
+				dt->map[i][j] = dt->vue_player;
+				k++;
+			}
+			else
+				dt->map[i][j] = dt->map_verif[k++]; 
+			j++;
+		}
+		dt->map[i][j] = '\0';
+		i++;
+	}
 }
 
 int	main(int ac, char **av)
@@ -85,6 +125,9 @@ int	main(int ac, char **av)
 	dt.map_verif = NULL;
 	dt.fi = &file_info;
 	read_file(av[1], &dt);
+	
+	str_to_table(&dt);
+
 	printing_all_file_info(&file_info, &dt);
 	
 	raise_error("Perfect", "Program ends well.", 1 ,1);//ne

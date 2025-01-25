@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/13 17:22:28 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/01/25 08:53:26 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,9 @@ typedef struct s_data
 {
 	t_file	*fi;
 
-	// char	**map;
+	char	**map;
 	char	*map_verif;
+	char	vue_player;
 	int		pos_player;
 	// int		p_x;
 	// int		p_y;
