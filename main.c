@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/27 08:38:15 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:03:09 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,31 @@ void str_to_table(t_data *dt)
 	}
 }
 
+void	load_texture(t_cub *cub, t_file *file_info)
+{
+	mlx_texture_t	*buff;
+	(void)cub;
+	buff = mlx_load_png(file_info->no);
+	if (!buff)
+		raise_perror("A problem occur while loading North texture.", 1);
+	cub->north_texture = buff;
+
+	buff = mlx_load_png(file_info->so);
+	if (!buff)
+		raise_perror("A problem occur while loading South texture.", 1);
+	cub->south_texture = buff;
+
+	buff = mlx_load_png(file_info->we);
+	if (!buff)
+		raise_perror("A problem occur while loading Weast texture.", 1);
+	cub->weast_texture = buff;
+
+	buff = mlx_load_png(file_info->ea);
+	if (!buff)
+		raise_perror("A problem occur while loading East texture.", 1);
+	cub->east_texture = buff;
+}
+
 mlx_t		*g_window = NULL;
 mlx_image_t	*g_game_container = NULL;
 
@@ -138,6 +163,11 @@ int	main(int ac, char **av)
 	str_to_table(&dt);
 	printing_all_file_info(&file_info, &dt);
 	cub = gb_malloc(sizeof(t_cub));
+	cub->player_orientation = dt.vue_player;
+	cub->map = dt.map;
+	cub->mapX = dt.fi->nc;
+	cub->mapY = dt.fi->nl;
+	load_texture(cub, &file_info);
 	window = create_window(cub);
 	mlx_loop(window);
 	mlx_terminate(window);

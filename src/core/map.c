@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 09:25:51 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/22 11:20:01 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 09:01:00 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,4 @@ uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b, unsigned
 	if (alpha > 255)
 		alpha = 255;
 	return ((r << 24) | (g << 16) | (b << 8) | alpha);
-}
-
-uint32_t	get_color(char symbol)
-{
-	if (symbol == '0' || symbol == 'P')
-		return (get_hexa_color(255, 0, 0, 255));
-	else if (symbol == '1')
-		return(get_hexa_color(0, 255, 0, 255));
-	return (get_hexa_color(0, 0, 0, 255));
 }

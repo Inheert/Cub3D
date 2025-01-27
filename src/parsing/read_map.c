@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:59:03 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/01/27 08:26:24 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 09:05:41 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	dimetions_for_map(char *line1, int fd1, t_data *dt)
 	if (line1)
 		gb_free(line1);
 	// printf("lines; %i\nrows; %i\n", dt->fi->nl, dt->fi->nc);
-	if (dt->fi->nl < 3 && dt->fi->nc < 3)
+	if (dt->fi->nl < 3 || dt->fi->nc < 3)
 		return (false);
 	else
 		return (true);
@@ -109,6 +109,7 @@ bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt)
 	dt->map_verif = get_map(dt, fd);
 	if (!dt->map_verif)
 		return (raise_error("Error\n", "Not valid map.\n", 1, true), 0);
+	printf("%d\n", dt->pos_player);
 	if (flood_fill(dt, dt->pos_player) == 1)
 		return (raise_error("Error\n", " read_map 2 NULL.\n", 1, true), 0);
 

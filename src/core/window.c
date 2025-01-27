@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/23 14:55:09 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:09:42 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,35 +20,24 @@ void	close_window()
 	exit(0);
 }
 
-#define mapX  8      //map width
-#define mapY  8      //map height
-#define mapS 64      //map cube size
+// #define mapX  8      //map width
+// #define mapY  8      //map height
+// #define mapS 64      //map cube size
 
-int	map[] =
-{
-	1,1,1,1,1,1,1,1,
-	1,0,1,0,0,0,0,1,
-	1,0,0,0,1,0,0,1,
-	1,0,0,0,0,0,0,1,
-	1,0,0,0,0,1,0,1,
-	1,0,0,0,0,1,0,1,
-	1,0,0,1,0,0,0,1,
-	1,1,1,1,1,1,1,1,
-};
-
-void draw_map_2d()
+void draw_map_2d(t_cub *cub)
 {
 	int x, y, xo, yo;
 
 	y = -1;
-	while (++y < mapY)
+	while (++y < cub->mapY)
 	{
 		x = -1;
-		while (++x < mapX)
+		while (++x < cub->mapX)
 		{
-			xo = MINIMAP_WIDTH / mapX;
-			yo = MINIMAP_HEIGHT / mapY;
-			if (map[y * mapX + x] == 1)
+			xo = MINIMAP_WIDTH / cub->mapX;
+			yo = MINIMAP_HEIGHT / cub->mapY;
+			//printf("%c %d %d\n", cub->map[y][x], y, x);
+			if (cub->map[y][x] == '1')
 				draw_rectangle(TILE_SIZE * x + 1, TILE_SIZE * y + 1, TILE_SIZE - 1, TILE_SIZE - 1, get_hexa_color(200, 200, 200, 255));
 			else
 				draw_rectangle(TILE_SIZE * x + 1, TILE_SIZE * y + 1, TILE_SIZE - 1, TILE_SIZE - 1, get_hexa_color(15, 15, 15, 255));
@@ -109,7 +98,7 @@ void draw_player_2d()
 		MINIMAP_PLAYER_SIZE, MINIMAP_PLAYER_SIZE, get_hexa_color(200, 0, 0, 255));
 }
 
-void draw_rays_2d()
+void draw_rays_2d(t_cub *cub)
 {
 	float ra, rdx, rdy, ray_x, ray_y;
 	int ray_count = 100;
@@ -132,10 +121,10 @@ void draw_rays_2d()
 			int	ray_cell_x = (int)(ray_x / TILE_SIZE);
 			int	ray_cell_y = (int)(ray_y / TILE_SIZE);
 
-			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= mapX || ray_cell_y >= mapY)
+			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= cub->mapX || ray_cell_y >= cub->mapY)
 				break ;
 
-			if (map[ray_cell_y * mapX + ray_cell_x] == 1)
+			if (cub->map[ray_cell_y][ray_cell_x] == '1')
 				break ;
 			ray_x += rdx;
 			ray_y += rdy;
@@ -155,6 +144,7 @@ void draw_3d_view(t_cub	*cub)
 	int ray_count = W_WIDTH;
 	float fov = PI / 4;
 	float angle_step = fov / ray_count;
+	mlx_texture_t	*texture;
 
 	ra = pa - (fov / 2);
 	while (ra < 0)
@@ -176,16 +166,24 @@ void draw_3d_view(t_cub	*cub)
 			int ray_cell_x = (int)(ray_x / TILE_SIZE);
 			int ray_cell_y = (int)(ray_y / TILE_SIZE);
 
-			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= mapX || ray_cell_y >= mapY)
+			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= cub->mapX || ray_cell_y >= cub->mapY)
 				break;
 
-			if (map[ray_cell_y * mapX + ray_cell_x] == 1)
+			if (cub->map[ray_cell_y][ray_cell_x] == '1')
 			{
 				float rest = fmodf(ray_y, TILE_SIZE);
-				if (rest > 126 || rest < 1)
-					hit_texture_x = (int)fmodf(ray_x, TILE_SIZE);
+				printf("%f\n", rest);
+				texture = cub->south_texture;
+				if (rest > 1)
+					texture = cub->north_texture;
+				else if (rest < 1)
+					texture = cub->south_texture;
 				else
-					hit_texture_x = (int)fmodf(ray_y, TILE_SIZE);
+					texture = cub->east_texture;
+				if (rest > TILE_SIZE - 2 || rest < 1)
+					hit_texture_x = (int)((fmodf(ray_x, TILE_SIZE) / TILE_SIZE) * texture->width);
+				else
+					hit_texture_x = (int)((fmodf(ray_y, TILE_SIZE) / TILE_SIZE) * texture->width);
 				break;
 			}
 			ray_x += rdx;
@@ -194,23 +192,23 @@ void draw_3d_view(t_cub	*cub)
 		}
 		float corrected_distance = distance * cos(ra - pa);
 
-		int wall_height = (int)(TILE_SIZE * W_HEIGHT / corrected_distance);
+		int wall_height = (int)(MAP_SCALE * W_HEIGHT / corrected_distance);
 
 		int wall_top = (W_HEIGHT / 2) - (wall_height / 2);
 		int wall_bottom = (W_HEIGHT / 2) + (wall_height / 2);
 
-		int texture_width = cub->texture->width;
-		int texture_height = cub->texture->height;
-		printf("%d\n", hit_texture_x);
+		int texture_width = texture->width;
+		int texture_height = texture->height;
+		//printf("%d\n", hit_texture_x);
 		for (int y = wall_top; y < wall_bottom; y++)
 		{
 			int texture_y = (int)(((float)(y - wall_top) / wall_height) * texture_height);
 			int texture_index = (texture_y * texture_width + hit_texture_x) * 4;
 			//printf("%d\n", texture_index);
-			uint8_t r = cub->texture->pixels[texture_index];
-			uint8_t g = cub->texture->pixels[texture_index + 1];
-			uint8_t b = cub->texture->pixels[texture_index + 2];
-			uint8_t a = cub->texture->pixels[texture_index + 3];
+			uint8_t r = texture->pixels[texture_index];
+			uint8_t g = texture->pixels[texture_index + 1];
+			uint8_t b = texture->pixels[texture_index + 2];
+			uint8_t a = texture->pixels[texture_index + 3];
 
 			if (i < 0 || y < 0 || i >= W_WIDTH || y >= W_HEIGHT)
 				continue ;
@@ -219,7 +217,7 @@ void draw_3d_view(t_cub	*cub)
 
 		draw_line(i * (W_WIDTH / ray_count), 0, i * (W_WIDTH / ray_count), wall_top, get_hexa_color(135, 206, 250, 255), g_game_container);
 
-		// draw_line(i * (W_WIDTH / ray_count), wall_top, i * (W_WIDTH / ray_count), wall_bottom, get_hexa_color(150, 75, 0, 255), g_game_container);
+		//draw_line(i * (W_WIDTH / ray_count), wall_top, i * (W_WIDTH / ray_count), wall_bottom, get_hexa_color(150, 75, 0, 255), g_game_container);
 
 		draw_line(i * (W_WIDTH / ray_count), wall_bottom, i * (W_WIDTH / ray_count), W_HEIGHT, get_hexa_color(169, 169, 169, 255), g_game_container);
 
@@ -241,9 +239,9 @@ void	hook_frame_update(void *param)
 		while (++j < MINIMAP_HEIGHT)
 			mlx_put_pixel(g_game_container, i, j, 0x00003366);
 	}
-	draw_map_2d();
-	draw_rays_2d();
 	draw_3d_view(param);
+	//draw_map_2d(param);
+	//draw_rays_2d(param);
 	draw_player_2d();
 }
 
@@ -266,10 +264,31 @@ mlx_t	*create_window(t_cub *cub)
 		raise_error("Error:", "game image container creation failed.", 1, true);
 	if (mlx_image_to_window(window, g_game_container, 0, 0) == -1)
 		raise_error("Error:", "game image container to window failed.", 1, true);
-	cub->texture = mlx_load_png("./src/resources/decors/256_Marble 01.png");
-	printf("%p\n", cub->texture);
-	px = 500;
-	py = 500;
+	cub->texture = mlx_load_png("./src/resources/decors/256_Marble01.png");
+	px = 900;
+	py = 200;
+	int	x, y = 0;
+	while (++y < cub->mapY)
+	{
+		x = -1;
+		while (++x < cub->mapX)
+		{
+			if (cub->map[y][x] == 'N' || cub->map[y][x] == 'S' || cub->map[y][x] == 'E' || cub->map[y][x] == 'W')
+			{
+				px = x * TILE_SIZE + TILE_SIZE / 2;
+				py = y * TILE_SIZE + TILE_SIZE / 2;
+				if (cub->map[y][x] == 'E')
+					pa = 0;
+				else if (cub->map[y][x] == 'S')
+					pa = PI / 2;
+				else if (cub->map[y][x] == 'W')
+					pa = PI;
+				else if (cub->map[y][x] == 'N')
+					pa = 3 * PI / 2;
+				break ;
+			}
+		}
+	}
 	pdx = cos(pa) * 5;
 	pdy = sin(pa) * 5;
 	initialize_hooks(cub);

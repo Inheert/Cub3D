@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/27 08:25:42 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 12:15:59 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define MINIMAP_PLAYER_SIZE 30
 
 # define TILE_SIZE 128
+# define MAP_SCALE 128
 
 # define PLAYER_SPEED 45
 # define ANGLE_SPEED 60
@@ -102,9 +103,17 @@ typedef struct s_data
 
 typedef struct s_cub
 {
-	mlx_image_t	*game_img;
-	mlx_image_t	*minimap_img;
+	mlx_image_t		*game_img;
+	mlx_image_t		*minimap_img;
 	mlx_texture_t	*texture;
+	mlx_texture_t	*north_texture;
+	mlx_texture_t	*south_texture;
+	mlx_texture_t	*weast_texture;
+	mlx_texture_t	*east_texture;
+	char			player_orientation;
+	char			**map;
+	int				mapX;
+	int				mapY;
 }	t_cub;
 
 extern mlx_t		*g_window;
