@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/27 08:32:40 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 08:38:15 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,9 @@ int	main(int ac, char **av)
 	read_file(av[1], &dt);
 	str_to_table(&dt);
 	printing_all_file_info(&file_info, &dt);
-
+	cub = gb_malloc(sizeof(t_cub));
+	window = create_window(cub);
+	mlx_loop(window);
+	mlx_terminate(window);
 	raise_error("Perfect", "Program ends well.", 1 ,1);//ne
 }
