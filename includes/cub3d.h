@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/25 08:53:26 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/01/27 08:25:42 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,24 @@
 # include <errno.h>
 # include <fcntl.h>
 
-
 # include "../src/utils/libft/libft.h"
 # include "../src/utils/garbage_collector/includes/garbage_collector.h"
 # include "MLX42/MLX42.h"
+
+# define W_WIDTH 2048
+# define W_HEIGHT 2048
+# define MINIMAP_WIDTH 1024
+# define MINIMAP_HEIGHT 1024
+# define MINIMAP_PLAYER_SIZE 30
+
+# define TILE_SIZE 128
+
+# define PLAYER_SPEED 45
+# define ANGLE_SPEED 60
+
+# define PI 3.14159265359
+# define P2 PI / 2
+# define P3 3 * PI / 2
 
 /* **************************--Structures--********************************** */
 
@@ -41,12 +55,12 @@
  *
  * @param nl number of lines.
  * @param nc number of colons.
- * 
+ *
  * @param line char * to the line before the map.
  * @param lb line before lm (UP).
  * @param lm line for next_line_keep_map_close().
  * @param la line before lm (DWON).
- * 
+ *
  * @param valid 1 if all the file_information is validated.
  * 					0 if is not.
  *
@@ -86,10 +100,30 @@ typedef struct s_data
 
 }	t_data;
 
+typedef struct s_cub
+{
+	mlx_image_t	*game_img;
+	mlx_image_t	*minimap_img;
+	mlx_texture_t	*texture;
+}	t_cub;
+
+extern mlx_t		*g_window;
+extern mlx_image_t	*g_game_container;
+
+void	raise_perror(char *error, bool critical);
 void	raise_error(char *error, char *details, int exit_code, bool critical);
 
 void	read_file(char *file, t_data *dt);
 bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt);
 int		flood_fill(t_data *dt, int courrent_pos);
+mlx_t	*create_window();
+void	player_init();
+void	draw_player();
+void	player_set_x(int32_t direction);
+void	player_set_y(int32_t direction);
+void	player_set_angle(float ang);
+void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color);
+void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color, mlx_image_t *g_game_container);
+uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b, unsigned int alpha);
 
 #endif

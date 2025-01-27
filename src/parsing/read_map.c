@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:59:03 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/01/25 08:54:04 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/01/27 08:26:24 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	is_player(char *p, t_data *dt, int i)
 		return (player++, dt->pos_player = i, dt->vue_player = *p, 1);
 	else if ((*p == 'E' || *p == 'W' || *p == 'N' || *p == 'S'))
 		return (dt->fi->valid = false, 2);
-		
+
 	if (*p == '1' || *p == '0' || *p == ' '|| *p == '\n')
 		return (1);
 	return (dt->fi->valid = false, 2);
@@ -29,7 +29,7 @@ int	is_player(char *p, t_data *dt, int i)
 bool	dimetions_for_map(char *line1, int fd1, t_data *dt)
 {
 	int	i;
-	
+
 	while (line1)
 	{
 		dt->fi->nl++;
@@ -45,11 +45,11 @@ bool	dimetions_for_map(char *line1, int fd1, t_data *dt)
 	}
 	if (line1)
 		gb_free(line1);
-	printf("lines; %i\nrows; %i\n", dt->fi->nl, dt->fi->nc);
+	// printf("lines; %i\nrows; %i\n", dt->fi->nl, dt->fi->nc);
 	if (dt->fi->nl < 3 && dt->fi->nc < 3)
 		return (false);
 	else
-		return (true);	
+		return (true);
 }
 
 /**
@@ -94,11 +94,12 @@ char	*get_map(t_data *dt, int fd)
 			return (printf("get_map 3\n%i char on the map\n%i char on gc_malloc\n", i, (dt->fi->nl * dt->fi->nc)), gb_free(map), NULL);
 	}
 	map[i] = '\0';
-	return (printf("get_map 4\n%i chars on the map\n%i char in the gb_malloc \nvalid: %d\n", i, (dt->fi->nl * dt->fi->nc),dt->fi->valid), map);
+	// printf("get_map 4\n%i chars on the map\n%i char in the gb_malloc \nvalid: %d\n", i, (dt->fi->nl * dt->fi->nc),dt->fi->valid);
+	return (map);
 }
 
  /**
-  * 
+  *
   */
 bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt)
 {

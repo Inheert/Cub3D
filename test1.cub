@@ -1,8 +1,8 @@
+EA                          ./path_to_the_east_texture
 NO                  ./path_to_the_north_texture
 SO ./path_to_           the_south_texture
 
 
-EA                          ./path_to_the_east_texture
 
 WE ./path_to   _the_west_texture
 
