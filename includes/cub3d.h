@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/23 14:18:23 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 08:25:42 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,9 @@ typedef struct s_data
 {
 	t_file	*fi;
 
-	// char	**map;
+	char	**map;
 	char	*map_verif;
+	char	vue_player;
 	int		pos_player;
 	// int		p_x;
 	// int		p_y;

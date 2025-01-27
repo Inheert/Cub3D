@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:59:03 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/01/13 07:28:08 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 08:26:24 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	is_player(char *p, t_data *dt, int i)
 	static int	player = 0;
 
 	if (player == 0 && (*p == 'E' || *p == 'W' || *p == 'N' || *p == 'S'))//Pas plus d'un jouer
-		return (player++, dt->pos_player = i, 1);
+		return (player++, dt->pos_player = i, dt->vue_player = *p, 1);
 	else if ((*p == 'E' || *p == 'W' || *p == 'N' || *p == 'S'))
 		return (dt->fi->valid = false, 2);
 
@@ -111,5 +111,6 @@ bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt)
 		return (raise_error("Error\n", "Not valid map.\n", 1, true), 0);
 	if (flood_fill(dt, dt->pos_player) == 1)
 		return (raise_error("Error\n", " read_map 2 NULL.\n", 1, true), 0);
+
 	return (true);
 }

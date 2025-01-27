@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/01/13 07:29:02 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 08:31:43 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,9 @@ void	read_file(char *file, t_data *dt)
 	int		fd1;
 
 	fd = open(file, O_RDONLY, 777);
-	// printf("fd: %i\n", fd);
+	printf("fd: %i\n", fd);//
 	fd1 = open(file, O_RDONLY, 777);
-	// printf("fd1: %i\n", fd1);
+	printf("fd1: %i\n", fd1);//
 	if (fd < 0 || fd1 < 0)
 		return (raise_error("Error\n", "read_file: cannot open the file.\n", 1, true));
 	if (verify_format_file(fd, fd1, dt) == false)
