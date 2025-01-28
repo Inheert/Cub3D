@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/27 13:03:09 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:36:34 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,8 @@ void	load_texture(t_cub *cub, t_file *file_info)
 
 	buff = mlx_load_png(file_info->we);
 	if (!buff)
-		raise_perror("A problem occur while loading Weast texture.", 1);
-	cub->weast_texture = buff;
+		raise_perror("A problem occur while loading West texture.", 1);
+	cub->west_texture = buff;
 
 	buff = mlx_load_png(file_info->ea);
 	if (!buff)

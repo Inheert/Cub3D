@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/27 12:15:59 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/28 09:51:19 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,11 @@
 # define MINIMAP_PLAYER_SIZE 30
 
 # define TILE_SIZE 128
-# define MAP_SCALE 128
 
-# define PLAYER_SPEED 45
+# define PLAYER_SPEED 40
 # define ANGLE_SPEED 60
 
 # define PI 3.14159265359
-# define P2 PI / 2
-# define P3 3 * PI / 2
 
 /* **************************--Structures--********************************** */
 
@@ -108,9 +105,10 @@ typedef struct s_cub
 	mlx_texture_t	*texture;
 	mlx_texture_t	*north_texture;
 	mlx_texture_t	*south_texture;
-	mlx_texture_t	*weast_texture;
+	mlx_texture_t	*west_texture;
 	mlx_texture_t	*east_texture;
 	char			player_orientation;
+	float			player_pos[6];
 	char			**map;
 	int				mapX;
 	int				mapY;

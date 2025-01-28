@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/27 13:09:42 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/28 11:58:00 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,63 +38,76 @@ void draw_map_2d(t_cub *cub)
 			yo = MINIMAP_HEIGHT / cub->mapY;
 			//printf("%c %d %d\n", cub->map[y][x], y, x);
 			if (cub->map[y][x] == '1')
-				draw_rectangle(TILE_SIZE * x + 1, TILE_SIZE * y + 1, TILE_SIZE - 1, TILE_SIZE - 1, get_hexa_color(200, 200, 200, 255));
+				draw_rectangle(50 * x + 1, 50 * y + 1, 50 - 1, 50 - 1, get_hexa_color(200, 200, 200, 255));
 			else
-				draw_rectangle(TILE_SIZE * x + 1, TILE_SIZE * y + 1, TILE_SIZE - 1, TILE_SIZE - 1, get_hexa_color(15, 15, 15, 255));
+				draw_rectangle(50 * x + 1, 50 * y + 1, 50 - 1, 50 - 1, get_hexa_color(15, 15, 15, 255));
 		}
 	}
 }
 
-float px, py, pdx, pdy, pa;
+float pa;
+
+bool	is_next_pos_valid(t_cub *cub, int x, int y)
+{
+	x = x / TILE_SIZE;
+	y = y / TILE_SIZE;
+
+	if (cub->map[y][x] == '1')
+		return (true);
+	return (false);
+}
 
 void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
 {
-	(void)param;
+	t_cub	*cub;
+	// int		predicted_pos;
+
+	cub = (t_cub *)param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		close_window();
 	if (keydata.key == MLX_KEY_W)
 	{
-		px += pdx * PLAYER_SPEED * g_window->delta_time;
-		py += pdy * PLAYER_SPEED * g_window->delta_time;
+		cub->player_pos[0] += cub->player_pos[2] * PLAYER_SPEED * g_window->delta_time;
+		cub->player_pos[1] += cub->player_pos[3] * PLAYER_SPEED * g_window->delta_time;
 	}
 	if (keydata.key == MLX_KEY_S)
 	{
-		px -= pdx * PLAYER_SPEED * g_window->delta_time;
-		py -= pdy * PLAYER_SPEED * g_window->delta_time;
+		cub->player_pos[0] -= cub->player_pos[2] * PLAYER_SPEED * g_window->delta_time;
+		cub->player_pos[1] -= cub->player_pos[3] * PLAYER_SPEED * g_window->delta_time;
 	}
 	if (keydata.key == MLX_KEY_A)
 	{
 		float	strafe_angle = pa - PI / 2;
-		px += cos(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
-		py += sin(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
+		cub->player_pos[0] += cos(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
+		cub->player_pos[1] += sin(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
 	}
 	if (keydata.key == MLX_KEY_D)
 	{
 		float	strafe_angle = pa + PI / 2;
-		px += cos(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
-		py += sin(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
+		cub->player_pos[0] += cos(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
+		cub->player_pos[1] += sin(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
 	}
 	if (keydata.key == MLX_KEY_LEFT)
 	{
 		pa -= 0.1;
 		if (pa < 0)
 			pa += 2 * PI;
-		pdx = cos(pa) * 5;
-		pdy = sin(pa) * 5;
+		cub->player_pos[2] = cos(pa) * 5;
+		cub->player_pos[3] = sin(pa) * 5;
 	}
 	if (keydata.key == MLX_KEY_RIGHT)
 	{
 		pa += 0.1;
 		if (pa > 2 * PI)
 			pa -= 2 * PI;
-		pdx = cos(pa) * 5;
-		pdy = sin(pa) * 5;
+		cub->player_pos[2] = cos(pa) * 5;
+		cub->player_pos[3] = sin(pa) * 5;
 	}
 }
 
-void draw_player_2d()
+void draw_player_2d(t_cub *cub)
 {
-	draw_rectangle( px - MINIMAP_PLAYER_SIZE * 0.5, py - MINIMAP_PLAYER_SIZE * 0.5,
+	draw_rectangle( cub->player_pos[0] - MINIMAP_PLAYER_SIZE * 0.5, cub->player_pos[1] - MINIMAP_PLAYER_SIZE * 0.5,
 		MINIMAP_PLAYER_SIZE, MINIMAP_PLAYER_SIZE, get_hexa_color(200, 0, 0, 255));
 }
 
@@ -108,12 +121,11 @@ void draw_rays_2d(t_cub *cub)
 	ra = pa - (fov / 2);
 	while (ra < 0) ra += 2 * PI;
 	while (ra > 2 * PI) ra -= 2 * PI;
-	// printf("player pos: %d %d\n", (int)(px / TILE_SIZE), (int)(py / TILE_SIZE));
 	for (int i = 0; i < ray_count; i++)
 	{
 		float current_ra = ra;
-		ray_x = px;
-		ray_y = py;
+		ray_x = cub->player_pos[0];
+		ray_y = cub->player_pos[1];
 		rdx = cos(current_ra);
 		rdy = sin(current_ra);
 		while (1)
@@ -130,16 +142,15 @@ void draw_rays_2d(t_cub *cub)
 			ray_y += rdy;
 		}
 
-		draw_line(px, py, ray_x, ray_y, get_hexa_color(100, 100, 255, 255), g_game_container);
+		draw_line(cub->player_pos[0], cub->player_pos[1], ray_x, ray_y, get_hexa_color(100, 100, 255, 255), g_game_container);
 		ra += angle_step;
 		if (ra > 2 * PI) ra -= 2 * PI;
 	}
-	draw_line(px, py, px + cos(pa) * 20, py + sin(pa) * 20, get_hexa_color(0, 255, 0, 255), g_game_container);
+	draw_line(cub->player_pos[0], cub->player_pos[1], cub->player_pos[0] + cos(pa) * 20, cub->player_pos[1] + sin(pa) * 20, get_hexa_color(0, 255, 0, 255), g_game_container);
 }
 
 void draw_3d_view(t_cub	*cub)
 {
-	(void)cub;
 	float ra, rdx, rdy, ray_x, ray_y;
 	int ray_count = W_WIDTH;
 	float fov = PI / 4;
@@ -154,30 +165,28 @@ void draw_3d_view(t_cub	*cub)
 	for (int i = 0; i < ray_count; i++)
 	{
 		float current_ra = ra;
-		ray_x = px;
-		ray_y = py;
+		ray_x = cub->player_pos[0];
+		ray_y = cub->player_pos[1];
 		rdx = cos(current_ra);
 		rdy = sin(current_ra);
-
 		float distance = 0.0;
 		int hit_texture_x = 0;
 		while (1)
 		{
 			int ray_cell_x = (int)(ray_x / TILE_SIZE);
 			int ray_cell_y = (int)(ray_y / TILE_SIZE);
-
 			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= cub->mapX || ray_cell_y >= cub->mapY)
 				break;
 
 			if (cub->map[ray_cell_y][ray_cell_x] == '1')
 			{
 				float rest = fmodf(ray_y, TILE_SIZE);
-				printf("%f\n", rest);
-				texture = cub->south_texture;
-				if (rest > 1)
+				if (rest > TILE_SIZE - 2)
 					texture = cub->north_texture;
 				else if (rest < 1)
 					texture = cub->south_texture;
+				else if (ray_x < cub->player_pos[0])
+					texture = cub->west_texture;
 				else
 					texture = cub->east_texture;
 				if (rest > TILE_SIZE - 2 || rest < 1)
@@ -191,36 +200,25 @@ void draw_3d_view(t_cub	*cub)
 			distance += 1.0;
 		}
 		float corrected_distance = distance * cos(ra - pa);
-
-		int wall_height = (int)(MAP_SCALE * W_HEIGHT / corrected_distance);
-
+		int wall_height = (int)(TILE_SIZE * W_HEIGHT / corrected_distance);
 		int wall_top = (W_HEIGHT / 2) - (wall_height / 2);
 		int wall_bottom = (W_HEIGHT / 2) + (wall_height / 2);
-
 		int texture_width = texture->width;
 		int texture_height = texture->height;
-		//printf("%d\n", hit_texture_x);
 		for (int y = wall_top; y < wall_bottom; y++)
 		{
 			int texture_y = (int)(((float)(y - wall_top) / wall_height) * texture_height);
 			int texture_index = (texture_y * texture_width + hit_texture_x) * 4;
-			//printf("%d\n", texture_index);
 			uint8_t r = texture->pixels[texture_index];
 			uint8_t g = texture->pixels[texture_index + 1];
 			uint8_t b = texture->pixels[texture_index + 2];
 			uint8_t a = texture->pixels[texture_index + 3];
-
 			if (i < 0 || y < 0 || i >= W_WIDTH || y >= W_HEIGHT)
 				continue ;
 			mlx_put_pixel(g_game_container, i, y, get_hexa_color(r, g, b, a));
 		}
-
 		draw_line(i * (W_WIDTH / ray_count), 0, i * (W_WIDTH / ray_count), wall_top, get_hexa_color(135, 206, 250, 255), g_game_container);
-
-		//draw_line(i * (W_WIDTH / ray_count), wall_top, i * (W_WIDTH / ray_count), wall_bottom, get_hexa_color(150, 75, 0, 255), g_game_container);
-
 		draw_line(i * (W_WIDTH / ray_count), wall_bottom, i * (W_WIDTH / ray_count), W_HEIGHT, get_hexa_color(169, 169, 169, 255), g_game_container);
-
 		ra += angle_step;
 		if (ra > 2 * PI) ra -= 2 * PI;
 	}
@@ -240,14 +238,14 @@ void	hook_frame_update(void *param)
 			mlx_put_pixel(g_game_container, i, j, 0x00003366);
 	}
 	draw_3d_view(param);
-	//draw_map_2d(param);
-	//draw_rays_2d(param);
-	draw_player_2d();
+	draw_map_2d(param);
+	draw_rays_2d(param);
+	draw_player_2d(param);
 }
 
 void	initialize_hooks(t_cub *cub)
 {
-	mlx_key_hook(g_window, &cub_keys_hooks, NULL);
+	mlx_key_hook(g_window, &cub_keys_hooks, cub);
 	mlx_loop_hook(g_window,  &hook_frame_update, cub);
 }
 
@@ -265,9 +263,15 @@ mlx_t	*create_window(t_cub *cub)
 	if (mlx_image_to_window(window, g_game_container, 0, 0) == -1)
 		raise_error("Error:", "game image container to window failed.", 1, true);
 	cub->texture = mlx_load_png("./src/resources/decors/256_Marble01.png");
-	px = 900;
-	py = 200;
 	int	x, y = 0;
+	if (cub->player_orientation == 'E')
+		pa = 0;
+	else if (cub->player_orientation == 'S')
+		pa = PI / 2;
+	else if (cub->player_orientation == 'W')
+		pa = PI;
+	else if (cub->player_orientation == 'N')
+		pa = 3 * PI / 2;
 	while (++y < cub->mapY)
 	{
 		x = -1;
@@ -275,22 +279,14 @@ mlx_t	*create_window(t_cub *cub)
 		{
 			if (cub->map[y][x] == 'N' || cub->map[y][x] == 'S' || cub->map[y][x] == 'E' || cub->map[y][x] == 'W')
 			{
-				px = x * TILE_SIZE + TILE_SIZE / 2;
-				py = y * TILE_SIZE + TILE_SIZE / 2;
-				if (cub->map[y][x] == 'E')
-					pa = 0;
-				else if (cub->map[y][x] == 'S')
-					pa = PI / 2;
-				else if (cub->map[y][x] == 'W')
-					pa = PI;
-				else if (cub->map[y][x] == 'N')
-					pa = 3 * PI / 2;
+				cub->player_pos[0] = x * TILE_SIZE + TILE_SIZE * 0.5;
+				cub->player_pos[1] = y * TILE_SIZE + TILE_SIZE * 0.5;
+				cub->player_pos[2] = cos(pa) * 5;
+				cub->player_pos[3] = sin(pa) * 5;
 				break ;
 			}
 		}
 	}
-	pdx = cos(pa) * 5;
-	pdy = sin(pa) * 5;
 	initialize_hooks(cub);
 	return (window);
 }
