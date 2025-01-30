@@ -1,11 +1,10 @@
-NO ./path_to_the_north_texture
-
-SO              ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-
+EA                          ./src/resources/decors/256_Cement01.png
+NO                  ./src/resources/decors/256_Marble01.png
+SO ./src/resources/decors/256_Checkered01.png
 
 
-EA ./path           _to_the_east_texture
+
+WE ./src/resources/decors/256_Brick04.png
 F               220,100,0
 
 C 225,225,225
@@ -14,8 +13,8 @@ C 225,225,225
 
 11111111111111
 1000N000000001
-10000000000001
-10000000000001
+10110000110001
+10100000100001
 10000000000001
 10000000000001
 10000000000001

@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/28 09:51:19 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:59:25 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@
 
 # define W_WIDTH 2048
 # define W_HEIGHT 2048
-# define MINIMAP_WIDTH 1024
-# define MINIMAP_HEIGHT 1024
+# define MINIMAP_SIZE W_WIDTH * 0.2
+# define MINIMAP_CELL_SIZE 25
+# define MINIMAP_CELL_OFFSET 2
 # define MINIMAP_PLAYER_SIZE 30
 
 # define TILE_SIZE 128
@@ -100,6 +101,7 @@ typedef struct s_data
 
 typedef struct s_cub
 {
+	mlx_t			*mlx;
 	mlx_image_t		*game_img;
 	mlx_image_t		*minimap_img;
 	mlx_texture_t	*texture;
@@ -109,28 +111,21 @@ typedef struct s_cub
 	mlx_texture_t	*east_texture;
 	char			player_orientation;
 	float			player_pos[6];
+	float			player_ang;
 	char			**map;
 	int				mapX;
 	int				mapY;
 }	t_cub;
 
-extern mlx_t		*g_window;
-extern mlx_image_t	*g_game_container;
-
 void	raise_perror(char *error, bool critical);
 void	raise_error(char *error, char *details, int exit_code, bool critical);
 
-void	read_file(char *file, t_data *dt);
-bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt);
-int		flood_fill(t_data *dt, int courrent_pos);
-mlx_t	*create_window();
-void	player_init();
-void	draw_player();
-void	player_set_x(int32_t direction);
-void	player_set_y(int32_t direction);
-void	player_set_angle(float ang);
-void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color);
-void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color, mlx_image_t *g_game_container);
+void		read_file(char *file, t_data *dt);
+bool		read_map(char *line, char *line1, int fd, int fd1, t_data *dt);
+int			flood_fill(t_data *dt, int courrent_pos);
+mlx_t		*create_window();
+void		draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color, mlx_image_t *img);
+void		draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color, mlx_image_t *g_game_container);
 uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b, unsigned int alpha);
 
 #endif

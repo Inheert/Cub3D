@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/27 13:36:34 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:59:22 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,9 +143,6 @@ void	load_texture(t_cub *cub, t_file *file_info)
 		raise_perror("A problem occur while loading East texture.", 1);
 	cub->east_texture = buff;
 }
-
-mlx_t		*g_window = NULL;
-mlx_image_t	*g_game_container = NULL;
 
 int	main(int ac, char **av)
 {

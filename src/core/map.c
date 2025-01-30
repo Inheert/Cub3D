@@ -6,35 +6,32 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 09:25:51 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/27 09:01:00 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:26:16 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color)
+void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color, mlx_image_t *img)
 {
 	int	i;
 	int	j;
 
 	i = -1;
-	// printf("Draw rect\n");
 	while (++i < height)
 	{
 		if (i + y < 0)
 			continue ;
-		// printf("1. %d %d %d %d %d %d\n", i, y, height, W_HEIGHT, i + y, i + y > W_HEIGHT);
 		if (i + y > W_HEIGHT)
 			return ;
 		j = -1;
 		while (++j < width)
 		{
-			//printf("%d %d\n", i, j);
 			if (j + x < 0)
 				continue ;
 			if (j + x > W_WIDTH)
 				return ;
-			mlx_put_pixel(g_game_container, x + j, y + i, color);
+			mlx_put_pixel(img, x + j, y + i, color);
 		}
 	}
 }

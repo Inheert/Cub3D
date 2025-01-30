@@ -6,181 +6,193 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/28 11:58:00 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:03:25 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	close_window()
+void	close_window(t_cub *cub)
 {
-	mlx_close_window(g_window);
-	mlx_terminate(g_window);
+	mlx_close_window(cub->mlx);
+	mlx_terminate(cub->mlx);
 	gb_free_all();
 	exit(0);
 }
 
-// #define mapX  8      //map width
-// #define mapY  8      //map height
-// #define mapS 64      //map cube size
-
-void draw_map_2d(t_cub *cub)
+void	real_draw_map_2d(t_cub *cub, int map_x, int map_y, int pos[2])
 {
-	int x, y, xo, yo;
+	if (map_x < 0 || map_y < 0 || map_x >= cub->mapX || map_y >= cub->mapY)
+		draw_rectangle(pos[0] * MINIMAP_CELL_SIZE + 1,
+			pos[1] * MINIMAP_CELL_SIZE + 1, MINIMAP_CELL_SIZE - 1,
+			MINIMAP_CELL_SIZE - 1, get_hexa_color(41, 79, 73, 255),
+			cub->game_img);
+	else if (cub->map[map_y][map_x] == '1')
+		draw_rectangle(pos[0] * MINIMAP_CELL_SIZE + 1,
+			pos[1] * MINIMAP_CELL_SIZE + 1, MINIMAP_CELL_SIZE - 1,
+			MINIMAP_CELL_SIZE - 1, get_hexa_color(129, 120, 145, 255),
+			cub->game_img);
+	else
+		draw_rectangle(pos[0] * MINIMAP_CELL_SIZE + 1,
+			pos[1] * MINIMAP_CELL_SIZE + 1, MINIMAP_CELL_SIZE - 1,
+			MINIMAP_CELL_SIZE - 1, get_hexa_color(179, 168, 175, 255),
+			cub->game_img);
+}
 
+void	draw_map_2d(t_cub *cub, int x, int y)
+{
+	int	cell_count;
+	int	start_x;
+	int	start_y;
+	int	pos[2];
+
+	cell_count = MINIMAP_SIZE / MINIMAP_CELL_SIZE;
+	start_x = (int)(cub->player_pos[0] / TILE_SIZE) - cell_count * 0.5;
+	start_y = (int)(cub->player_pos[1] / TILE_SIZE) - cell_count * 0.5;
+	draw_rectangle(0, 0, MINIMAP_SIZE - cell_count * 0.5,
+		MINIMAP_SIZE - cell_count * 0.5, get_hexa_color(42, 42, 42, 255),
+		cub->game_img);
 	y = -1;
-	while (++y < cub->mapY)
+	while (++y < cell_count)
 	{
 		x = -1;
-		while (++x < cub->mapX)
+		while (++x < cell_count)
 		{
-			xo = MINIMAP_WIDTH / cub->mapX;
-			yo = MINIMAP_HEIGHT / cub->mapY;
-			//printf("%c %d %d\n", cub->map[y][x], y, x);
-			if (cub->map[y][x] == '1')
-				draw_rectangle(50 * x + 1, 50 * y + 1, 50 - 1, 50 - 1, get_hexa_color(200, 200, 200, 255));
-			else
-				draw_rectangle(50 * x + 1, 50 * y + 1, 50 - 1, 50 - 1, get_hexa_color(15, 15, 15, 255));
+			pos[0] = x;
+			pos[1] = y;
+			real_draw_map_2d(cub, start_x + x, start_y + y, pos);
 		}
+	}
+	draw_rectangle(MINIMAP_SIZE * 0.5, MINIMAP_SIZE * 0.5, 15, 15, get_hexa_color(255, 0, 0, 255), cub->game_img);
+}
+
+void	next_pos(t_cub *cub, float new_x, float new_y)
+{
+	int x_index;
+	int	y_index;
+
+	x_index = new_x / TILE_SIZE;
+	y_index = new_y / TILE_SIZE;
+
+	if (cub->map[(int)cub->player_pos[1] / TILE_SIZE][x_index] != '1')
+		cub->player_pos[0] = new_x;
+	if (cub->map[y_index][(int)cub->player_pos[0] / TILE_SIZE] != '1')
+		cub->player_pos[1]= new_y;
+}
+
+void	vertical_movement(t_cub *cub)
+{
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_W))
+		next_pos(cub, cub->player_pos[0] + cub->player_pos[2] * PLAYER_SPEED * cub->mlx->delta_time,
+			cub->player_pos[1] + cub->player_pos[3] * PLAYER_SPEED * cub->mlx->delta_time);
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_S))
+		next_pos(cub, cub->player_pos[0] - cub->player_pos[2] * PLAYER_SPEED * cub->mlx->delta_time,
+			cub->player_pos[1] - cub->player_pos[3] * PLAYER_SPEED * cub->mlx->delta_time);
+}
+
+void	horizontal_movement(t_cub *cub)
+{
+	float strafe_angle;
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_A))
+	{
+		strafe_angle = cub->player_ang - PI * 0.5;
+		next_pos(cub, cub->player_pos[0] + cos(strafe_angle) * PLAYER_SPEED * cub->mlx->delta_time,
+			cub->player_pos[1] + sin(strafe_angle) * PLAYER_SPEED * cub->mlx->delta_time);
+	}
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_D))
+	{
+		strafe_angle = cub->player_ang + PI * 0.5;
+		next_pos(cub, cub->player_pos[0] + cos(strafe_angle) * PLAYER_SPEED * cub->mlx->delta_time,
+			cub->player_pos[1] + sin(strafe_angle) * PLAYER_SPEED * cub->mlx->delta_time);
 	}
 }
 
-float pa;
-
-bool	is_next_pos_valid(t_cub *cub, int x, int y)
+void	player_rotation(t_cub *cub)
 {
-	x = x / TILE_SIZE;
-	y = y / TILE_SIZE;
-
-	if (cub->map[y][x] == '1')
-		return (true);
-	return (false);
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_LEFT))
+	{
+		cub->player_ang -= 0.1;
+		if (cub->player_ang < 0)
+			cub->player_ang += 2 * PI;
+		cub->player_pos[2] = cos(cub->player_ang) * 5;
+		cub->player_pos[3] = sin(cub->player_ang) * 5;
+	}
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_RIGHT))
+	{
+		cub->player_ang += 0.1;
+		if (cub->player_ang > 2 * PI)
+			cub->player_ang -= 2 * PI;
+		cub->player_pos[2] = cos(cub->player_ang) * 5;
+		cub->player_pos[3] = sin(cub->player_ang) * 5;
+	}
 }
 
-void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
+void	cub_keys_hooks(void *param)
 {
 	t_cub	*cub;
-	// int		predicted_pos;
 
 	cub = (t_cub *)param;
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
-		close_window();
-	if (keydata.key == MLX_KEY_W)
-	{
-		cub->player_pos[0] += cub->player_pos[2] * PLAYER_SPEED * g_window->delta_time;
-		cub->player_pos[1] += cub->player_pos[3] * PLAYER_SPEED * g_window->delta_time;
-	}
-	if (keydata.key == MLX_KEY_S)
-	{
-		cub->player_pos[0] -= cub->player_pos[2] * PLAYER_SPEED * g_window->delta_time;
-		cub->player_pos[1] -= cub->player_pos[3] * PLAYER_SPEED * g_window->delta_time;
-	}
-	if (keydata.key == MLX_KEY_A)
-	{
-		float	strafe_angle = pa - PI / 2;
-		cub->player_pos[0] += cos(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
-		cub->player_pos[1] += sin(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
-	}
-	if (keydata.key == MLX_KEY_D)
-	{
-		float	strafe_angle = pa + PI / 2;
-		cub->player_pos[0] += cos(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
-		cub->player_pos[1] += sin(strafe_angle) * PLAYER_SPEED * g_window->delta_time;
-	}
-	if (keydata.key == MLX_KEY_LEFT)
-	{
-		pa -= 0.1;
-		if (pa < 0)
-			pa += 2 * PI;
-		cub->player_pos[2] = cos(pa) * 5;
-		cub->player_pos[3] = sin(pa) * 5;
-	}
-	if (keydata.key == MLX_KEY_RIGHT)
-	{
-		pa += 0.1;
-		if (pa > 2 * PI)
-			pa -= 2 * PI;
-		cub->player_pos[2] = cos(pa) * 5;
-		cub->player_pos[3] = sin(pa) * 5;
-	}
-}
-
-void draw_player_2d(t_cub *cub)
-{
-	draw_rectangle( cub->player_pos[0] - MINIMAP_PLAYER_SIZE * 0.5, cub->player_pos[1] - MINIMAP_PLAYER_SIZE * 0.5,
-		MINIMAP_PLAYER_SIZE, MINIMAP_PLAYER_SIZE, get_hexa_color(200, 0, 0, 255));
-}
-
-void draw_rays_2d(t_cub *cub)
-{
-	float ra, rdx, rdy, ray_x, ray_y;
-	int ray_count = 100;
-	float fov = PI / 4;
-	float angle_step = fov / ray_count;
-
-	ra = pa - (fov / 2);
-	while (ra < 0) ra += 2 * PI;
-	while (ra > 2 * PI) ra -= 2 * PI;
-	for (int i = 0; i < ray_count; i++)
-	{
-		float current_ra = ra;
-		ray_x = cub->player_pos[0];
-		ray_y = cub->player_pos[1];
-		rdx = cos(current_ra);
-		rdy = sin(current_ra);
-		while (1)
-		{
-			int	ray_cell_x = (int)(ray_x / TILE_SIZE);
-			int	ray_cell_y = (int)(ray_y / TILE_SIZE);
-
-			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= cub->mapX || ray_cell_y >= cub->mapY)
-				break ;
-
-			if (cub->map[ray_cell_y][ray_cell_x] == '1')
-				break ;
-			ray_x += rdx;
-			ray_y += rdy;
-		}
-
-		draw_line(cub->player_pos[0], cub->player_pos[1], ray_x, ray_y, get_hexa_color(100, 100, 255, 255), g_game_container);
-		ra += angle_step;
-		if (ra > 2 * PI) ra -= 2 * PI;
-	}
-	draw_line(cub->player_pos[0], cub->player_pos[1], cub->player_pos[0] + cos(pa) * 20, cub->player_pos[1] + sin(pa) * 20, get_hexa_color(0, 255, 0, 255), g_game_container);
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
+		close_window(cub);
+	vertical_movement(cub);
+	horizontal_movement(cub);
+	player_rotation(cub);
 }
 
 void draw_3d_view(t_cub	*cub)
 {
+	uint8_t	r;
+	uint8_t	g;
+	uint8_t	b;
+	uint8_t	a;
+	float	current_ra;
+	float	distance;
+	int		hit_texture_x;
 	float ra, rdx, rdy, ray_x, ray_y;
 	int ray_count = W_WIDTH;
-	float fov = PI / 4;
-	float angle_step = fov / ray_count;
+	int	ray_cell_x;
+	int	ray_cell_y;
+	float	rest;
+	float	fov = PI / 4;
+	float	angle_step = fov / ray_count;
+	float	corrected_distance;
+	int	wall_height;
+	int	wall_top;
+	int	wall_bottom;
+	int	texture_width;
+	int	texture_height;
+	int	texture_y;
+	int	texture_index;
+	int	i;
+	int	y;
+
 	mlx_texture_t	*texture;
 
-	ra = pa - (fov / 2);
+	ra = cub->player_ang - (fov * 0.5);
 	while (ra < 0)
 		ra += 2 * PI;
 	while (ra > 2 * PI)
 		ra -= 2 * PI;
-	for (int i = 0; i < ray_count; i++)
+	i = -1;
+	while (++i < ray_count)
 	{
-		float current_ra = ra;
+		current_ra = ra;
 		ray_x = cub->player_pos[0];
 		ray_y = cub->player_pos[1];
 		rdx = cos(current_ra);
 		rdy = sin(current_ra);
-		float distance = 0.0;
-		int hit_texture_x = 0;
+		distance = 0.0;
+		hit_texture_x = 0;
 		while (1)
 		{
-			int ray_cell_x = (int)(ray_x / TILE_SIZE);
-			int ray_cell_y = (int)(ray_y / TILE_SIZE);
+			ray_cell_x = (int)(ray_x / TILE_SIZE);
+			ray_cell_y = (int)(ray_y / TILE_SIZE);
 			if (ray_cell_x < 0 || ray_cell_y < 0 || ray_cell_x >= cub->mapX || ray_cell_y >= cub->mapY)
 				break;
 
 			if (cub->map[ray_cell_y][ray_cell_x] == '1')
 			{
-				float rest = fmodf(ray_y, TILE_SIZE);
+				rest = fmodf(ray_y, TILE_SIZE);
 				if (rest > TILE_SIZE - 2)
 					texture = cub->north_texture;
 				else if (rest < 1)
@@ -199,94 +211,89 @@ void draw_3d_view(t_cub	*cub)
 			ray_y += rdy;
 			distance += 1.0;
 		}
-		float corrected_distance = distance * cos(ra - pa);
-		int wall_height = (int)(TILE_SIZE * W_HEIGHT / corrected_distance);
-		int wall_top = (W_HEIGHT / 2) - (wall_height / 2);
-		int wall_bottom = (W_HEIGHT / 2) + (wall_height / 2);
-		int texture_width = texture->width;
-		int texture_height = texture->height;
-		for (int y = wall_top; y < wall_bottom; y++)
+		corrected_distance = distance * cos(ra - cub->player_ang);
+		wall_height = (int)(TILE_SIZE * W_HEIGHT / corrected_distance);
+		wall_top = (W_HEIGHT * 0.5) - (wall_height * 0.5);
+		wall_bottom = (W_HEIGHT * 0.5) + (wall_height * 0.5);
+		texture_width = texture->width;
+		texture_height = texture->height;
+		y = wall_top - 1;
+		while (++y < wall_bottom)
 		{
-			int texture_y = (int)(((float)(y - wall_top) / wall_height) * texture_height);
-			int texture_index = (texture_y * texture_width + hit_texture_x) * 4;
-			uint8_t r = texture->pixels[texture_index];
-			uint8_t g = texture->pixels[texture_index + 1];
-			uint8_t b = texture->pixels[texture_index + 2];
-			uint8_t a = texture->pixels[texture_index + 3];
+			texture_y = (int)(((float)(y - wall_top) / wall_height)
+				* texture_height);
+			texture_index = (texture_y * texture_width + hit_texture_x) * 4;
+			r = texture->pixels[texture_index];
+			g = texture->pixels[texture_index + 1];
+			b = texture->pixels[texture_index + 2];
+			a = texture->pixels[texture_index + 3];
 			if (i < 0 || y < 0 || i >= W_WIDTH || y >= W_HEIGHT)
 				continue ;
-			mlx_put_pixel(g_game_container, i, y, get_hexa_color(r, g, b, a));
+			mlx_put_pixel(cub->game_img, i, y, get_hexa_color(r, g, b, a));
 		}
-		draw_line(i * (W_WIDTH / ray_count), 0, i * (W_WIDTH / ray_count), wall_top, get_hexa_color(135, 206, 250, 255), g_game_container);
-		draw_line(i * (W_WIDTH / ray_count), wall_bottom, i * (W_WIDTH / ray_count), W_HEIGHT, get_hexa_color(169, 169, 169, 255), g_game_container);
+		draw_line(i * (W_WIDTH / ray_count), 0,
+			i * (W_WIDTH / ray_count), wall_top,
+			get_hexa_color(135, 206, 250, 255), cub->game_img);
+		draw_line(i * (W_WIDTH / ray_count),
+			wall_bottom, i * (W_WIDTH / ray_count), W_HEIGHT,
+			get_hexa_color(169, 169, 169, 255), cub->game_img);
 		ra += angle_step;
-		if (ra > 2 * PI) ra -= 2 * PI;
+		if (ra > 2 * PI)
+			ra -= 2 * PI;
 	}
 }
 
 void	hook_frame_update(void *param)
 {
-	int	i;
-	int	j;
-
-	(void)param;
-	i = -1;
-	while (++i < MINIMAP_WIDTH)
-	{
-		j = -1;
-		while (++j < MINIMAP_HEIGHT)
-			mlx_put_pixel(g_game_container, i, j, 0x00003366);
-	}
 	draw_3d_view(param);
-	draw_map_2d(param);
-	draw_rays_2d(param);
-	draw_player_2d(param);
+	draw_map_2d(param, 0, 0);
 }
 
 void	initialize_hooks(t_cub *cub)
 {
-	mlx_key_hook(g_window, &cub_keys_hooks, cub);
-	mlx_loop_hook(g_window,  &hook_frame_update, cub);
+	mlx_loop_hook(cub->mlx, &cub_keys_hooks, cub);
+	mlx_loop_hook(cub->mlx, &hook_frame_update, cub);
 }
 
 mlx_t	*create_window(t_cub *cub)
 {
-	mlx_t	*window;
+	int	x;
+	int	y;
 
-	window = mlx_init(W_WIDTH, W_HEIGHT, "Cub3D", false);
-	if (!window)
+	cub->mlx = mlx_init(W_WIDTH, W_HEIGHT, "Cub3D", false);
+	if (!cub->mlx)
 		raise_perror("a problem occur while creating the mlx window.", true);
-	g_window = window;
-	g_game_container = mlx_new_image(window, W_WIDTH, W_HEIGHT);
-	if (!g_game_container)
+	cub->game_img = mlx_new_image(cub->mlx, W_WIDTH, W_HEIGHT);
+	if (!cub->game_img)
 		raise_error("Error:", "game image container creation failed.", 1, true);
-	if (mlx_image_to_window(window, g_game_container, 0, 0) == -1)
+	if (mlx_image_to_window(cub->mlx, cub->game_img, 0, 0) == -1)
 		raise_error("Error:", "game image container to window failed.", 1, true);
 	cub->texture = mlx_load_png("./src/resources/decors/256_Marble01.png");
-	int	x, y = 0;
 	if (cub->player_orientation == 'E')
-		pa = 0;
+		cub->player_ang = 0;
 	else if (cub->player_orientation == 'S')
-		pa = PI / 2;
+		cub->player_ang = PI * 0.5;
 	else if (cub->player_orientation == 'W')
-		pa = PI;
+		cub->player_ang = PI;
 	else if (cub->player_orientation == 'N')
-		pa = 3 * PI / 2;
+		cub->player_ang = 3 * PI * 0.5;
+	y = -1;
 	while (++y < cub->mapY)
 	{
 		x = -1;
 		while (++x < cub->mapX)
 		{
-			if (cub->map[y][x] == 'N' || cub->map[y][x] == 'S' || cub->map[y][x] == 'E' || cub->map[y][x] == 'W')
+			if (cub->map[y][x] == 'N' || cub->map[y][x] == 'S' ||
+				cub->map[y][x] == 'E' || cub->map[y][x] == 'W')
 			{
 				cub->player_pos[0] = x * TILE_SIZE + TILE_SIZE * 0.5;
 				cub->player_pos[1] = y * TILE_SIZE + TILE_SIZE * 0.5;
-				cub->player_pos[2] = cos(pa) * 5;
-				cub->player_pos[3] = sin(pa) * 5;
+				cub->player_pos[2] = cos(cub->player_ang) * 5;
+				cub->player_pos[3] = sin(cub->player_ang) * 5;
 				break ;
 			}
 		}
 	}
 	initialize_hooks(cub);
-	return (window);
+	return (cub->mlx);
 }
