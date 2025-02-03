@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/25 08:53:26 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:52:51 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <stdbool.h>
 # include <errno.h>
 # include <fcntl.h>
-
 
 # include "../src/utils/libft/libft.h"
 # include "../src/utils/garbage_collector/includes/garbage_collector.h"
@@ -81,15 +80,25 @@ typedef struct s_data
 	char	*map_verif;
 	char	vue_player;
 	int		pos_player;
-	// int		p_x;
-	// int		p_y;
-
 }	t_data;
 
 void	raise_error(char *error, char *details, int exit_code, bool critical);
 
 void	read_file(char *file, t_data *dt);
-bool	read_map(char *line, char *line1, int fd, int fd1, t_data *dt);
+bool	read_map(char *line, char *line1, int tfd[2], t_data *dt);
 int		flood_fill(t_data *dt, int courrent_pos);
+
+int		ft_is_cub(const char *file);
+void	init_t_file(t_file *fi);
+void	printing_all_file_info(t_file *fi, t_data *dt);
+bool	allocate_map_rows(t_data *dt);
+void	fill_map_rows(t_data *dt);
+void	str_to_table(t_data *dt);
+
+char	*take_path_info(char *line);
+char	*take_colors(char *color);
+bool	init_file_info(char *line, t_data *dt);
+bool	free_and_return(char *line, char *line1, bool result);
+int		is_player(char *p, t_data *dt, int i);
 
 #endif

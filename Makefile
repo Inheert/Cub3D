@@ -13,6 +13,8 @@ SOURCES = main.c \
 			src/utils/ft_error.c	\
 			src/parsing/flood_fill.c	\
 			src/parsing/read_file.c	\
+			src/parsing/str_to_table.c	\
+			src/parsing/init_file_info.c	\
 			src/parsing/read_map.c
 
 OBJECTS = $(addprefix $(BIN_DIR)/,$(SOURCES:.c=.o))

@@ -1,19 +1,15 @@
-NO                  ./path_to_the_north_texture
-SO ./path_to_           the_south_texture
+NO                  ./path_to _the_north_texture
+SO ./path_to_           the_south_texture 
 
-
-EA                          ./path_to_the_east_texture
+EA                          ./path_to dd
 
 WE ./path_to   _the_west_texture
 
 
+            F 220,100,255
  C            225,30,0
 
-            F 220,100,255
-
+011111111111
+    1N000100 1111 111111
 111111111111
-    1N0001001111 111111
-111111111111
-
-ksdfh
-
+S

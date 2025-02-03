@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flood_fill.c                                        :+:      :+:    :+:   */
+/*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:16:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/04 16:17:10 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:14:59 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/**
- * a tester et a nettoyer
- */
 int	flood_fill(t_data *dt, int courrent_pos)
 {
 	if (courrent_pos < 0 || courrent_pos > (dt->fi->nc * dt->fi->nl))
-		return (raise_error("Error\n", "map open.\n", 1, true), 1);// on sort completement du program
+		return (raise_error("Error\n", "map open.\n", 1, true), 1);
 	if (dt->map_verif[courrent_pos] == '1'
 		|| dt->map_verif[courrent_pos] == 'x')
 		return (1);
