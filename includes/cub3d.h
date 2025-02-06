@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/06 12:37:55 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:03:55 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@
  * 					0 if is not.
  *
  */
+
 typedef struct s_file_info
 {
 	const char	*no;
@@ -71,14 +72,14 @@ typedef struct s_file_info
 	const char	*we;
 	const char	*ea;
 	const char	*f;
-
+	const char	*c;
+	int			complet;
+	int			nl;
+	int			nc;
+	char		*line;
 	bool		valid;
-
 }	t_file;
 
-/**
- *
- */
 typedef struct s_data
 {
 	t_file	*fi;

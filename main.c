@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/06 12:38:53 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:12:53 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 void	load_texture(t_cub *cub, t_file *file_info)
 {
 	mlx_texture_t	*buff;
-	(void)cub;
+
 	buff = mlx_load_png(file_info->no);
 	if (!buff)
 		raise_perror("A problem occur while loading North texture.", 1);
