@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/03 17:48:08 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/02/06 11:13:48 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	process_line(char *line, t_data *dt)
 
 /**
  * tratar el caso cuando se llega al final del file
- * 
+ *
  * Before going to read_map it verify:
  * 	- there are more lines to read
  * 	- the 6 informations tha must have the file were fulfill

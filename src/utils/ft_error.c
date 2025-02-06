@@ -6,17 +6,39 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:29:59 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/04 12:51:37 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/06 09:03:38 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	raise_perror(char *error, int critical)
+void	close_window(t_cub *cub)
+{
+	mlx_close_window(cub->mlx);
+	mlx_terminate(cub->mlx);
+	gb_free_all();
+	exit(0);
+}
+
+void	safe_close_mlx(mlx_t *mlx)
+{
+	static mlx_t	*_mlx = NULL;
+
+	if (mlx && !_mlx)
+		_mlx = mlx;
+	else if (!mlx && _mlx)
+	{
+		mlx_close_window(_mlx);
+		mlx_terminate(_mlx);
+	}
+}
+
+void	raise_perror(char *error, bool critical)
 {
 	perror(error);
-	if (critical == 1)
+	if (critical == true)
 	{
+		safe_close_mlx(NULL);
 		gb_free_all();
 		exit(errno);
 	}
@@ -40,6 +62,7 @@ void	raise_error(char *error, char *details, int exit_code, bool critical)
 		write(2, "\n", 1);
 	if (critical == true)
 	{
+		safe_close_mlx(NULL);
 		gb_free_all();
 		exit(exit_code);
 	}

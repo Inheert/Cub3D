@@ -2,7 +2,7 @@ NAME = cub3D
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -Ofast -march=native -mtune=native -funroll-loops -finline-functions -fomit-frame-pointer -ffast-math
 
 INCLUDES = -I ./includes/
 
@@ -13,9 +13,14 @@ SOURCES = main.c \
 			src/utils/ft_error.c	\
 			src/parsing/flood_fill.c	\
 			src/parsing/read_file.c	\
-			src/parsing/str_to_table.c	\
-			src/parsing/init_file_info.c	\
-			src/parsing/read_map.c
+			src/parsing/read_map.c \
+			src/parsing/init_file_info.c \
+			src/parsing/str_to_table.c \
+			src/core/window.c \
+			src/core/raycasting.c \
+			src/core/minimap.c \
+			src/core/input_hooks.c \
+			src/core/map.c \
 
 OBJECTS = $(addprefix $(BIN_DIR)/,$(SOURCES:.c=.o))
 
