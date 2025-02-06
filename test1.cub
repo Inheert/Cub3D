@@ -2,21 +2,18 @@ EA                          ./src/resources/decors/256_Cement01.png
 NO                  ./src/resources/decors/256_Marble01.png
 SO ./src/resources/decors/256_Checkered01.png
 
-
-
 WE ./src/resources/decors/256_Brick04.png
 
 
+            F 220,100,255
  C            225,30,0
 
-            F 220,100,255
-
+011111111111
+    1N000100 1111 111111
 111111111111
 111100000111
     1S0000001111 111111
     100010001111 111111
     100000001111 111111
 111111111111
-
-ksdfh
 

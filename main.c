@@ -55,7 +55,7 @@ int	main(int ac, char **av)
 	mlx_t	*window;
 
 	if (ac != 2 || !av || !av[1] || !ft_is_cub((const char *)av[1]))
-		raise_error("Parsing", "file inexistent or wrong file.", 1 ,1);
+		raise_error("Parsing", "file inexistent or wrong file.", 1, 1);
 	init_t_file(&file_info);
 	dt.map_verif = NULL;
 	dt.fi = &file_info;

@@ -87,9 +87,6 @@ typedef struct s_data
 	char	*map_verif;
 	char	vue_player;
 	int		pos_player;
-	// int		p_x;
-	// int		p_y;
-
 }	t_data;
 
 typedef struct s_cub
