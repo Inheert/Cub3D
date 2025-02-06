@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/30 09:59:25 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/06 12:37:55 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 
 # define TILE_SIZE 128
 
-# define PLAYER_SPEED 40
+# define PLAYER_SPEED 100
 # define ANGLE_SPEED 60
 
 # define PI 3.14159265359
@@ -71,13 +71,6 @@ typedef struct s_file_info
 	const char	*we;
 	const char	*ea;
 	const char	*f;
-	const char	*c;
-	int			complet;
-
-	int			nl;
-	int			nc;
-
-	char		*line;
 
 	bool		valid;
 
@@ -117,15 +110,72 @@ typedef struct s_cub
 	int				mapY;
 }	t_cub;
 
+typedef struct s_raycast
+{
+	float	current_ra;
+	float	distance;
+	int		hit_texture_x;
+	float ra, rdx, rdy, ray_x, ray_y;
+	int	ray_cell_x;
+	int	ray_cell_y;
+	float	rest;
+	float	fov;
+	float	angle_step;
+	float	corrected_distance;
+	int	wall_height;
+	int	wall_top;
+	int	wall_bottom;
+	int	texture_width;
+	int	texture_height;
+	int	texture_y;
+	int	texture_index;
+	int	i;
+	int	y;
+}	t_raycast;
+
+typedef struct s_draw_param
+{
+	int32_t		xstart;
+	int32_t		ystart;
+	int32_t		xend;
+	int32_t		yend;
+	int			sx;
+	int			sy;
+	uint32_t	color;
+	mlx_image_t	*image;
+}	t_draw_param;
+
+void	safe_close_mlx(mlx_t *mlx);
 void	raise_perror(char *error, bool critical);
 void	raise_error(char *error, char *details, int exit_code, bool critical);
 
-void		read_file(char *file, t_data *dt);
-bool		read_map(char *line, char *line1, int fd, int fd1, t_data *dt);
-int			flood_fill(t_data *dt, int courrent_pos);
-mlx_t		*create_window();
-void		draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color, mlx_image_t *img);
-void		draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color, mlx_image_t *g_game_container);
+void	read_file(char *file, t_data *dt);
+bool	read_map(char *line, char *line1, int tfd[2], t_data *dt);
+int		flood_fill(t_data *dt, int courrent_pos);
+
+int		ft_is_cub(const char *file);
+void	init_t_file(t_file *fi);
+void	printing_all_file_info(t_file *fi, t_data *dt);
+bool	allocate_map_rows(t_data *dt);
+void	fill_map_rows(t_data *dt);
+void	str_to_table(t_data *dt);
+
+char	*take_path_info(char *line);
+char	*take_colors(char *color);
+bool	init_file_info(char *line, t_data *dt);
+bool	free_and_return(char *line, char *line1, bool result);
+int		is_player(char *p, t_data *dt, int i);
+mlx_t		*create_window(t_cub *cub);
+void		close_window(t_cub *cub);
+void		vertical_movement(t_cub *cub);
+void		horizontal_movement(t_cub *cub);
+void		player_rotation(t_cub *cub);
+void		draw_3d_view(t_cub	*cub);
+void		draw_map_2d(t_cub *cub, int x, int y);
+t_draw_param	create_param_struct(int32_t xstart, int32_t ystart,
+			int32_t xend, int32_t yend);
+void		draw_rectangle(t_draw_param param, uint32_t color, mlx_image_t *img);
+void		draw_line(t_draw_param param, uint32_t color, mlx_image_t *image);
 uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b, unsigned int alpha);
 
 #endif

@@ -14,7 +14,12 @@ SOURCES = main.c \
 			src/parsing/flood_fill.c	\
 			src/parsing/read_file.c	\
 			src/parsing/read_map.c \
+			src/parsing/init_file_info.c \
+			src/parsing/str_to_table.c \
 			src/core/window.c \
+			src/core/raycasting.c \
+			src/core/minimap.c \
+			src/core/input_hooks.c \
 			src/core/map.c \
 
 OBJECTS = $(addprefix $(BIN_DIR)/,$(SOURCES:.c=.o))

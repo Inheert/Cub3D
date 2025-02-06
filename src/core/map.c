@@ -6,68 +6,26 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 09:25:51 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/01/30 09:26:16 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/06 10:47:38 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_rectangle(int32_t x, int32_t y, int width, int height, uint32_t color, mlx_image_t *img)
+t_draw_param	create_param_struct(int32_t xstart, int32_t ystart,
+	int32_t xend, int32_t yend)
 {
-	int	i;
-	int	j;
+	t_draw_param	param;
 
-	i = -1;
-	while (++i < height)
-	{
-		if (i + y < 0)
-			continue ;
-		if (i + y > W_HEIGHT)
-			return ;
-		j = -1;
-		while (++j < width)
-		{
-			if (j + x < 0)
-				continue ;
-			if (j + x > W_WIDTH)
-				return ;
-			mlx_put_pixel(img, x + j, y + i, color);
-		}
-	}
+	param.xstart = xstart;
+	param.ystart = ystart;
+	param.xend = xend;
+	param.yend = yend;
+	return (param);
 }
 
-void	draw_line(int32_t xstart, int32_t ystart, int32_t xend, int32_t yend, uint32_t color, mlx_image_t *image)
-{
-	int dx = abs(xend - xstart);
-	int dy = abs(yend - ystart);
-	int sx = (xstart < xend) ? 1 : -1;
-	int sy = (ystart < yend) ? 1 : -1;
-	int err = dx - dy;
-
-	if (!image)
-		return ;
-	while (1)
-	{
-		if (xstart < 0 || (uint32_t)xstart >= image->width)
-			break ;
-		if (ystart < 0 || (uint32_t)ystart >= image->height)
-			break ;
-		mlx_put_pixel(image, xstart, ystart, color);
-		if (xstart == xend && ystart == yend)
-			break;
-		int e2 = 2 * err;
-		if (e2 > -dy) {
-			err -= dy;
-			xstart += sx;
-		}
-		if (e2 < dx) {
-		err += dx;
-			ystart += sy;
-		}
-	}
-}
-
-uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b, unsigned int alpha)
+uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b,
+	unsigned int alpha)
 {
 	if (r > 255)
 		r = 255;
@@ -78,4 +36,81 @@ uint32_t	get_hexa_color(unsigned int r, unsigned int g, unsigned int b, unsigned
 	if (alpha > 255)
 		alpha = 255;
 	return ((r << 24) | (g << 16) | (b << 8) | alpha);
+}
+
+void	draw_rectangle(t_draw_param param, uint32_t color, mlx_image_t *img)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < param.yend)
+	{
+		if (i + param.ystart < 0)
+			continue ;
+		if (i + param.ystart > W_HEIGHT)
+			return ;
+		j = -1;
+		while (++j < param.xend)
+		{
+			if (j + param.xstart < 0)
+				continue ;
+			if (j + param.xstart > W_WIDTH)
+				return ;
+			mlx_put_pixel(img, param.xstart + j, param.ystart + i, color);
+		}
+	}
+}
+
+void	process_draw_line(t_draw_param param, int dx, int dy)
+{
+	int	err;
+	int	e2;
+
+	err = dx - dy;
+	while (1)
+	{
+		if (param.xstart < 0 || (uint32_t)param.xstart >= param.image->width)
+			break ;
+		if (param.ystart < 0 || (uint32_t)param.ystart >= param.image->height)
+			break ;
+		mlx_put_pixel(param.image, param.xstart, param.ystart, param.color);
+		if (param.xstart == param.xend && param.ystart == param.yend)
+			break ;
+		e2 = 2 * err;
+		if (e2 > -dy)
+		{
+			err -= dy;
+			param.xstart += param.sx;
+		}
+		if (e2 < dx)
+		{
+			err += dx;
+			param.ystart += param.sy;
+		}
+	}
+}
+
+void	draw_line(t_draw_param param, uint32_t color, mlx_image_t *image)
+{
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+
+	if (!image)
+		return ;
+	dx = abs(param.xend - param.xstart);
+	dy = abs(param.yend - param.ystart);
+	sx = -1;
+	if (param.xstart < param.xend)
+		sx = 1;
+	sy = -1;
+	if (param.ystart < param.yend)
+		sy = 1;
+	param.color = color;
+	param.image = image;
+	param.sx = sx;
+	param.sy = sy;
+	process_draw_line(param, dx, dy);
 }
