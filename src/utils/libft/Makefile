@@ -6,7 +6,7 @@
 #    By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/18 13:41:46 by jodiaz-a          #+#    #+#              #
-#    Updated: 2024/12/05 11:36:59 by jodiaz-a         ###   ########.fr        #
+#    Updated: 2025/02/07 13:18:13 by jodiaz-a         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SOURCES	=	ft_isalpha.c	\
 		ft_memcmp.c	\
 		ft_strnstr.c	\
 		ft_atoi.c	\
+		ft_atol.c	\
 		ft_calloc.c	\
 		ft_strdup.c	\
 		ft_substr.c	\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/06 11:13:48 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:55:24 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@
 char	*take_path_info(char *line)
 {
 	char	*path;
+	char	*png;
 	int		i;
 
 	path = ft_strchr(line, '.');
-	if (path == NULL)
+	png = ft_strrchr(line, '.');
+	if (path == NULL || png == NULL || (ft_strncmp(png, ".png\n", 5) != 0
+			&& ft_strncmp(png, ".png ", 5) != 0))
 		return (raise_error("Error\n",
 				"read_file: bad use of indetifier.\n", 1, true), NULL);
 	i = 0;
@@ -31,29 +34,33 @@ char	*take_path_info(char *line)
 	return (ft_substr(path, 0, i));
 }
 
-char	*take_colors(char *color)
+int	*take_colors(char *color)
 {
-	char	*start;
+	int		*start;
 	int		i;
-	int		len;
+	int		j;
 
+	start = (int *)malloc(sizeof(int) * 3);
 	i = 0;
 	while (color[i] == 'F' || color[i] == 'C' || color[i] == ' ')
 		i++;
 	if (!color[i] && !ft_isalnum(color[i]))
 		return (raise_error("Error\n",
 				"read_file: bad use of Colors.\n", 1, true), NULL);
-	start = &color[i];
-	len = 0;
-	while (color[i] && (ft_isalnum(color[i]) || color[i] == ','))
+	j = 0;
+	while (j < 3)
 	{
-		i++;
-		len++;
+		start[j] = ft_atol(&color[i]);
+		while (color[i] && ft_isalnum(color[i]))
+			i++;
+		if (color[i] == ',')
+			i++;
+		j++;
 	}
-	if (len > 11)
+	if (color[i] && (color[i] > 33 && color[i] < 127))
 		return (raise_error("Error\n",
 				"read_file: bad use of Colors.\n", 1, true), NULL);
-	return (ft_substr(start, 0, len));
+	return (start);
 }
 
 bool	process_line(char *line, t_data *dt)

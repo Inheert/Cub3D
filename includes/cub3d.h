@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/06 13:03:55 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:58:54 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ typedef struct s_file_info
 	const char	*so;
 	const char	*we;
 	const char	*ea;
-	const char	*f;
-	const char	*c;
+	const int	*f;
+	const int	*c;
 	int			complet;
 	int			nl;
 	int			nc;
@@ -143,26 +143,26 @@ typedef struct s_draw_param
 	mlx_image_t	*image;
 }	t_draw_param;
 
-void	safe_close_mlx(mlx_t *mlx);
-void	raise_perror(char *error, bool critical);
-void	raise_error(char *error, char *details, int exit_code, bool critical);
+void		safe_close_mlx(mlx_t *mlx);
+void		raise_perror(char *error, bool critical);
+void		raise_error(char *error, char *details, int exit_code, bool critical);
 
-void	read_file(char *file, t_data *dt);
-bool	read_map(char *line, char *line1, int tfd[2], t_data *dt);
-int		flood_fill(t_data *dt, int courrent_pos);
+void		read_file(char *file, t_data *dt);
+bool		read_map(char *line, char *line1, int tfd[2], t_data *dt);
+int			flood_fill(t_data *dt, int courrent_pos);
 
-int		ft_is_cub(const char *file);
-void	init_t_file(t_file *fi);
-void	printing_all_file_info(t_file *fi, t_data *dt);
-bool	allocate_map_rows(t_data *dt);
-void	fill_map_rows(t_data *dt);
-void	str_to_table(t_data *dt);
+int			ft_is_cub(const char *file);
+void		init_t_file(t_file *fi);
+void		printing_all_file_info(t_file *fi, t_data *dt);
+bool		allocate_map_rows(t_data *dt);
+void		fill_map_rows(t_data *dt);
+void		str_to_table(t_data *dt);
 
-char	*take_path_info(char *line);
-char	*take_colors(char *color);
-bool	init_file_info(char *line, t_data *dt);
-bool	free_and_return(char *line, char *line1, bool result);
-int		is_player(char *p, t_data *dt, int i);
+char		*take_path_info(char *line);
+int			*take_colors(char *color);
+bool		init_file_info(char *line, t_data *dt);
+bool		free_and_return(char *line, char *line1, bool result);
+int			is_player(char *p, t_data *dt, int i);
 mlx_t		*create_window(t_cub *cub);
 void		close_window(t_cub *cub);
 void		vertical_movement(t_cub *cub);
