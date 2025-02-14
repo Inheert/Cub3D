@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:57:20 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:00:22 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:05:51 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	proceeds_raycasting(t_cub *cub, t_raycast *va, mlx_texture_t **texture)
 		va->ray_cell_x = (int)(va->ray_x / TILE_SIZE);
 		va->ray_cell_y = (int)(va->ray_y / TILE_SIZE);
 		if (va->ray_cell_x < 0 || va->ray_cell_y < 0
-			|| va->ray_cell_x >= cub->mapX || va->ray_cell_y >= cub->mapY)
+			|| va->ray_cell_x >= cub->map_x || va->ray_cell_y >= cub->map_y)
 			break ;
 		if (cub->map[va->ray_cell_y][va->ray_cell_x] == '1')
 		{

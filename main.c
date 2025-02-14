@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/06 13:12:53 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:05:51 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	main(int ac, char **av)
 	cub = gb_malloc(sizeof(t_cub));
 	cub->player_orientation = dt.vue_player;
 	cub->map = dt.map;
-	cub->mapX = dt.fi->nc;
-	cub->mapY = dt.fi->nl;
+	cub->map_x = dt.fi->nc;
+	cub->map_y = dt.fi->nl;
 	load_texture(cub, &file_info);
 	window = create_window(cub);
 	mlx_loop(window);

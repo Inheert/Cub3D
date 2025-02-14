@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 05:52:44 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:05:51 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	set_player_pos(t_cub *cub)
 	int	x;
 
 	y = -1;
-	while (++y < cub->mapY)
+	while (++y < cub->map_y)
 	{
 		x = -1;
-		while (++x < cub->mapX)
+		while (++x < cub->map_x)
 		{
 			if (cub->map[y][x] == 'N' || cub->map[y][x] == 'S' ||
 				cub->map[y][x] == 'E' || cub->map[y][x] == 'W')

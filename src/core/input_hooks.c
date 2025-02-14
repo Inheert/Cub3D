@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 09:01:50 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:01:03 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:05:51 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void	next_pos(t_cub *cub, float new_x, float new_y)
 	right_x = (new_x + PLAYER_WIDTH / 2) / TILE_SIZE;
 	top_y = (new_y - PLAYER_WIDTH / 2) / TILE_SIZE;
 	bottom_y = (new_y + PLAYER_WIDTH / 2) / TILE_SIZE;
-	if (left_x >= 0 && right_x < cub->mapX
+	if (left_x >= 0 && right_x < cub->map_x
 		&& cub->map[(int)cub->player_pos[1] / TILE_SIZE][left_x] != '1'
 		&& cub->map[(int)cub->player_pos[1] / TILE_SIZE][right_x] != '1')
 	{
 		cub->player_pos[0] = new_x;
 	}
-	if (top_y >= 0 && bottom_y < cub->mapY
+	if (top_y >= 0 && bottom_y < cub->map_y
 		&& cub->map[top_y][(int)cub->player_pos[0] / TILE_SIZE] != '1'
 		&& cub->map[bottom_y][(int)cub->player_pos[0] / TILE_SIZE] != '1')
 	{
