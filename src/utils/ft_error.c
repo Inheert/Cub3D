@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:29:59 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 05:50:12 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:20:26 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	close_window(t_cub *cub)
 	if (cub->east_texture)
 		mlx_delete_texture(cub->east_texture);
 	if (cub->west_texture)
-		mlx_delete_texture(cub->west_texture);
+	mlx_delete_texture(cub->west_texture);
 	gb_free_all();
 	exit(0);
 }
@@ -31,7 +31,6 @@ void	close_window(t_cub *cub)
 void	safe_close_mlx(mlx_t *mlx)
 {
 	static mlx_t	*_mlx = NULL;
-
 	if (mlx && !_mlx)
 		_mlx = mlx;
 	else if (!mlx && _mlx)
@@ -43,6 +42,7 @@ void	safe_close_mlx(mlx_t *mlx)
 
 void	raise_perror(char *error, bool critical)
 {
+	write(2, "Error:\n", 7);
 	perror(error);
 	if (critical == true)
 	{
@@ -54,6 +54,7 @@ void	raise_perror(char *error, bool critical)
 
 void	raise_error(char *error, char *details, int exit_code, bool critical)
 {
+	write(2, "Error:\n", 7);
 	if (error)
 	{
 		if (ft_strlen(error) > 0)

@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 09:01:50 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:05:51 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:19:10 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,9 @@ void	player_rotation(t_cub *cub)
 		cub->player_pos[2] = cos(cub->player_ang) * 5;
 		cub->player_pos[3] = sin(cub->player_ang) * 5;
 	}
+}
+
+void	close_window_hook(void *param)
+{
+	close_window((t_cub *)param);
 }

@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:05:51 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:20:11 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	initialize_hooks(t_cub *cub)
 {
 	mlx_loop_hook(cub->mlx, &cub_keys_hooks, cub);
 	mlx_loop_hook(cub->mlx, &hook_frame_update, cub);
+	mlx_close_hook(cub->mlx, &close_window_hook, cub);
 }
 
 void	set_player_pos(t_cub *cub)

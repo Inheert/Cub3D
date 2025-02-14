@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:09:05 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:19:28 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ typedef struct s_raycast
 	float	rdy;
 	float	ray_x;
 	float	ray_y;
+	float	x_offset;
+	float	y_offset;
 	int		ray_cell_x;
 	int		ray_cell_y;
 	float	rest;
@@ -170,6 +172,7 @@ bool			free_and_return(char *line, char *line1, bool result);
 int				is_player(char *p, t_data *dt, int i);
 mlx_t			*create_window(t_cub *cub);
 void			close_window(t_cub *cub);
+void			close_window_hook(void *param);
 void			vertical_movement(t_cub *cub);
 void			horizontal_movement(t_cub *cub);
 void			player_rotation(t_cub *cub);

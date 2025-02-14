@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:57:20 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:05:51 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 07:19:16 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	set_good_texture(t_cub *cub, t_raycast *va, mlx_texture_t **texture)
 
 	ray_y_rest = (int)va->ray_y % TILE_SIZE;
 	ray_x_rest = (int)va->ray_x % TILE_SIZE;
-	if ((ray_x_rest == 0 || ray_x_rest == 127) && (ray_y_rest == 0 || ray_y_rest == 127) && texture && *texture)
+	if ((ray_x_rest == 0 || ray_x_rest == 127)
+		&& (ray_y_rest == 0 || ray_y_rest == 127) && texture && *texture)
 		return ;
 	if (ray_y_rest == TILE_SIZE - 1)
 		*texture = cub->north_texture;
@@ -43,14 +44,15 @@ void	proceeds_raycasting(t_cub *cub, t_raycast *va, mlx_texture_t **texture)
 		if (cub->map[va->ray_cell_y][va->ray_cell_x] == '1')
 		{
 			va->rest = fmodf(va->ray_y, TILE_SIZE);
-			float x_offset = fmodf(va->ray_x, TILE_SIZE);
-			float y_offset = fmodf(va->ray_y, TILE_SIZE);
-
+			va->x_offset = fmodf(va->ray_x, TILE_SIZE);
+			va->y_offset = fmodf(va->ray_y, TILE_SIZE);
 			set_good_texture(cub, va, texture);
-			if (x_offset < 1 || x_offset > TILE_SIZE - 1)
-				va->hit_texture_x = (int)((y_offset / TILE_SIZE) * (*texture)->width);
+			if (va->x_offset < 1 || va->x_offset > TILE_SIZE - 1)
+				va->hit_texture_x = (int)((va->y_offset / TILE_SIZE)
+						* (*texture)->width);
 			else
-				va->hit_texture_x = (int)((x_offset / TILE_SIZE) * (*texture)->width);
+				va->hit_texture_x = (int)((va->x_offset / TILE_SIZE)
+						* (*texture)->width);
 			break ;
 		}
 		va->ray_x += va->rdx;
