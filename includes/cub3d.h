@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 05:52:45 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:01:36 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define MINIMAP_CELL_SIZE 25
 # define MINIMAP_CELL_OFFSET 2
 # define MINIMAP_PLAYER_SIZE 30
+# define PLAYER_WIDTH 50
 
 # define TILE_SIZE 128
 

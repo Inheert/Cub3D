@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:57:20 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 05:47:47 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:00:22 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	prepare_and_proceed_raycasting(t_cub *cub, t_raycast *va,
 	proceeds_raycasting(cub, va, texture);
 	va->corrected_distance = va->distance * cos(va->ra - cub->player_ang);
 	va->wall_height = (int)(TILE_SIZE * W_HEIGHT / va->corrected_distance);
-	if (va->wall_height > 15000)
-		va->wall_height = 15000;
 	va->wall_top = (W_HEIGHT * 0.5) - (va->wall_height * 0.5);
 	va->wall_bottom = (W_HEIGHT * 0.5) + (va->wall_height * 0.5);
 	va->texture_width = (*texture)->width;

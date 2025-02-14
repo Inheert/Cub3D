@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 09:01:50 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/06 09:02:13 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 06:01:03 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,27 @@
 
 void	next_pos(t_cub *cub, float new_x, float new_y)
 {
-	int	x_index;
-	int	y_index;
+	int	left_x;
+	int	right_x;
+	int	top_y;
+	int	bottom_y;
 
-	x_index = new_x / TILE_SIZE;
-	y_index = new_y / TILE_SIZE;
-	if (x_index >= 0 && x_index < cub->mapX
-		&& cub->map[(int)cub->player_pos[1] / TILE_SIZE][x_index] != '1')
+	left_x = (new_x - PLAYER_WIDTH / 2) / TILE_SIZE;
+	right_x = (new_x + PLAYER_WIDTH / 2) / TILE_SIZE;
+	top_y = (new_y - PLAYER_WIDTH / 2) / TILE_SIZE;
+	bottom_y = (new_y + PLAYER_WIDTH / 2) / TILE_SIZE;
+	if (left_x >= 0 && right_x < cub->mapX
+		&& cub->map[(int)cub->player_pos[1] / TILE_SIZE][left_x] != '1'
+		&& cub->map[(int)cub->player_pos[1] / TILE_SIZE][right_x] != '1')
+	{
 		cub->player_pos[0] = new_x;
-	if (y_index >= 0 && y_index < cub->mapY
-		&& cub->map[y_index][(int)cub->player_pos[0] / TILE_SIZE] != '1')
+	}
+	if (top_y >= 0 && bottom_y < cub->mapY
+		&& cub->map[top_y][(int)cub->player_pos[0] / TILE_SIZE] != '1'
+		&& cub->map[bottom_y][(int)cub->player_pos[0] / TILE_SIZE] != '1')
+	{
 		cub->player_pos[1] = new_y;
+	}
 }
 
 void	vertical_movement(t_cub *cub)
