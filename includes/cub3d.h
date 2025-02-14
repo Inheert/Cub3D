@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:19:28 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 07:40:12 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ typedef struct s_draw_param
 	mlx_image_t	*image;
 }	t_draw_param;
 
-void			safe_close_mlx(mlx_t *mlx);
+void			safe_close_mlx(t_cub *cub);
 void			raise_perror(char *error, bool critical);
 void			raise_error(char *error, char *details, int exit_code,
 					bool critical);

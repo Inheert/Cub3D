@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:20:11 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 07:40:39 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ mlx_t	*create_window(t_cub *cub)
 	cub->mlx = mlx_init(W_WIDTH, W_HEIGHT, "Cub3D", false);
 	if (!cub->mlx)
 		raise_perror("a problem occur while creating the mlx window.", true);
-	safe_close_mlx(cub->mlx);
+	safe_close_mlx(cub);
 	cub->game_img = mlx_new_image(cub->mlx, W_WIDTH, W_HEIGHT);
 	if (!cub->game_img)
 		raise_error("Error:", "game image creation failed.", 1, true);

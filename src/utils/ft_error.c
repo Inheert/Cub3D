@@ -6,16 +6,16 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:29:59 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:20:26 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 07:41:11 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	close_window(t_cub *cub)
+void	delete_textures(t_cub *cub)
 {
-	mlx_close_window(cub->mlx);
-	mlx_terminate(cub->mlx);
+	if (!cub)
+		return ;
 	if (cub->north_texture)
 		mlx_delete_texture(cub->north_texture);
 	if (cub->south_texture)
@@ -23,20 +23,30 @@ void	close_window(t_cub *cub)
 	if (cub->east_texture)
 		mlx_delete_texture(cub->east_texture);
 	if (cub->west_texture)
-	mlx_delete_texture(cub->west_texture);
+		mlx_delete_texture(cub->west_texture);
+}
+
+void	close_window(t_cub *cub)
+{
+	if (!cub)
+		return ;
+	mlx_close_window(cub->mlx);
+	mlx_terminate(cub->mlx);
+	delete_textures(cub);
 	gb_free_all();
 	exit(0);
 }
 
-void	safe_close_mlx(mlx_t *mlx)
+void	safe_close_mlx(t_cub *cub)
 {
-	static mlx_t	*_mlx = NULL;
-	if (mlx && !_mlx)
-		_mlx = mlx;
-	else if (!mlx && _mlx)
+	static t_cub	*_cub = NULL;
+	if (cub && !_cub)
+		_cub = cub;
+	else if (!cub && _cub)
 	{
-		mlx_close_window(_mlx);
-		mlx_terminate(_mlx);
+		mlx_close_window(_cub->mlx);
+		mlx_terminate(_cub->mlx);
+		delete_textures(_cub);
 	}
 }
 
