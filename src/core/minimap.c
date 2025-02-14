@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:59:16 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/06 10:39:42 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 04:47:38 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ void	draw_map_2d(t_cub *cub, int x, int y)
 		}
 	}
 	draw_rectangle(create_param_struct(MINIMAP_SIZE * 0.5,
-			MINIMAP_SIZE * 0.5, 15, 15), get_hexa_color(255, 0, 0, 255),
+			MINIMAP_SIZE * 0.5, 15, 15), get_hexa_color(0, 0, 0, 255),
 		cub->game_img);
 }

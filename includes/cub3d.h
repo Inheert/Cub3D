@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/06 13:03:55 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 05:52:45 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ typedef struct s_cub
 	mlx_t			*mlx;
 	mlx_image_t		*game_img;
 	mlx_image_t		*minimap_img;
-	mlx_texture_t	*texture;
 	mlx_texture_t	*north_texture;
 	mlx_texture_t	*south_texture;
 	mlx_texture_t	*west_texture;

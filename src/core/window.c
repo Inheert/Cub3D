@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/06 09:03:30 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 05:52:44 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ mlx_t	*create_window(t_cub *cub)
 		raise_error("Error:", "game image creation failed.", 1, true);
 	if (mlx_image_to_window(cub->mlx, cub->game_img, 0, 0) == -1)
 		raise_error("Error:", "game image to window failed.", 1, true);
-	cub->texture = mlx_load_png("./src/resources/decors/256_Marble01.png");
 	if (cub->player_orientation == 'E')
 		cub->player_ang = 0;
 	else if (cub->player_orientation == 'S')

@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:29:59 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/06 09:03:38 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/14 05:50:12 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@ void	close_window(t_cub *cub)
 {
 	mlx_close_window(cub->mlx);
 	mlx_terminate(cub->mlx);
+	if (cub->north_texture)
+		mlx_delete_texture(cub->north_texture);
+	if (cub->south_texture)
+		mlx_delete_texture(cub->south_texture);
+	if (cub->east_texture)
+		mlx_delete_texture(cub->east_texture);
+	if (cub->west_texture)
+		mlx_delete_texture(cub->west_texture);
 	gb_free_all();
 	exit(0);
 }
