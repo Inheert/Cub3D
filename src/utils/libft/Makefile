@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+         #
+#    By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/18 13:41:46 by jodiaz-a          #+#    #+#              #
-#    Updated: 2024/12/05 11:36:59 by jodiaz-a         ###   ########.fr        #
+#    Updated: 2025/02/19 08:16:42 by tclaereb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ SOURCES	=	ft_isalpha.c	\
 		ft_strtrim.c	\
 		ft_split.c		\
 		ft_itoa.c		\
+		ft_atol.c	\
 		ft_strmapi.c	\
 		ft_striteri.c	\
 		ft_putchar_fd.c	\

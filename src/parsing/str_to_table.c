@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:28:41 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/06 11:14:01 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:12:11 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,38 +44,6 @@ void	init_t_file(t_file *fi)
 	fi->line = NULL;
 	fi->valid = true;
 }
-/**
- * A EFFACER
- */
-// void	printing_all_file_info(t_file *fi, t_data *dt)
-// {
-// 	printf("\nfi->no: %s\n", fi->no);
-// 	printf("fi->so: %s\n", fi->so);
-// 	printf("fi->we: %s\n", fi->we);
-// 	printf("fi->ea: %s\n", fi->ea);
-// 	printf("fi->f: %s\n", fi->f);
-// 	printf("fi->c: %s\n", fi->c);
-// 	printf("fi->complet: %i\n", fi->complet);
-// 	printf("fi->nl: %i\n", fi->nl);
-// 	printf("fi->nc: %i\n", fi->nc);
-// 	printf("fi->line: %s\n", fi->line);
-// 	printf("fi->valid: %d\n", fi->valid);
-// 	printf("dt->map_verif: \n");
-// 	for (int i = 0; i < (fi->nc * fi->nl); i++)
-// 	{
-// 		if (i % dt->fi->nc == 0 && i != 0)
-// 			printf("\n");
-// 		printf("%c", dt->map_verif[i]);
-// 	}
-// 	printf("\n");
-// 	printf("dt->pos_player: %i\n", dt->pos_player);
-// 	printf("dt->vue_player: %c\n", dt->vue_player);
-// 	printf("char **map:\n");
-// 	for (int i = 0; i < dt->fi->nl ; i++)
-// 	{
-// 		printf("%s\n", dt->map[i]);
-// 	}
-// }
 
 bool	allocate_map_rows(t_data *dt)
 {

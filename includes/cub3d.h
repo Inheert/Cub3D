@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 07:40:12 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:18:00 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,36 +66,35 @@
  *
  */
 
-typedef struct s_file_info
-{
-	const char	*no;
-	const char	*so;
-	const char	*we;
-	const char	*ea;
-	const char	*f;
-	const char	*c;
-	int			complet;
-	int			nl;
-	int			nc;
-	char		*line;
-	bool		valid;
-}	t_file;
+ typedef struct s_file_info
+ {
+	 const char	*no;
+	 const char	*so;
+	 const char	*we;
+	 const char	*ea;
+	 const int	*f;
+	 const int	*c;
+	 int			complet;
+	 int			nl;
+	 int			nc;
+	 char		*line;
+	 bool		valid;
+ }	t_file;
 
-typedef struct s_data
-{
-	t_file	*fi;
+ typedef struct s_data
+ {
+	 t_file	*fi;
 
-	char	**map;
-	char	*map_verif;
-	char	vue_player;
-	int		pos_player;
-}	t_data;
+	 char	**map;
+	 char	*map_verif;
+	 char	vue_player;
+	 int		pos_player;
+ }	t_data;
 
 typedef struct s_cub
 {
 	mlx_t			*mlx;
 	mlx_image_t		*game_img;
-	mlx_image_t		*minimap_img;
 	mlx_texture_t	*north_texture;
 	mlx_texture_t	*south_texture;
 	mlx_texture_t	*west_texture;
@@ -166,7 +165,7 @@ void			fill_map_rows(t_data *dt);
 void			str_to_table(t_data *dt);
 
 char			*take_path_info(char *line);
-char			*take_colors(char *color);
+int				*take_colors(char *color);
 bool			init_file_info(char *line, t_data *dt);
 bool			free_and_return(char *line, char *line1, bool result);
 int				is_player(char *p, t_data *dt, int i);
