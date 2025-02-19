@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 08:50:22 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:57:37 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	cub_keys_hooks(void *param)
 {
 	t_cub	*cub;
 
+	if (!param)
+		return ;
 	cub = (t_cub *)param;
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
 		close_window(cub);
@@ -27,6 +29,8 @@ void	cub_keys_hooks(void *param)
 
 void	hook_frame_update(void *param)
 {
+	if (!param)
+		return ;
 	draw_3d_view(param);
 	draw_map_2d(param, 0, 0);
 }
