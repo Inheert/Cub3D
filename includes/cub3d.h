@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 08:51:49 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:09:32 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ typedef struct s_cub
 	mlx_texture_t	*south_texture;
 	mlx_texture_t	*west_texture;
 	mlx_texture_t	*east_texture;
+	const int		*floor_color;
+	const int		*ceiling_color;
 	char			player_orientation;
 	float			player_pos[6];
 	float			player_ang;
@@ -176,7 +178,7 @@ void			close_window_hook(void *param);
 void			vertical_movement(t_cub *cub);
 void			horizontal_movement(t_cub *cub);
 void			player_rotation(t_cub *cub);
-void			draw_3d_view(t_cub	*cub);
+void			draw_3d_view(t_cub	*cub, t_raycast va);
 void			draw_map_2d(t_cub *cub, int x, int y);
 t_draw_param	create_param_struct(int32_t xstart, int32_t ystart,
 					int32_t xend, int32_t yend);

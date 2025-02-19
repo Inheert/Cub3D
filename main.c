@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 08:21:45 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:16:27 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	main(int ac, char **av)
 	cub->map = dt.map;
 	cub->map_x = dt.fi->nc;
 	cub->map_y = dt.fi->nl;
+	cub->floor_color = dt.fi->f;
+	cub->ceiling_color = dt.fi->c;
 	load_texture(cub, &file_info);
 	window = create_window(cub);
 	mlx_loop(window);

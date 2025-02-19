@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:59:16 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 08:50:26 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:13:41 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	real_draw_map_2d(t_cub *cub, int map_x, int map_y, int pos[2])
 				pos[1] * MINIMAP_CELL_SIZE + 1, MINIMAP_CELL_SIZE - 1,
 				MINIMAP_CELL_SIZE - 1), get_hexa_color(41, 79, 73, 255),
 			cub->game_img);
-	else if (cub->map[map_y][map_x] == '1')
+	else if (cub->map[map_y][map_x] != 'x')
 		draw_rectangle(create_param_struct(pos[0] * MINIMAP_CELL_SIZE + 1,
 				pos[1] * MINIMAP_CELL_SIZE + 1, MINIMAP_CELL_SIZE - 1,
 				MINIMAP_CELL_SIZE - 1), get_hexa_color(129, 120, 145, 255),

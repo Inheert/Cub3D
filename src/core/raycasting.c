@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:57:20 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 07:33:50 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:15:59 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	proceeds_raycasting(t_cub *cub, t_raycast *va, mlx_texture_t **texture)
 		if (va->ray_cell_x < 0 || va->ray_cell_y < 0
 			|| va->ray_cell_x >= cub->map_x || va->ray_cell_y >= cub->map_y)
 			break ;
-		if (cub->map[va->ray_cell_y][va->ray_cell_x] == '1')
+		if (cub->map[va->ray_cell_y][va->ray_cell_x] != 'x')
 		{
 			va->rest = fmodf(va->ray_y, TILE_SIZE);
 			va->x_offset = fmodf(va->ray_x, TILE_SIZE);
@@ -99,28 +99,21 @@ void	draw_texture(t_cub *cub, t_raycast *va, mlx_texture_t *texture)
 	}
 }
 
-void	draw_3d_view(t_cub	*cub)
+void	draw_3d_view(t_cub	*cub, t_raycast va)
 {
-	t_raycast		va;
 	mlx_texture_t	*texture;
 
-	va.fov = PI / 4;
-	va.angle_step = va.fov / W_WIDTH;
-	va.ra = cub->player_ang - (va.fov * 0.5);
-	while (va.ra < 0)
-		va.ra += 2 * PI;
-	while (va.ra > 2 * PI)
-		va.ra -= 2 * PI;
-	va.i = -1;
 	texture = NULL;
 	while (++va.i < W_WIDTH)
 	{
 		prepare_and_proceed_raycasting(cub, &va, &texture);
 		draw_texture(cub, &va, texture);
 		draw_line(create_param_struct(va.i, 0, va.i, va.wall_top),
-			get_hexa_color(135, 206, 250, 255), cub->game_img);
+			get_hexa_color(cub->ceiling_color[0], cub->ceiling_color[1],
+				cub->ceiling_color[2], 255), cub->game_img);
 		draw_line(create_param_struct(va.i, va.wall_bottom, va.i, W_HEIGHT),
-			get_hexa_color(169, 169, 169, 255), cub->game_img);
+			get_hexa_color(cub->floor_color[0], cub->floor_color[1],
+				cub->floor_color[2], 255), cub->game_img);
 		va.ra += va.angle_step;
 		if (va.ra > 2 * PI)
 			va.ra -= 2 * PI;

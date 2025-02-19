@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 08:57:37 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:15:12 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,19 @@ void	cub_keys_hooks(void *param)
 
 void	hook_frame_update(void *param)
 {
+	t_raycast		va;
+
 	if (!param)
 		return ;
-	draw_3d_view(param);
+	va.fov = PI / 4;
+	va.angle_step = va.fov / W_WIDTH;
+	va.ra = ((t_cub *)param)->player_ang - (va.fov * 0.5);
+	while (va.ra < 0)
+		va.ra += 2 * PI;
+	while (va.ra > 2 * PI)
+		va.ra -= 2 * PI;
+	va.i = -1;
+	draw_3d_view(param, va);
 	draw_map_2d(param, 0, 0);
 }
 
@@ -62,6 +72,7 @@ void	set_player_pos(t_cub *cub)
 				cub->player_pos[1] = y * TILE_SIZE + TILE_SIZE * 0.5;
 				cub->player_pos[2] = cos(cub->player_ang) * 5;
 				cub->player_pos[3] = sin(cub->player_ang) * 5;
+				cub->map[y][x] = 'x';
 				break ;
 			}
 		}
