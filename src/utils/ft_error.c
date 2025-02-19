@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:29:59 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 10:02:21 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:49:46 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	close_window(t_cub *cub)
 void	safe_close_mlx(t_cub *cub)
 {
 	static t_cub	*_cub = NULL;
+
 	if (cub && !_cub)
 		_cub = cub;
 	else if (!cub && _cub)

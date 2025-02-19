@@ -6,11 +6,36 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:59:16 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 06:05:51 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:50:26 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	mouse_pos_change(double x, double y, void *param)
+{
+	t_cub	*cub;
+
+	(void)y;
+	cub = (t_cub *)param;
+	if (x < cub->last_x_mouse)
+	{
+		cub->player_ang -= 0.07;
+		if (cub->player_ang < 0)
+			cub->player_ang += 2 * PI;
+		cub->player_pos[2] = cos(cub->player_ang) * 5;
+		cub->player_pos[3] = sin(cub->player_ang) * 5;
+	}
+	else
+	{
+		cub->player_ang += 0.07;
+		if (cub->player_ang > 2 * PI)
+			cub->player_ang -= 2 * PI;
+		cub->player_pos[2] = cos(cub->player_ang) * 5;
+		cub->player_pos[3] = sin(cub->player_ang) * 5;
+	}
+	cub->last_x_mouse = x;
+}
 
 void	real_draw_map_2d(t_cub *cub, int map_x, int map_y, int pos[2])
 {

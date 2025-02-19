@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/14 07:40:39 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:50:22 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	cub_keys_hooks(void *param)
 	vertical_movement(cub);
 	horizontal_movement(cub);
 	player_rotation(cub);
+	mlx_set_mouse_pos(cub->mlx, W_WIDTH * 0.5, W_HEIGHT * 0.5);
 }
 
 void	hook_frame_update(void *param)
@@ -32,9 +33,11 @@ void	hook_frame_update(void *param)
 
 void	initialize_hooks(t_cub *cub)
 {
+	cub->last_x_mouse = 0;
 	mlx_loop_hook(cub->mlx, &cub_keys_hooks, cub);
 	mlx_loop_hook(cub->mlx, &hook_frame_update, cub);
 	mlx_close_hook(cub->mlx, &close_window_hook, cub);
+	mlx_cursor_hook(cub->mlx, &mouse_pos_change, cub);
 }
 
 void	set_player_pos(t_cub *cub)

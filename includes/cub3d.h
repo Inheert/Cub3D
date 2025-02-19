@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 08:18:00 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:51:49 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,30 +66,30 @@
  *
  */
 
- typedef struct s_file_info
- {
-	 const char	*no;
-	 const char	*so;
-	 const char	*we;
-	 const char	*ea;
-	 const int	*f;
-	 const int	*c;
-	 int			complet;
-	 int			nl;
-	 int			nc;
-	 char		*line;
-	 bool		valid;
- }	t_file;
+typedef struct s_file_info
+{
+	const char	*no;
+	const char	*so;
+	const char	*we;
+	const char	*ea;
+	const int	*f;
+	const int	*c;
+	int			complet;
+	int			nl;
+	int			nc;
+	char		*line;
+	bool		valid;
+}	t_file;
 
- typedef struct s_data
- {
-	 t_file	*fi;
+typedef struct s_data
+{
+	t_file	*fi;
 
-	 char	**map;
-	 char	*map_verif;
-	 char	vue_player;
-	 int		pos_player;
- }	t_data;
+	char	**map;
+	char	*map_verif;
+	char	vue_player;
+	int		pos_player;
+}	t_data;
 
 typedef struct s_cub
 {
@@ -105,6 +105,7 @@ typedef struct s_cub
 	char			**map;
 	int				map_x;
 	int				map_y;
+	double			last_x_mouse;
 }	t_cub;
 
 typedef struct s_raycast
@@ -185,5 +186,6 @@ void			draw_line(t_draw_param param, uint32_t color,
 					mlx_image_t *image);
 uint32_t		get_hexa_color(unsigned int r, unsigned int g, unsigned int b,
 					unsigned int alpha);
+void			mouse_pos_change(double x, double y, void *param);
 
 #endif
