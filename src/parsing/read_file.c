@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/19 08:11:29 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:01:38 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ char	*take_path_info(char *line)
 	png = ft_strrchr(line, '.');
 	if (path == NULL || png == NULL || (ft_strncmp(png, ".png\n", 5) != 0
 			&& ft_strncmp(png, ".png ", 5) != 0))
-		return (raise_error("Error\n",
-				"read_file: bad use of indetifier.\n", 1, true), NULL);
+		return (raise_error("Parsing",
+				"read_file: bad use of indetifier.", 1, true), NULL);
 	i = 0;
 	while (ft_isgraph(path[i]))
 		i++;
@@ -45,8 +45,8 @@ int	*take_colors(char *color)
 	while (color[i] == 'F' || color[i] == 'C' || color[i] == ' ')
 		i++;
 	if (!color[i] && !ft_isalnum(color[i]))
-		return (raise_error("Error\n",
-				"read_file: bad use of Colors.\n", 1, true), NULL);
+		return (raise_error("Parsing",
+				"read_file: bad use of Colors.", 1, true), NULL);
 	j = 0;
 	while (j < 3)
 	{
@@ -58,8 +58,8 @@ int	*take_colors(char *color)
 		j++;
 	}
 	if (color[i] && (color[i] > 33 && color[i] < 127))
-		return (raise_error("Error\n",
-				"read_file: bad use of Colors.\n", 1, true), NULL);
+		return (raise_error("Parsing",
+				"read_file: bad use of Colors.", 1, true), NULL);
 	return (start);
 }
 
@@ -70,8 +70,8 @@ bool	process_line(char *line, t_data *dt)
 	if (*line && init_file_info(line, dt))
 		dt->fi->complet++;
 	else if (*line && !init_file_info(line, dt))
-		return (raise_error("Error\n",
-				"read_file: init_file_info.\n", 1, true), false);
+		return (raise_error("Parsing",
+				"read_file: init_file_info.", 1, true), false);
 	return (true);
 }
 
@@ -96,8 +96,8 @@ bool	verify_format_file(int fd, int fd1, t_data *dt)
 		line = get_next_line_bonus(tfd[0]);
 		line1 = get_next_line_bonus(tfd[1]);
 		if (!line || !line1)
-			return (raise_error("Error\n",
-					"read_file: gnl return NULL.\n", 1, true),
+			return (raise_error("Parsing",
+					"read_file: gnl return NULL.", 1, true),
 				free_and_return(line, line1, false));
 		if (*line && dt->fi->complet <= 6 && !process_line(line, dt))
 			return (free_and_return(line, line1, false));
@@ -115,12 +115,12 @@ void	read_file(char *file, t_data *dt)
 	fd = open(file, O_RDONLY, 777);
 	fd1 = open(file, O_RDONLY, 777);
 	if (fd < 0 || fd1 < 0)
-		return (raise_error("Error\n",
-				"read_file: cannot open the file.\n", 1, true));
+		return (raise_error("Parsing",
+				"read_file: cannot open the file.", 1, true));
 	if (verify_format_file(fd, fd1, dt) == false)
-		return (raise_error("Error\n", "read_file: file usless.\n", 1, true));
+		return (raise_error("Parsing", "read_file: file usless.", 1, true));
 	if (dt->map_verif == NULL)
-		return (raise_error("Error\n", "read_file: file usless.\n", 1, true));
+		return (raise_error("Parsing", "read_file: file usless.", 1, true));
 	close(fd);
 	close(fd1);
 }

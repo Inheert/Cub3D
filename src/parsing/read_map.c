@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:59:03 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/19 08:11:53 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:01:55 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,19 +113,19 @@ bool	read_map(char *line, char *line1, int tfd[2], t_data *dt)
 	int	i;
 
 	if (dimetions_for_map(line1, tfd[1], dt) == false)
-		return (raise_error("Error\n", "dimetions_for_map.\n", 1, true), 0);
+		return (raise_error("Parsing", "dimetions_for_map.", 1, true), 0);
 	dt->fi->line = line;
 	dt->map_verif = get_map(dt, tfd[0]);
 	if (!dt->map_verif)
-		return (raise_error("Error\n", "Not valid map.\n", 1, true), 0);
+		return (raise_error("Parsing", "Not valid map.", 1, true), 0);
 	if (flood_fill(dt, dt->pos_player) == 1)
-		return (raise_error("Error\n", " map open.\n", 1, true), 0);
+		return (raise_error("Parsing", " map open.", 1, true), 0);
 	i = 0;
 	while (dt->map_verif[i])
 	{
 		if (dt->map_verif[i] == '0')
 			if (flood_fill(dt, i) == 1)
-				return (raise_error("Error\n", " map open.\n", 1, true), 0);
+				return (raise_error("Parsing", " map open.", 1, true), 0);
 		i++;
 	}
 	return (true);
