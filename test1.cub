@@ -1,8 +1,8 @@
-EA                          ./src/resources/decors/256_Cement01.png
-NO                  ./src/resources/decors/256_Marble01.png
-SO ./src/resources/decors/256_Checkered01.png
+EA                          ./src/resources/decors/e.png
+NO                  ./src/resources/decors/n.png
+SO ./src/resources/decors/s.png
 
-WE ./src/resources/decors/256_Brick04.png
+WE ./src/resources/decors/o.png
 
 
             F 220,100,255

@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 12:29:59 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 08:49:46 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:05:36 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	delete_textures(t_cub *cub)
 		mlx_delete_texture(cub->east_texture);
 	if (cub->west_texture)
 		mlx_delete_texture(cub->west_texture);
-	if (cub->game_img)
-		mlx_delete_image(cub->mlx, cub->game_img);
 }
 
 void	close_window(t_cub *cub)

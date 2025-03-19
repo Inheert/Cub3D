@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 09:16:27 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:33:58 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,35 @@
 	si tout pres du mur, limite les calculs
 */
 
+void	swap_texture_pixels_horizontal(mlx_texture_t *texture)
+{
+	unsigned int	row_size;
+	unsigned int	row;
+	unsigned int	col;
+	int				comp;
+	int				temp;
+
+	row_size = texture->width * 4;
+	row = -1;
+	while (++row < texture->height)
+	{
+		col = -1;
+		while (++col < texture->width * 0.5)
+		{
+			comp = -1;
+			while (++comp < 4)
+			{
+				temp = texture->pixels[row * row_size + col * 4 + comp];
+				texture->pixels[row * row_size + col * 4
+					+ comp] = texture->pixels[row * row_size
+					+ (texture->width - col - 1) * 4 + comp];
+				texture->pixels[row * row_size + (texture->width
+						- col - 1) * 4 + comp] = temp;
+			}
+		}
+	}
+}
+
 void	load_texture(t_cub *cub, t_file *file_info)
 {
 	mlx_texture_t	*buff;
@@ -30,17 +59,16 @@ void	load_texture(t_cub *cub, t_file *file_info)
 	if (!buff)
 		raise_perror("A problem occur while loading North texture.", 1);
 	cub->north_texture = buff;
-
 	buff = mlx_load_png(file_info->so);
 	if (!buff)
 		raise_perror("A problem occur while loading South texture.", 1);
 	cub->south_texture = buff;
-
+	swap_texture_pixels_horizontal(cub->south_texture);
 	buff = mlx_load_png(file_info->we);
 	if (!buff)
 		raise_perror("A problem occur while loading West texture.", 1);
 	cub->west_texture = buff;
-
+	swap_texture_pixels_horizontal(cub->west_texture);
 	buff = mlx_load_png(file_info->ea);
 	if (!buff)
 		raise_perror("A problem occur while loading East texture.", 1);
