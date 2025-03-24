@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   str_to_table.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:28:41 by jodiaz-a          #+#    #+#             */
 /*   Updated: 2025/02/19 08:12:11 by tclaereb         ###   ########.fr       */

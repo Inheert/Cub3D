@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
 /*   Updated: 2025/02/19 09:09:32 by tclaereb         ###   ########.fr       */
@@ -151,6 +151,7 @@ typedef struct s_draw_param
 	mlx_image_t	*image;
 }	t_draw_param;
 
+
 void			safe_close_mlx(t_cub *cub);
 void			raise_perror(char *error, bool critical);
 void			raise_error(char *error, char *details, int exit_code,
@@ -180,6 +181,7 @@ void			horizontal_movement(t_cub *cub);
 void			player_rotation(t_cub *cub);
 void			draw_3d_view(t_cub	*cub, t_raycast va);
 void			draw_map_2d(t_cub *cub, int x, int y);
+
 t_draw_param	create_param_struct(int32_t xstart, int32_t ystart,
 					int32_t xend, int32_t yend);
 void			draw_rectangle(t_draw_param param, uint32_t color,
