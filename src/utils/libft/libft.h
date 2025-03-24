@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:21:37 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/07 13:17:55 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/02/19 08:49:32 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,36 +71,36 @@ typedef struct s_list
 	struct s_list	*next;
 }			t_list;
 
-t_list	*ft_lstnew(void *content);
-void	ft_lstadd_front(t_list **lst, t_list *new);
-int		ft_lstsize(t_list *lst);
-t_list	*ft_lstlast(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstdelone(t_list *lst, void (*del)(void*));
-void	ft_lstclear(t_list **lst, void (*del)(void*));
-void	ft_lstiter(t_list *lst, void (*f)(void *));
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+t_list		*ft_lstnew(void *content);
+void		ft_lstadd_front(t_list **lst, t_list *new);
+int			ft_lstsize(t_list *lst);
+t_list		*ft_lstlast(t_list *lst);
+void		ft_lstadd_back(t_list **lst, t_list *new);
+void		ft_lstdelone(t_list *lst, void (*del)(void*));
+void		ft_lstclear(t_list **lst, void (*del)(void*));
+void		ft_lstiter(t_list *lst, void (*f)(void *));
+t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 /* ft_printf */
-int		ft_printf(const char *format, ...);
-int		ft_print_c(int c);
-int		ft_print_d_and_i(int num);
-int		ft_print_p(unsigned long long int num);
-int		ft_print_s(const char *string);
-int		ft_print_u(unsigned int num);
-int		ft_print_xx(unsigned int num, const char f);
+int			ft_printf(const char *format, ...);
+int			ft_print_c(int c);
+int			ft_print_d_and_i(int num);
+int			ft_print_p(unsigned long long int num);
+int			ft_print_s(const char *string);
+int			ft_print_u(unsigned int num);
+int			ft_print_xx(unsigned int num, const char f);
 
 /* gnl*/
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1000
 
-char	*get_next_line_bonus(int fd);
-int		ft_strlen1(char *s);
-char	*ft_strjoin1(char *start_point, char *buffer_rd);
-char	*ft_read_fd(int fd, char *start_point);
-char	*ft_get_line(char *start_point);
-char	*ft_new_start_point(char *start_point);
-char	*ft_strchr1(char *start_point, int bn);
+char		*get_next_line_bonus(int fd);
+int			ft_strlen1(char *s);
+char		*ft_strjoin1(char *start_point, char *buffer_rd);
+char		*ft_read_fd(int fd, char *start_point);
+char		*ft_get_line(char *start_point);
+char		*ft_new_start_point(char *start_point);
+char		*ft_strchr1(char *start_point, int bn);
 
 // char	*get_next_line(int fd);
 // int		ft_strlen_gnl(char *s);
@@ -110,7 +110,7 @@ char	*ft_strchr1(char *start_point, int bn);
 // char	*ft_find_new_start(char *start_point_buff);
 // char	*ft_strchr_gnl(char *start_point_buff, int bn);
 
-double	ft_abs(double n);
+double		ft_abs(double n);
 
 # endif
 #endif

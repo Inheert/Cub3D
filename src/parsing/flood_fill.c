@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:16:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/07 12:08:11 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:30:04 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	flood_fill(t_data *dt, int courrent_pos)
 {
 	if (courrent_pos < 0 || courrent_pos > (dt->fi->nc * dt->fi->nl))
-		return (raise_error("Error\n", "map open 1.\n", 1, true), 1);
+		return (raise_error("Parsing", "map open 1.", 1, true), 1);
 	if (dt->map_verif[courrent_pos] == '1'
 		|| dt->map_verif[courrent_pos] == 'x')
 		return (1);
 	else if (dt->map_verif[courrent_pos] == ' '
 		|| dt->map_verif[courrent_pos] == '\n')
-		return (raise_error("Error\n", "map open 2.\n", 1, true), 1);
+		return (raise_error("Parsing", "map open 2.", 1, true), 1);
 	else if (dt->map_verif[courrent_pos] == '0'
 		|| dt->map_verif[courrent_pos] == 'N'
 		|| dt->map_verif[courrent_pos] == 'E'
