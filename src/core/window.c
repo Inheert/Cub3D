@@ -6,74 +6,99 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/05 14:36:38 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:15:12 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	close_window()
+void	cub_keys_hooks(void *param)
 {
-	mlx_close_window(g_window);
-	mlx_terminate(g_window);
-	gb_free_all();
-	exit(0);
-}
+	t_cub	*cub;
 
-void	cub_keys_hooks(mlx_key_data_t keydata, void *param)
-{
-	(void)param;
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
-		close_window();
-	if (keydata.key == MLX_KEY_W)
-		player_set_y(1);
-	if (keydata.key == MLX_KEY_S)
-		player_set_y(-1);
-	if (keydata.key == MLX_KEY_A)
-		player_set_x(-1);
-	if (keydata.key == MLX_KEY_D)
-		player_set_x(1);
-	if (keydata.key == MLX_KEY_LEFT)
-		player_set_angle(-0.1);
-	if (keydata.key == MLX_KEY_RIGHT)
-		player_set_angle(0.1);
+	if (!param)
+		return ;
+	cub = (t_cub *)param;
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
+		close_window(cub);
+	vertical_movement(cub);
+	horizontal_movement(cub);
+	player_rotation(cub);
+	mlx_set_mouse_pos(cub->mlx, W_WIDTH * 0.5, W_HEIGHT * 0.5);
 }
 
 void	hook_frame_update(void *param)
 {
-	int	i;
-	int	j;
+	t_raycast		va;
 
-	(void)param;
-	i = -1;
-	while (++i < 1024)
+	if (!param)
+		return ;
+	va.fov = PI / 4;
+	va.angle_step = va.fov / W_WIDTH;
+	va.ra = ((t_cub *)param)->player_ang - (va.fov * 0.5);
+	while (va.ra < 0)
+		va.ra += 2 * PI;
+	while (va.ra > 2 * PI)
+		va.ra -= 2 * PI;
+	va.i = -1;
+	draw_3d_view(param, va);
+	draw_map_2d(param, 0, 0);
+}
+
+void	initialize_hooks(t_cub *cub)
+{
+	cub->last_x_mouse = 0;
+	mlx_loop_hook(cub->mlx, &cub_keys_hooks, cub);
+	mlx_loop_hook(cub->mlx, &hook_frame_update, cub);
+	mlx_close_hook(cub->mlx, &close_window_hook, cub);
+	mlx_cursor_hook(cub->mlx, &mouse_pos_change, cub);
+}
+
+void	set_player_pos(t_cub *cub)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (++y < cub->map_y)
 	{
-		j = -1;
-		while (++j < 1024)
-			mlx_put_pixel(g_game_container, i, j, 0x00003366);
+		x = -1;
+		while (++x < cub->map_x)
+		{
+			if (cub->map[y][x] == 'N' || cub->map[y][x] == 'S' ||
+				cub->map[y][x] == 'E' || cub->map[y][x] == 'W')
+			{
+				cub->player_pos[0] = x * TILE_SIZE + TILE_SIZE * 0.5;
+				cub->player_pos[1] = y * TILE_SIZE + TILE_SIZE * 0.5;
+				cub->player_pos[2] = cos(cub->player_ang) * 5;
+				cub->player_pos[3] = sin(cub->player_ang) * 5;
+				cub->map[y][x] = 'x';
+				break ;
+			}
+		}
 	}
-	draw_player();
 }
 
-void	initialize_hooks()
+mlx_t	*create_window(t_cub *cub)
 {
-	mlx_key_hook(g_window, &cub_keys_hooks, NULL);
-	mlx_loop_hook(g_window,  &hook_frame_update, NULL);
-}
-
-mlx_t	*create_window()
-{
-	mlx_t	*window;
-
-	window = mlx_init(2048, 1024, "Cub3D", false);
-	if (!window)
+	cub->mlx = mlx_init(W_WIDTH, W_HEIGHT, "Cub3D", false);
+	if (!cub->mlx)
 		raise_perror("a problem occur while creating the mlx window.", true);
-	g_window = window;
-	g_game_container = mlx_new_image(window, 1024, 1024);
-	if (!g_game_container)
-		raise_error("Error:", "game image container creation failed.", 1, true);
-	if (mlx_image_to_window(window, g_game_container, 0, 0) == -1)
-		raise_error("Error:", "game image container to window failed.", 1, true);
-	initialize_hooks();
-	return (window);
+	safe_close_mlx(cub);
+	cub->game_img = mlx_new_image(cub->mlx, W_WIDTH, W_HEIGHT);
+	if (!cub->game_img)
+		raise_error("Error:", "game image creation failed.", 1, true);
+	if (mlx_image_to_window(cub->mlx, cub->game_img, 0, 0) == -1)
+		raise_error("Error:", "game image to window failed.", 1, true);
+	if (cub->player_orientation == 'E')
+		cub->player_ang = 0;
+	else if (cub->player_orientation == 'S')
+		cub->player_ang = PI * 0.5;
+	else if (cub->player_orientation == 'W')
+		cub->player_ang = PI;
+	else if (cub->player_orientation == 'N')
+		cub->player_ang = 3 * PI * 0.5;
+	set_player_pos(cub);
+	initialize_hooks(cub);
+	return (cub->mlx);
 }

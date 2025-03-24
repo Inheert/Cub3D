@@ -1,19 +1,19 @@
-NO                  ./path_to_the_north_texture
-SO ./path_to_           the_south_texture
+EA                          ./src/resources/decors/e.png
+NO                  ./src/resources/decors/n.png
+SO ./src/resources/decors/s.png
 
+WE ./src/resources/decors/o.png
 
-EA                          ./path_to_the_east_texture
-
-WE ./path_to   _the_west_texture
-
-
- C            225,30,0
 
             F 220,100,255
+ C            225,30,0
 
 111111111111
-    1N0001001111 111111
+    1000000011111 111111
+111111101111
+111100000111
+    1S0000001111 111111
+    100010001111 111111
+    100001001111 111111
 111111111111
-
-ksdfh
 

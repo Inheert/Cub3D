@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 14:11:31 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2024/12/16 13:19:52 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/02/06 11:17:31 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ char	*ft_read_fd(int fd, char *start_point)
 		start_point = ft_strjoin1(start_point, buff_rd);
 	}
 	gb_free(buff_rd);
-	
-	return ( start_point);
+	return (start_point);
 }
 
 char	*get_next_line_bonus(int fd)

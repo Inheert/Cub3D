@@ -3,88 +3,101 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2024/12/17 13:14:39 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:33:58 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/**
- * Make sure the file pas as argument is type .cub
- */
-int	ft_is_cub(const char *file)
+/*
+	faire en sorte que raise_error/perror close la mlx
+	verifier la map bien ferme
+	limite de taille pr la map
+	si extension pngg ca devrait etre faux
+	couleur du ciel et du sol en int *
+	pq je segfault????????
+	si tout pres du mur, limite les calculs
+*/
+
+void	swap_texture_pixels_horizontal(mlx_texture_t *texture)
 {
-	char	*p;
+	unsigned int	row_size;
+	unsigned int	row;
+	unsigned int	col;
+	int				comp;
+	int				temp;
 
-	p = NULL;
-	if (file == NULL)
-		return (0);
-	if ((p = ft_strchr(file, '.')) == NULL)
-		return (0);
-	if (ft_strncmp(".cub", p, 4) != 0)
-		return (0);
-	return (1);
-}
-
-void	init_t_file(t_file *fi)
-{
-	fi->no = NULL;
-	fi->so = NULL;
-	fi->we = NULL;
-	fi->ea = NULL;
-	fi->f = NULL;
-	fi->c = NULL;
-	fi->complet = 1;
-
-	fi->nl = 0;
-	fi->nc = 0;
-
-	fi->line = NULL;
-
-	fi->valid = true;
-	
-}
-
-void	printing_all_file_info(t_file *fi, t_data *dt)
-{
-	printf("\nfi->no: %s\n", fi->no);
-	printf("fi->so: %s\n", fi->so);
-	printf("fi->we: %s\n", fi->we);
-	printf("fi->ea: %s\n", fi->ea);
-	printf("fi->f: %s\n", fi->f);
-	printf("fi->c: %s\n", fi->c);
-	printf("fi->complet: %i\n", fi->complet);
-	printf("fi->nl: %i\n", fi->nl);
-	printf("fi->nc: %i\n", fi->nc);
-	printf("fi->line: %s\n", fi->line);
-	printf("fi->valid: %d\n", fi->valid);
-
-	printf("dt->map_verif: \n");
-	for (int i = 0; i < (fi->nc * fi->nl); i++)
+	row_size = texture->width * 4;
+	row = -1;
+	while (++row < texture->height)
 	{
-		if (i % dt->fi->nc == 0 && i != 0)
-			printf("\n");
-		printf("%c", dt->map_verif[i]);
+		col = -1;
+		while (++col < texture->width * 0.5)
+		{
+			comp = -1;
+			while (++comp < 4)
+			{
+				temp = texture->pixels[row * row_size + col * 4 + comp];
+				texture->pixels[row * row_size + col * 4
+					+ comp] = texture->pixels[row * row_size
+					+ (texture->width - col - 1) * 4 + comp];
+				texture->pixels[row * row_size + (texture->width
+						- col - 1) * 4 + comp] = temp;
+			}
+		}
 	}
-	printf("\n");
-	printf("dt->pos_player: %i\n", dt->pos_player);
+}
+
+void	load_texture(t_cub *cub, t_file *file_info)
+{
+	mlx_texture_t	*buff;
+
+	buff = mlx_load_png(file_info->no);
+	if (!buff)
+		raise_perror("A problem occur while loading North texture.", 1);
+	cub->north_texture = buff;
+	buff = mlx_load_png(file_info->so);
+	if (!buff)
+		raise_perror("A problem occur while loading South texture.", 1);
+	cub->south_texture = buff;
+	swap_texture_pixels_horizontal(cub->south_texture);
+	buff = mlx_load_png(file_info->we);
+	if (!buff)
+		raise_perror("A problem occur while loading West texture.", 1);
+	cub->west_texture = buff;
+	swap_texture_pixels_horizontal(cub->west_texture);
+	buff = mlx_load_png(file_info->ea);
+	if (!buff)
+		raise_perror("A problem occur while loading East texture.", 1);
+	cub->east_texture = buff;
 }
 
 int	main(int ac, char **av)
 {
 	t_data	dt;
 	t_file	file_info;
+	t_cub	*cub;
+	mlx_t	*window;
 
 	if (ac != 2 || !av || !av[1] || !ft_is_cub((const char *)av[1]))
-		raise_error("Parsing", "file inexistent or wrong file.", 1 ,1);
+		raise_error("Parsing", "file inexistent or wrong file.", 1, 1);
 	init_t_file(&file_info);
 	dt.map_verif = NULL;
 	dt.fi = &file_info;
 	read_file(av[1], &dt);
-	printing_all_file_info(&file_info, &dt);
-	
-	raise_error("Perfect", "Program ends well.", 1 ,1);//ne
+	str_to_table(&dt);
+	cub = gb_malloc(sizeof(t_cub));
+	cub->player_orientation = dt.vue_player;
+	cub->map = dt.map;
+	cub->map_x = dt.fi->nc;
+	cub->map_y = dt.fi->nl;
+	cub->floor_color = dt.fi->f;
+	cub->ceiling_color = dt.fi->c;
+	load_texture(cub, &file_info);
+	window = create_window(cub);
+	mlx_loop(window);
+	mlx_terminate(window);
 }
