@@ -4,6 +4,9 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -Ofast -march=native -mtune=native -funroll-loops -finline-functions -fomit-frame-pointer -ffast-math
 
+CMAKE = cmake
+MLX_PATH = ./src/utils/mlx42
+
 INCLUDES = -I ./includes/
 
 SRC_DIR = .
@@ -35,7 +38,9 @@ all: $(NAME)
 $(NAME): $(OBJECTS)
 	@$(MAKE_GARBAGE)
 	@$(MAKE_LIBFT)
-	@$(CC) $(OBJECTS) -o $@ $(INCLUDES) $(LIBFT) $(GARBAGE) src/utils/libmlx42.a -ldl -lglfw -pthread -lm
+	@cmake -B $(MLX_PATH)/build -S $(MLX_PATH)
+	@cmake --build $(MLX_PATH)/build
+	@$(CC) $(OBJECTS) -o $@ $(INCLUDES) $(LIBFT) $(GARBAGE) $(MLX_PATH)/build/libmlx42.a -ldl -lglfw -pthread -lm
 	@echo "\033[1;38;5;10m   ⭐ - All files compiled.\033[0m"
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
@@ -53,6 +58,7 @@ fclean: clean
 	@rm -f $(NAME)
 	@$(MAKE_GARBAGE) -s fclean
 	@$(MAKE_LIBFT) -s fclean
+	@rm -rf $(MLX_PATH)/build
 	@echo "\033[1;38;5;9m   📤 - Libs and executable removed.\033[0m"
 
 re: fclean all

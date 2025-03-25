@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/03/25 11:43:23 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:31:54 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 # include "../src/utils/libft/libft.h"
 # include "../src/utils/garbage_collector/includes/garbage_collector.h"
-# include "MLX42/MLX42.h"
+# include "../src/utils/mlx42/include/MLX42/MLX42.h"
 
 # define W_WIDTH 2048
 # define W_HEIGHT 2048
@@ -108,6 +108,7 @@ typedef struct s_cub
 	int				map_x;
 	int				map_y;
 	double			last_x_mouse;
+	bool			unfocus;
 }	t_cub;
 
 typedef struct s_raycast
@@ -162,6 +163,7 @@ int				flood_fill(t_data *dt, int courrent_pos);
 
 int				ft_is_cub(const char *file);
 void			init_t_file(t_file *fi);
+bool			first_line_map(char *line1, t_data *dt);
 void			printing_all_file_info(t_file *fi, t_data *dt);
 bool			allocate_map_rows(t_data *dt);
 void			fill_map_rows(t_data *dt);

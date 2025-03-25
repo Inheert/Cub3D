@@ -3,14 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   init_file_info.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:46:57 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/19 08:11:10 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:31:20 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+bool	first_line_map(char *line1, t_data *dt)
+{
+	bool	flag;
+	int		i;
+
+	flag = true;
+	if (ft_strchr(line1, '1'))
+	{
+		i = 0;
+		while (i < dt->fi->nc && flag == true)
+		{
+			if (line1[i] == '1')
+				flag = true;
+			else
+				flag = false;
+			i++;
+		}
+		if (flag == true)
+			return (true);
+	}
+	return (false);
+}
 
 /**
  * Get organize the information in the t_file structure

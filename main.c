@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/03/25 11:42:09 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:32:26 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	main(int ac, char **av)
 	cub->map_y = dt.fi->nl;
 	cub->floor_color = dt.fi->f;
 	cub->ceiling_color = dt.fi->c;
+	cub->unfocus = false;
 	load_texture(cub, &file_info);
 	window = create_window(cub);
 	mlx_loop(window);

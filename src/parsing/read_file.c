@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/19 09:01:38 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:31:10 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,11 @@ bool	verify_format_file(int fd, int fd1, t_data *dt)
 				free_and_return(line, line1, false));
 		if (*line && dt->fi->complet <= 6 && !process_line(line, dt))
 			return (free_and_return(line, line1, false));
-		if (*line && dt->fi->complet == 7 && ft_strchr(line, '1'))
-			return (read_map(line, line1, tfd, dt), true);
+		else if (*line && dt->fi->complet == 7)
+		{
+			if (first_line_map(line1, dt))
+				return (read_map(line, line1, tfd, dt), true);
+		}
 		free_and_return(line, line1, true);
 	}
 }
@@ -118,7 +121,7 @@ void	read_file(char *file, t_data *dt)
 		return (raise_error("Parsing",
 				"read_file: cannot open the file.", 1, true));
 	if (verify_format_file(fd, fd1, dt) == false)
-		return (raise_error("Parsing", "read_file: file usless.", 1, true));
+		return (raise_error("Parsing", "read_file: file usless.1", 1, true));
 	if (dt->map_verif == NULL)
 		return (raise_error("Parsing", "read_file: file usless.", 1, true));
 	close(fd);

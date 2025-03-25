@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:59:16 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 09:13:41 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/03/25 12:25:24 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	mouse_pos_change(double x, double y, void *param)
 {
 	t_cub	*cub;
 
-	(void)y;
 	cub = (t_cub *)param;
 	if (x < cub->last_x_mouse)
 	{
@@ -26,7 +25,7 @@ void	mouse_pos_change(double x, double y, void *param)
 		cub->player_pos[2] = cos(cub->player_ang) * 5;
 		cub->player_pos[3] = sin(cub->player_ang) * 5;
 	}
-	else
+	else if (y == y)
 	{
 		cub->player_ang += 0.07;
 		if (cub->player_ang > 2 * PI)

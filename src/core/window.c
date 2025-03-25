@@ -6,7 +6,7 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 11:04:11 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 09:15:12 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/03/25 12:33:12 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	cub_keys_hooks(void *param)
 	vertical_movement(cub);
 	horizontal_movement(cub);
 	player_rotation(cub);
-	mlx_set_mouse_pos(cub->mlx, W_WIDTH * 0.5, W_HEIGHT * 0.5);
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_L))
+		cub->unfocus = !cub->unfocus;
+	if (!cub->unfocus)
+		mlx_set_mouse_pos(cub->mlx, W_WIDTH * 0.5, W_HEIGHT * 0.5);
 }
 
 void	hook_frame_update(void *param)

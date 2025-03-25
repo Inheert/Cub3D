@@ -1,18 +1,19 @@
-EA ./src/resources/decors/3.png
-NO ./src/resources/decors/256_Marble01.png
+EA ./src/resources/decors/256_PathDirtVertical07.png
 SO ./src/resources/decors/256_Checkered01.png
+
+
+C 255,0,0
+NO ./src/resources/decors/256_Marble01.png
+F 0,255,0
+
 WE ./src/resources/decors/256_Brick04.png
 
-C 9898989898989898989898989898989898,10,255
 
-F 255,225,0
-
-F 255,222,0
-
-000
-111
-1N1
-101
-111
-
-legerement incline
+1111111111111111  1
+1S00000000001    101
+100000000001      1
+100000000001 
+100000000001            
+100000000001        
+100000000001 
+1111111111111
