@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:25:47 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/02/19 09:09:32 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/03/25 11:43:23 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ typedef struct s_draw_param
 	uint32_t	color;
 	mlx_image_t	*image;
 }	t_draw_param;
-
 
 void			safe_close_mlx(t_cub *cub);
 void			raise_perror(char *error, bool critical);

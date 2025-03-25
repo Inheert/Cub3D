@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:57:20 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/03/19 07:52:59 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/03/24 12:01:10 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 void	set_good_texture(t_cub *cub, t_raycast *va, mlx_texture_t **texture)
 {
-	int	ray_y_rest;
-	int	ray_x_rest;
+	const int	ray_y_rest = (int)va->ray_y % TILE_SIZE;
+	const int	ray_x_rest = (int)va->ray_x % TILE_SIZE;
 
-	ray_y_rest = (int)va->ray_y % TILE_SIZE;
-	ray_x_rest = (int)va->ray_x % TILE_SIZE;
 	if ((ray_x_rest == 0 || ray_x_rest == TILE_SIZE - 1)
 		&& (ray_y_rest == 0 || ray_y_rest == TILE_SIZE - 1)
 		&& texture && *texture)

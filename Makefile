@@ -2,7 +2,7 @@ NAME = cub3D
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3 -Ofast -march=native -mtune=native -funroll-loops -finline-functions -fomit-frame-pointer -ffast-math
+CFLAGS = -Wall -Wextra -Werror -Ofast -march=native -mtune=native -funroll-loops -finline-functions -fomit-frame-pointer -ffast-math
 
 INCLUDES = -I ./includes/
 
