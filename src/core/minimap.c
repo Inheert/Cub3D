@@ -6,11 +6,22 @@
 /*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 08:59:16 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/04/02 12:59:16 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/04/02 14:37:05 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+bool	is_first_frame(t_cub *cub, double x)
+{
+	if (cub->first_frame)
+	{
+		cub->first_frame = false;
+		cub->last_x_mouse = x;
+		return (true);
+	}
+	return (false);
+}
 
 void	mouse_pos_change(double x, double y, void *param)
 {
@@ -20,6 +31,8 @@ void	mouse_pos_change(double x, double y, void *param)
 	if (cub->unfocus)
 		return ;
 	(void)y;
+	if (is_first_frame(cub, x))
+		return ;
 	if (x < cub->last_x_mouse)
 	{
 		cub->player_ang -= 0.07;

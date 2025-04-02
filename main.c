@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tclaereb <tclaereb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 10:26:24 by tclaereb          #+#    #+#             */
-/*   Updated: 2025/03/31 17:37:05 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/04/02 14:35:27 by tclaereb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	main(int ac, char **av)
 	cub->floor_color = dt.fi->f;
 	cub->ceiling_color = dt.fi->c;
 	cub->unfocus = false;
+	cub->first_frame = true;
 	load_texture(cub, &file_info);
 	window = create_window(cub);
 	mlx_loop(window);

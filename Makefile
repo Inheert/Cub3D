@@ -38,8 +38,10 @@ all: $(NAME)
 $(NAME): $(OBJECTS)
 	@$(MAKE_GARBAGE)
 	@$(MAKE_LIBFT)
-	@cmake -B $(MLX_PATH)/build -S $(MLX_PATH)
-	@cmake --build $(MLX_PATH)/build
+	@if [ ! -f $(MLX_PATH)/build/libmlx42.a ]; then \
+		cmake -B $(MLX_PATH)/build -S $(MLX_PATH); \
+		cmake --build $(MLX_PATH)/build; \
+	fi
 	@$(CC) $(OBJECTS) -o $@ $(INCLUDES) $(LIBFT) $(GARBAGE) $(MLX_PATH)/build/libmlx42.a -ldl -lglfw -pthread -lm
 	@echo "\033[1;38;5;10m   ⭐ - All files compiled.\033[0m"
 
