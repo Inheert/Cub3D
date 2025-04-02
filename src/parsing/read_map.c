@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 12:59:03 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/02/19 09:01:55 by tclaereb         ###   ########.fr       */
+/*   Updated: 2025/04/02 13:50:16 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	dimetions_for_map(char *line1, int fd1, t_data *dt)
 	if (line1)
 		gb_free(line1);
 	if ((dt->fi->nl < 3 && dt->fi->nc < 3)
-		|| (dt->fi->nl > 600 && dt->fi->nc > 600))
+		|| (dt->fi->nl > 300 || dt->fi->nc > 300))
 		return (false);
 	else
 		return (true);
