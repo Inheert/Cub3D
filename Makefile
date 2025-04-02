@@ -2,7 +2,7 @@ NAME = cub3D
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -Ofast -march=native -mtune=native -funroll-loops -finline-functions -fomit-frame-pointer -ffast-math
+CFLAGS = -Wall -Wextra -Werror -Ofast -march=native -mtune=native -funroll-loops -finline-functions -fomit-frame-pointer -ffast-math -g3
 
 CMAKE = cmake
 MLX_PATH = ./src/utils/mlx42

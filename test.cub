@@ -2,7 +2,9 @@ EA ./src/resources/decors/256_PathDirtVertical07.png
 SO ./src/resources/decors/256_Checkered01.png
 
 
-C 255,0,0
+C 0,00,255
+
+
 NO ./src/resources/decors/256_Marble01.png
 F 0,255,0
 

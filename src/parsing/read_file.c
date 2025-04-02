@@ -6,7 +6,7 @@
 /*   By: jodiaz-a <jodiaz-a@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 12:40:34 by jodiaz-a          #+#    #+#             */
-/*   Updated: 2025/03/25 16:31:10 by jodiaz-a         ###   ########.fr       */
+/*   Updated: 2025/03/31 17:54:52 by jodiaz-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,23 @@ char	*take_path_info(char *line)
 	char	*path;
 	char	*png;
 	int		i;
-
+	int 	fd;
+	
 	path = ft_strchr(line, '.');
 	png = ft_strrchr(line, '.');
 	if (path == NULL || png == NULL || (ft_strncmp(png, ".png\n", 5) != 0
-			&& ft_strncmp(png, ".png ", 5) != 0))
-		return (raise_error("Parsing",
-				"read_file: bad use of indetifier.", 1, true), NULL);
+	&& ft_strncmp(png, ".png ", 5) != 0))
+	return (raise_error("Parsing",
+		"read_file: bad use of indetifier.", 1, true), NULL);
+	
 	i = 0;
 	while (ft_isgraph(path[i]))
-		i++;
-	return (ft_substr(path, 0, i));
+	i++;
+	path = ft_substr(path, 0, i);
+	if ((fd = open(path, O_RDONLY)) < 0)
+		return (close(fd), raise_error("Parsing", "read_file: cannot open the file.", 1, true), NULL);
+	close(fd);
+	return (path);
 }
 
 int	*take_colors(char *color)
@@ -40,7 +46,7 @@ int	*take_colors(char *color)
 	int		i;
 	int		j;
 
-	start = (int *)malloc(sizeof(int) * 3);
+	start = (int *)gb_malloc(sizeof(int) * 3);
 	i = 0;
 	while (color[i] == 'F' || color[i] == 'C' || color[i] == ' ')
 		i++;
